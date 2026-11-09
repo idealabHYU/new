@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>교수진 데모</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="style.css?v=142">
+</head>
+<body>
+<div id="header"></div>
+
+<div class="subhero"><div class="wrap">
+  <div class="crumb">홈 › 소개 › 교수진</div>
+  <h1>교수진</h1>
+  <nav class="subtabs">
+    <a class="on" href="?t=full" data-t="full">전임교수</a><a href="?t=em" data-t="em">명예교수</a><a href="?t=adj" data-t="adj">초빙교수</a><a href="?t=res" data-t="res">연구교수</a>
+  </nav>
+</div></div>
+
+<main class="wrap pg">
+  <div class="tpane" id="pane-full"><div class="filters" id="filters"></div>
+  <div class="fac2" id="fac"></div></div>
+  <div class="tpane" id="pane-em" hidden><div class="em-grid" id="emer"></div></div>
+  <div class="tpane" id="pane-adj" hidden><div class="empty"><b>등록된 초빙교수가 없습니다</b><small>초빙교수 정보는 추후 업데이트됩니다.</small></div></div>
+  <div class="tpane" id="pane-res" hidden><div class="empty"><b>등록된 연구교수가 없습니다</b><small>연구교수 정보는 추후 업데이트됩니다.</small></div></div>
+</main>
+
+<div id="footer"></div>
+
+<script src="data.js?v=142"></script>
+<script src="common.js?v=142"></script>
+<script>
+renderHeader('소개');
+renderFooter();
+const POS_EN = { '교수': 'Professor', '부교수': 'Associate Professor', '조교수': 'Assistant Professor' };
+const countOf = id => FACULTY.filter(f => f.fields.includes(id)).length;
+const fil = document.getElementById('filters'), fac = document.getElementById('fac');
+// 분야 버튼: 아이콘 + 분야명 + 인원수 (세로 미니 카드)
+const FIC = {
+  all: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+  robot: '<path d="M4 21h9M8.5 21v-3.5"/><circle cx="8.5" cy="15.5" r="2"/><path d="M10 14l5-5"/><circle cx="16.5" cy="7.5" r="2"/><path d="M18.3 6.5l2.7-1.5M18 9.3l2 2"/>',
+  semi: '<rect x="7" y="7" width="10" height="10" rx="1.5"/><rect x="10" y="10" width="4" height="4"/><path d="M9.5 3v4M14.5 3v4M9.5 17v4M14.5 17v4M3 9.5h4M3 14.5h4M17 9.5h4M17 14.5h4"/>',
+  mobility: '<path d="M12 2.5c3 2 5 5.8 5 9.8l-2 3.7H9l-2-3.7c0-4 2-7.8 5-9.8z"/><circle cx="12" cy="10" r="1.8"/><path d="M9 16l-2.2 4.5L10 19.5M15 16l2.2 4.5-3.2-1"/>',
+  energy: '<path d="M13.5 2.5L4.5 14h7l-1 7.5 9-11.5h-7z"/>',
+  bio: '<path d="M2.5 12h4l2-4.5 3.5 9 2.3-4.5h7.2"/>',
+  ai: '<rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 15l1.5-6h1L13 15M9.6 12.8h2.8M16 9v6"/>',
+  mfg: '<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
+};
+const fbtn = (id, name, n) => `<button data-id="${id}"><span class="fi"><svg viewBox="0 0 24 24">${FIC[id] || FIC.all}</svg></span><b>${name}</b><i>${n}명</i></button>`;
+fil.innerHTML = fbtn('all', '전체', FACULTY.length) + FIELDS.map(f => fbtn(f.id, f.name, countOf(f.id))).join('');
+// 연세대 기계공학부 교수진 페이지 형식: 사진 | 이름·직위 / 이메일 / 연구실 ↗ / 연구 키워드 / 오피스 (전화번호 제외)
+// 정렬: 학과장만 맨 위, 나머지는 현행 사이트(-28) 순서 그대로 = 임용 순 (신임 교수가 아래)
+const CHAIR = '김남욱';
+const ORDER = [...FACULTY.filter(f => f.name === CHAIR), ...FACULTY.filter(f => f.name !== CHAIR)];
+// 오피스 → 영문 주소 형식 (예: Engineering Building #5, Room 303)
+const ADDR = o => { const m = o.match(/(\d+)공학관\s*([\w-]+)호/); return m ? `Engineering Building #${m[1]}, Room ${m[2]}` : o; };
+const ROLE = f => f.name === CHAIR ? '<em class="role">학과장</em>' : '';
+fac.innerHTML = ORDER.map(f => `
+  <div class="pf" data-f="${f.fields.join(' ')}">
+    <img class="pf-ph" src="${f.photo}" alt="${f.name} 교수" loading="lazy">
+    <div class="pf-body">
+      <div class="pf-name"><b>${f.name}</b><span>${POS_EN[f.pos] || f.pos}</span>${ROLE(f)}</div>
+      <a class="pf-mail" href="mailto:${f.email}"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>${f.email}</a>
+      <dl>
+        <dt>연구실</dt><dd>${f.lab ? `<a href="${f.lab}" target="_blank" rel="noopener">${f.labName} <i>↗</i></a>` : f.labName}</dd>
+        <dt>연구분야</dt><dd class="kw2">${f.kw}</dd>
+        <dt>주소</dt><dd class="addr">${ADDR(f.office)}</dd>
+      </dl>
+    </div>
+  </div>`).join('');
+function setFilter(id) {
+  fil.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.id === id));
+  fac.querySelectorAll('.pf').forEach(p => p.classList.toggle('hide', id !== 'all' && !p.dataset.f.split(' ').includes(id)));
+}
+fil.addEventListener('click', e => { const b = e.target.closest('button'); if (b) setFilter(b.dataset.id); });
+setFilter(new URLSearchParams(location.search).get('f') || 'all');
+// 명예교수 (현행 -28-2 기준, 사이트 순서)
+const EMER = [
+  ['정태형', 'Tae Hyong Chong', '명예교수', 'Kyoto University, Japan', 'thchong@hanyang.ac.kr'],
+  ['박경진', 'Gyung-Jin Park', '명예교수', 'The University of Iowa, USA', 'gjpark@hanyang.ac.kr'],
+  ['배대성', 'Dae Sung Bae', '명예교수', 'The University of Iowa, USA', 'dsbae@hanyang.ac.kr'],
+  ['김우승', 'Woo-Seung Kim', '명예교수', 'North Carolina State University, USA', 'wskim@hanyang.ac.kr'],
+  ['최낙삼', 'Nak-Sam Choi', '명예교수', 'Kyushu University, Japan', 'nschoi@hanyang.ac.kr'],
+  ['안강호', 'Kang-Ho Ahn', '명예교수', 'University of Minnesota, USA', 'khahn@hanyang.ac.kr'],
+  ['양현익', 'Hyunik Yang', '명예교수', 'Columbia University, USA', 'skynet@hanyang.ac.kr'],
+  ['이기형', 'Ki Hyung Lee', '석학교수', 'Kobe University, Japan', 'hylee@hanyang.ac.kr'],
+  ['안유민', 'Yoomin Ahn', '명예교수', 'Purdue University, USA', 'ahnym@hanyang.ac.kr'],
+  ['조남규', 'Nahm Gyoo Cho', '명예교수', 'Tokyo Institute of Technology, Japan', 'ngcho@hanyang.ac.kr'],
+  ['정진태', 'Jintai Chung', '석학교수', 'University of Michigan, USA', 'jchung@hanyang.ac.kr', 'https://sites.google.com/view/hyvibra'],
+];
+const EM_EN = { '명예교수': 'Professor Emeritus', '석학교수': 'Distinguished Professor' };
+document.getElementById('emer').innerHTML = EMER.map(([n, en, pos, phd, mail, web]) => `
+  <div class="em-card"><span class="em-mono">${n[0]}</span><div>
+    <div class="em-name"><b>${n}</b><span>${en}</span></div>
+    <span class="em-pos">${pos} <i>${EM_EN[pos]}</i></span>
+    <p class="em-deg">Ph.D., ${phd}</p>
+    <div class="em-links"><a href="mailto:${mail}"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>${mail}</a>${web ? `<a href="${web}" target="_blank" rel="noopener">홈페이지 ↗</a>` : ''}</div></div></div>`).join('');
+function setTab(k, push) {
+  if (!document.getElementById('pane-' + k)) k = 'full';
+  document.querySelectorAll('.tpane').forEach(p => p.hidden = p.id !== 'pane-' + k);
+  document.querySelectorAll('a[data-t]').forEach(a => a.classList.toggle('on', a.dataset.t === k));
+  if (push) history.replaceState(null, '', k === 'full' ? 'faculty.html' : '?t=' + k);
+}
+document.addEventListener('click', e => { const a = e.target.closest('a[data-t]'); if (a) { e.preventDefault(); setTab(a.dataset.t, true); } });
+setTab(new URLSearchParams(location.search).get('t') || 'full');
+</script>
+</body>
+</html>

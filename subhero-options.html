@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>서브 상단 시안</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root { --primary: #0E4A84; --accent: #5CC6F2; --ink: #0F1B2D; --ink2: #3A4756; --ink3: #6B7A8C; --line: #E3E8EF; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Pretendard, sans-serif; background: #E9EDF2; color: var(--ink); padding: 30px 0 80px; }
+  .lbl { max-width: 1240px; margin: 0 auto 10px; padding: 0 20px; font-size: 20px; font-weight: 800; color: var(--primary); }
+  .lbl small { font-size: 15px; color: var(--ink3); font-weight: 500; margin-left: 8px; }
+  .frame { max-width: 1240px; margin: 0 auto 44px; background: #F4F5F7; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px -20px rgba(0,0,0,.4); }
+  .fake { height: 120px; display: grid; place-items: center; color: #A9B4C0; font-size: 14px; }
+  .w { max-width: 1120px; margin: 0 auto; padding: 0 30px; }
+  .crumb { font-size: 14px; color: var(--ink3); }
+  /* A */
+  .A .band { height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center;
+    background: linear-gradient(rgba(14,22,34,.55), rgba(14,22,34,.55)), url('https://upload.wikimedia.org/wikipedia/commons/6/67/BMW_Leipzig_MEDIA_050719_Download_Karosseriebau_max.jpg') center 45% / cover; }
+  .A .band .crumb { color: rgba(255,255,255,.8); }
+  .A .band h1 { font-size: 46px; letter-spacing: -1.5px; margin-top: 8px; }
+  .A .tabs { display: flex; justify-content: center; background: #fff; border-bottom: 1px solid var(--line); }
+  .A .tabs a { width: 200px; text-align: center; padding: 20px 0; font-size: 17px; font-weight: 700; color: var(--ink3); border-left: 1px solid var(--line); }
+  .A .tabs a:last-child { border-right: 1px solid var(--line); }
+  .A .tabs a.on { background: var(--primary); color: #fff; }
+  /* B */
+  .B .top { background: #fff; border-bottom: 1px solid var(--line); padding: 36px 0 30px; }
+  .B .top .w { display: flex; justify-content: space-between; align-items: flex-end; }
+  .B h1 { font-size: 44px; letter-spacing: -1.5px; }
+  .B .body { display: grid; grid-template-columns: 220px 1fr; gap: 40px; padding: 34px 0 0; }
+  .B .lnb { background: #fff; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); align-self: start; }
+  .B .lnb b { display: block; background: var(--primary); color: #fff; padding: 18px 20px; font-size: 19px; }
+  .B .lnb a { display: flex; justify-content: space-between; padding: 14px 20px; font-size: 16px; font-weight: 600; color: var(--ink2); border-top: 1px solid var(--line); }
+  .B .lnb a.on { color: var(--primary); font-weight: 800; background: #F2F8FD; }
+  .B .lnb a.on::after { content: '›'; }
+  .B .ph { height: 140px; border-radius: 14px; background: #fff; border: 1px dashed #CFD8E2; display: grid; place-items: center; color: #A9B4C0; }
+  /* C */
+  .C .top { background: #F0F3F7; padding: 40px 0 0; }
+  .C .row { display: flex; justify-content: space-between; align-items: flex-end; }
+  .C h1 { font-size: 44px; letter-spacing: -1.5px; }
+  .C .crumb { display: flex; align-items: center; gap: 8px; }
+  .C .crumb i { width: 16px; height: 16px; border-radius: 4px; background: var(--primary); display: inline-block; }
+  .C .tabs { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 30px; }
+  .C .tabs a { text-align: center; padding: 18px 0; background: #fff; border: 1px solid var(--line); margin-left: -1px; font-size: 17px; font-weight: 700; color: var(--ink2); }
+  .C .tabs a.on { background: var(--primary); border-color: var(--primary); color: #fff; position: relative; z-index: 1; }
+  /* D */
+  .D .wrapD { padding: 26px 0 0; }
+  .D .card { height: 210px; border-radius: 22px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 30px 36px; color: #fff;
+    background: linear-gradient(90deg, rgba(12,20,32,.78) 0%, rgba(12,20,32,.3) 60%, transparent 100%), url('https://upload.wikimedia.org/wikipedia/commons/6/67/BMW_Leipzig_MEDIA_050719_Download_Karosseriebau_max.jpg') center 45% / cover; }
+  .D .card .crumb { color: rgba(255,255,255,.8); }
+  .D .card h1 { font-size: 44px; letter-spacing: -1.5px; margin-top: 6px; }
+  .D .tabs { display: flex; gap: 8px; margin-top: 18px; }
+  .D .tabs a { padding: 12px 22px; border-radius: 12px; background: #fff; border: 1px solid var(--line); font-size: 16.5px; font-weight: 700; color: var(--ink2); }
+  .D .tabs a.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+  /* E */
+  .E .top { background: #fff; border-bottom: 1px solid var(--line); }
+  .E .w { display: flex; align-items: center; justify-content: space-between; height: 120px; }
+  .E .tl .crumb { margin-bottom: 4px; }
+  .E h1 { font-size: 40px; letter-spacing: -1.4px; position: relative; padding-left: 18px; }
+  .E h1::before { content: ''; position: absolute; left: 0; top: 10%; bottom: 10%; width: 5px; border-radius: 4px; background: var(--primary); }
+  .E .tabs { display: flex; gap: 6px; background: #F0F3F7; padding: 5px; border-radius: 12px; }
+  .E .tabs a { padding: 11px 18px; border-radius: 9px; font-size: 16px; font-weight: 700; color: var(--ink3); }
+  .E .tabs a.on { background: #fff; color: var(--primary); box-shadow: 0 3px 10px -4px rgba(14,74,132,.4); }
+  a { text-decoration: none; }
+</style>
+</head>
+<body>
+<script>
+const T = ['전임교수', '명예교수', '초빙·연구교수', '연구실 목록'];
+const tabs = () => T.map((t, i) => `<a href="#" class="${i ? '' : 'on'}">${t}</a>`).join('');
+const fake = '<div class="fake">(본문)</div>';
+const O = [
+  ['A', '사진 띠 + 가운데 제목 + 아래 흰 칸 탭', '연세대·고려대 등에서 많이 쓰는 형태', `<div class="band"><div class="crumb">홈 › 소개 › 교수진</div><h1>교수진</h1></div><nav class="tabs">${tabs()}</nav>${fake}`],
+  ['B', '왼쪽 세로 메뉴(LNB)', '국내 대학 서브 페이지 전통 구조', `<div class="top"><div class="w"><h1>교수진</h1><div class="crumb">홈 › 소개 › 교수진</div></div></div><div class="w body"><nav class="lnb"><b>소개</b><a>학과소개</a><a>학과장 인사말</a><a class="on">교수진</a><a>연혁</a><a>방문안내</a></nav><div class="ph">(본문)</div></div><div style="height:30px"></div>`],
+  ['C', '회색 띠 + 칸 나눈 상자 탭', '서울대·KAIST 서브처럼 반듯한 칸', `<div class="top"><div class="w"><div class="row"><h1>교수진</h1><div class="crumb"><i></i>홈 › 소개 › 교수진</div></div><nav class="tabs">${tabs()}</nav></div></div>${fake}`],
+  ['D', '둥근 사진 카드 + 둥근 탭', '요즘 리뉴얼 사이트 느낌', `<div class="w wrapD"><div class="card"><div class="crumb">홈 › 소개 › 교수진</div><h1>교수진</h1></div><nav class="tabs">${tabs()}</nav></div>${fake}`],
+  ['E', '한 줄 압축 (제목 왼쪽 · 탭 오른쪽)', '스크롤 최소, 깔끔', `<div class="top"><div class="w"><div class="tl"><div class="crumb">홈 › 소개 › 교수진</div><h1>교수진</h1></div><nav class="tabs">${tabs()}</nav></div></div>${fake}`],
+];
+document.body.innerHTML = O.map(([id, t, d, h]) => `<p class="lbl">${id}안 · ${t}<small>${d}</small></p><div class="frame ${id}">${h}</div>`).join('');
+</script>
+</body>
+</html>

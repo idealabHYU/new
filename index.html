@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>기계공학과 개편 데모</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="style.css?v=142">
+</head>
+<body>
+<div id="header"></div>
+
+<!-- 1. 첫 화면: 분야가 바뀔 때마다 배경 사진도 교체 -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="wrap">
+    <div class="hero-text">
+      <div class="eyebrow">한양대학교 ERICA 기계공학과</div>
+      <h1>모든 산업의 시작, <em>기계공학</em></h1>
+      <p class="lead">로봇부터 우주까지, 가장 넓은 진로가 열리는 전공입니다.</p>
+      <div class="cta4">
+        <a class="pri" href="sub.html?m=1&s=0">전공 가이드 <i>→</i></a>
+        <a href="sub.html?m=3&s=5">대학원 · 장학 안내 <i>→</i></a>
+      </div>
+    </div>
+    <ul class="hero-fields" id="heroFields"></ul>
+  </div>
+</section>
+
+<!-- 숫자 띠 -->
+<div class="keys-band" id="stats"><div class="wrap"><div class="keys"><div><span class="ki"><svg viewBox="0 0 24 24"><path d="M4 21V9l8-6 8 6v12M4 21h16M9 21v-6h6v6"/><path d="M12 7.5v.01"/></svg></span><p><b>47년 전통</b><small>1979년 ERICA와 함께 출범</small></p></div><div><span class="ki"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg></span><p><b>취업률 71.3%</b><small>ERICA 2023 정보공시 · 전국 7위</small></p></div><div><span class="ki"><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="5"/><path d="M8.5 11L6 3h4l2 4 2-4h4l-2.5 8"/></svg></span><p><b>BK21 4단계 선정</b><small>정부 지원 대학원 교육연구단</small></p></div><div><span class="ki"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 01-8 0zM8 6H5a3 3 0 003 4M16 6h3a3 3 0 01-3 4M12 13v4M8 21h8M9 17h6"/></svg></span><p><b>학생 자작차 전국 2위</b><small>BAQU4 · 국제대회 입상</small></p></div></div></div></div></div></div>
+
+<!-- 2. 공지 & 일정 -->
+<section class="sec" id="notice">
+  <div class="wrap news2">
+    <div>
+      <div class="nhead"><h2>공지사항</h2><div class="tabs2" id="ntabs"></div><a class="more2" href="board.html">더보기 +</a></div>
+      <ul class="nlist2" id="nlist"></ul>
+    </div>
+    <div>
+      <div class="nhead"><h2>학과 일정</h2><a class="more2" href="sub.html?m=2&s=4">더보기 +</a></div>
+      <ul class="slist2" id="sched"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 왜 기계공학인가: 8개 분야 사진 타일(4×2) + 4대 역학 바닥 띠 -->
+<section class="sec alt" id="why">
+  <div class="wrap">
+    <div class="sec-head row"><div class="why-tt"><span class="why-k">CAREER PATHS</span><h2>하나의 전공, <em>8개 산업</em>으로</h2></div><a class="more2 go-link" href="sub.html?m=1&s=0">졸업 후 진로 보기 <span>→</span></a></div>
+    <div class="show v2" id="show">
+      
+      <div class="sh-view"><img data-k="0" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Hyundai_car_assembly_line.jpg/1280px-Hyundai_car_assembly_line.jpg" alt="자동차"><img data-k="1" data-fi="semi" alt="반도체"><img data-k="2" data-fi="mobility" alt="항공우주"><img data-k="3" data-fi="energy" alt="에너지"><img data-k="4" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Shahamah_LNG_carrier.jpg/1280px-Shahamah_LNG_carrier.jpg" alt="조선"><img data-k="5" data-fi="robot" alt="로봇"><img data-k="6" data-fi="bio" alt="의료기기"><img data-k="7" data-fi="mfg" alt="연구소"><div class="sh-cap"><em id="shN">01</em><b id="shT">자동차</b><p id="shD"></p><small id="shC"></small></div><ol class="sh-list"><li data-k="0"><span>01</span>자동차<i class="bar"></i></li><li data-k="1"><span>02</span>반도체<i class="bar"></i></li><li data-k="2"><span>03</span>항공우주<i class="bar"></i></li><li data-k="3"><span>04</span>에너지<i class="bar"></i></li><li data-k="4"><span>05</span>조선<i class="bar"></i></li><li data-k="5"><span>06</span>로봇<i class="bar"></i></li><li data-k="6"><span>07</span>의료기기<i class="bar"></i></li><li data-k="7"><span>08</span>연구소<i class="bar"></i></li></ol></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3-1. 학과 소식: 큰 기사 1 + 작은 기사 2 (출처: 뉴스H) -->
+<section class="sec" id="news">
+  <div class="wrap">
+    <div class="sec-head row"><div class="why-tt"><span class="why-k">NEWS</span><h2>학과 소식</h2></div><a class="more2 go-link" href="https://www.newshyu.com/news/articleList.html?sc_area=A&view_type=sm&sc_word=%EA%B8%B0%EA%B3%84%EA%B3%B5%ED%95%99%EA%B3%BC" target="_blank" rel="noopener">뉴스 더 보기 <span>→</span></a></div>
+    <div class="newsA"><a class="nA-feat" href="https://www.newshyu.com/news/articleView.html?idxno=1023461" target="_blank" rel="noopener"><img data-fi="semi" data-idx="0" alt=""><span>연구 성과</span></a>
+      <ul class="nA-list"><li><a href="https://www.newshyu.com/news/articleView.html?idxno=1023461" target="_blank" rel="noopener"><span class="nw-cat">연구 성과</span><b>홍석준 교수, 한국연구재단 '한우물파기 기초연구' 선정</b><time>2026.03.24</time></a></li><li><a href="https://www.newshyu.com/news/articleView.html?idxno=1019367" target="_blank" rel="noopener"><span class="nw-cat">우주공학</span><b>국내 최초 '국제우주대학 우주연구 프로그램(SSP25)' ERICA에서 개최</b><time>2025.07.07</time></a></li><li><a href="https://www.newshyu.com/news/articleView.html?idxno=1013659" target="_blank" rel="noopener"><span class="nw-cat">취업</span><b>한양대 ERICA, 취업률 71.3%로 전국 4년제 대학 7위</b><time>2024.03.25</time></a></li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. 연구실 둘러보기: 콘텐츠 폭 안에서 4장씩 -->
+<section class="sec" id="labs">
+  <div class="wrap">
+    <div class="sec-head row">
+      <div class="why-tt"><span class="why-k">RESEARCH LABS</span><h2>연구실 둘러보기</h2></div>
+      <div class="labs-ctrl">
+        <button id="labsPause" aria-label="일시정지">❚❚</button>
+        <button id="labsPrev" aria-label="이전">‹</button>
+        <button id="labsNext" aria-label="다음">›</button>
+      </div>
+    </div>
+  </div>
+  <div class="labs-viewport" id="labsVp"><div class="labs-track" id="labsTrack"></div></div>
+  <div class="wrap labs-foot"><a class="more2 go-link" href="faculty.html">전체 교수진 · 연구실 보기 <span>→</span></a></div>
+</section>
+
+<!-- 5. 누구를 위한 학과인가: 상세 내용은 하위 페이지로 -->
+<section class="sec alt" id="paths">
+  <div class="wrap rows2">
+    <a class="row2" href="sub.html?m=1&s=0">
+      <span class="row2-who">라이언스칼리지 · 자율전공생</span>
+      <span class="row2-t"><b>전공을 아직 못 정했다면</b><small>1학년 탐색부터 4학년 캡스톤까지, 기계공학 4년 로드맵</small></span>
+      <span class="row2-go">전공 가이드<i>→</i></span>
+    </a>
+    <a class="row2" href="sub.html?m=3&s=5">
+      <span class="row2-who">자대생 · 타대생</span>
+      <span class="row2-t"><b>대학원을 고민한다면</b><small>석사·박사 장학금, 학석사 연계, 연구실 정보까지</small></span>
+      <span class="row2-go">대학원 · 장학<i>→</i></span>
+    </a>
+  </div>
+</section>
+
+<div id="footer"></div>
+
+<script src="data.js?v=142"></script>
+<script src="common.js?v=142"></script>
+<script>
+renderHeader('');
+renderFooter();
+
+const countOf = id => FACULTY.filter(f => f.fields.includes(id)).length;
+const profsOf = id => FACULTY.filter(f => f.fields.includes(id)).map(f => f.name).join(' · ');
+const fieldName = id => FIELDS.find(f => f.id === id).name;
+const fieldImg = id => FIELD_IMG[id][0];   // 임시 사진: 학과 실제 사진으로 교체 예정
+
+const EQ_SVG = (() => {
+  const L = ['∇·σ + f = ρü', 'Q = mcΔT', 'ρ(∂v/∂t + v·∇v) = −∇p + μ∇²v', 'L(θ) = −Σ y log ŷ', 'σ = Eε', 'Mẍ + Cẋ + Kx = F(t)',
+    'θ ← θ − η∇L(θ)', 'Re = ρVD/μ', 'q = −k∇T', 'τ = Iα', 'ŷ = softmax(Wx + b)', 'ΔS ≥ Q/T', 'F = ma', 'min f(x)  s.t. g(x) ≤ 0', 'E = ½mv²', 'ω_n = √(k/m)'];
+  let o = '<svg class="eq" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">';
+  for (let i = 0; i < 26; i++) { const x = (i * 263) % 1500 + 20, y = 70 + ((i * 131) % 820), sz = 22 + (i % 4) * 9;
+    o += `<text x="${x}" y="${y}" font-size="${sz}" opacity="${0.25 + (i % 3) * 0.12}">${L[i % L.length]}</text>`; }
+  o += '<g class="eqline"><path d="M120 640 q80 -120 160 0 t160 0 t160 0"/><path d="M900 200 l120 0 l60 90 l-180 0z"/><circle cx="1180" cy="660" r="70"/><path d="M1110 660 h140 M1180 590 v140"/></g>';
+  return o + '</svg>';
+})();
+// ---- 첫 화면: 분야 목록 + 배경 사진 + 문구 순환 ----
+(function hero() {
+  const bg = document.getElementById('heroBg'), hf = document.getElementById('heroFields');
+  bg.innerHTML = FIELDS.map((f, k) => FIELD_DUAL[f.id]
+    ? `<div class="dual" data-i="${k}"><img src="${FIELD_IMG[f.id][0]}" alt=""><img src="${FIELD_IMG[f.id][1]}" alt=""></div>`
+    : f.id === 'ai' ? `<div class="aiscene" data-i="${k}">${EQ_SVG}<img src="${FIELD_IMG.ai[0]}" alt=""></div>`
+    : `<img src="${fieldImg(f.id)}" alt="" data-i="${k}" style="object-position:${FIELD_POS[f.id] || 'center 40%'}">`).join('');
+  hf.innerHTML = FIELDS.map((f, k) => `<li data-i="${k}"><a href="faculty.html?f=${f.id}"><span class="ar">↗</span>${f.name}</a></li>`).join('');
+  let i = 0, timer;
+  function show(k) {
+    i = k;
+    [...hf.children, ...bg.children].forEach(e => e.classList.toggle('on', +e.dataset.i === i));
+  }
+  const start = () => timer = setInterval(() => show((i + 1) % FIELDS.length), 3200);
+  [...hf.children].forEach(n => {
+    n.addEventListener('mouseenter', () => { clearInterval(timer); show(+n.dataset.i); });
+    n.addEventListener('mouseleave', start);
+  });
+  show(0); start();
+})();
+
+
+// ---- 왜 기계공학: 8개 분야 타일 ----
+const FICON = {
+  robot: '<path d="M4 21h9M8 21v-5l5-6 5 3"/><circle cx="13" cy="10" r="1.6"/><path d="M13 10l-2-5 3-2 2 4M18 13l3 1"/>',
+  semi: '<rect x="7" y="7" width="10" height="10" rx="1.5"/><rect x="10" y="10" width="4" height="4"/><path d="M9 3v4M15 3v4M9 17v4M15 17v4M3 9h4M3 15h4M17 9h4M17 15h4"/>',
+  mobility: '<path d="M12 2c3 2.5 4.5 6 4.5 10L12 16l-4.5-4C7.5 8 9 4.5 12 2z"/><circle cx="12" cy="9" r="1.6"/><path d="M7.5 12L5 15l3 1M16.5 12l2.5 3-3 1M10 18l2 4 2-4"/>',
+  energy: '<circle cx="12" cy="12" r="1.8"/><ellipse cx="12" cy="12" rx="9" ry="3.6"/><ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(120 12 12)"/>',
+  bio: '<path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/><path d="M5 12h3l1.5-3 2.5 6 2-4h5"/>',
+  ai: '<path d="M9 3a3 3 0 00-3 3v.5A3 3 0 004 9.5 3 3 0 005 12a3 3 0 00-1 2.5A3 3 0 006 17.5V18a3 3 0 006 0V6a3 3 0 00-3-3zM15 3a3 3 0 013 3v.5a3 3 0 012 3 3 3 0 01-1 2.5 3 3 0 011 2.5 3 3 0 01-2 3v.5a3 3 0 01-6 0"/>',
+  mfg: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+};
+;
+
+// ---- 연구실 슬라이드 (4장씩 보이고 한 장씩 이동) ----
+(function labs() {
+  const track = document.getElementById('labsTrack');
+  const card = f => `
+    <a class="lab-card" ${f.lab ? `href="${f.lab}" target="_blank" rel="noopener"` : ''}>
+      <img src="${f.img}" alt="" loading="lazy">
+      <span class="lab-tag">${fieldName(f.fields[0])}</span>
+      <span class="lab-go">${f.lab ? '↗' : '·'}</span>
+      <div class="lab-info">
+        <b>${f.labName}</b><em class="lab-en">${f.labEn}</em>
+        <dl><dt>지도교수</dt><dd>${f.name}</dd><dt>위치</dt><dd>${f.room}</dd></dl>
+      </div>
+    </a>`;
+  // 맨 앞에 마지막 연구실 카드를 하나 더 두어, 처음부터 왼쪽에 흐린 카드가 살짝 보이게 시작
+  track.innerHTML = card(FACULTY[FACULTY.length - 1]) + FACULTY.map(card).join('');
+  // 연구실 카드: 제목(.wrap)보다 조금 왼쪽에서 시작해 화면 오른쪽 끝까지 이어짐. 지나간 카드는 왼쪽에 흐리게 남음
+  const vp = document.getElementById('labsVp'), head = document.querySelector('#labs .wrap');
+  const N = FACULTY.length + 1; let idx = 1, paused = false;
+  const step = () => track.children[1].offsetLeft - track.children[0].offsetLeft;
+  function pad() {
+    const pl = parseFloat(getComputedStyle(head).paddingLeft);
+    vp.style.paddingLeft = Math.max(16, head.getBoundingClientRect().left + pl - 72) + 'px';
+  }
+  const maxI = () => Math.max(0, N - Math.floor((vp.clientWidth - parseFloat(vp.style.paddingLeft) + 20) / step()));
+  function go(k) {
+    const max = maxI();
+    idx = k < 1 ? max : k > max ? 1 : k;
+    track.style.transform = `translateX(${-idx * step()}px)`;
+    [...track.children].forEach((c, i) => c.classList.toggle('past', i < idx));
+  }
+  document.getElementById('labsPrev').onclick = () => go(idx - 1);
+  document.getElementById('labsNext').onclick = () => go(idx + 1);
+  const pb = document.getElementById('labsPause');
+  pb.onclick = () => { paused = !paused; pb.textContent = paused ? '▶' : '❚❚'; };
+  vp.addEventListener('mouseenter', () => paused = true);
+  vp.addEventListener('mouseleave', () => paused = pb.textContent === '▶');
+  setInterval(() => { if (!paused) go(idx + 1); }, 3500);
+  addEventListener('resize', () => { pad(); go(idx); });
+  pad(); go(1);
+})();
+
+// ---- 공지 & 일정 ----
+const ntabs = document.getElementById('ntabs'), nlist = document.getElementById('nlist');
+ntabs.innerHTML = ['전체', ...NOTICE_CATS].map((c, k) =>
+  `<button data-c="${c}" class="${k ? '' : 'on'}">${c}<i>${c === '전체' ? NOTICES.length : NOTICES.filter(n => n.cat === c).length}</i></button>`).join('');
+function renderNotices(c) {
+  ntabs.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.c === c));
+  const items = NOTICES.filter(n => c === '전체' || n.cat === c)
+    .sort((a, b) => (b.pin - a.pin) || b.date.localeCompare(a.date)).slice(0, 5);
+  nlist.innerHTML = items.map(n => `<li><a href="board.html">
+    <span class="c k-${n.cat}">${n.cat}</span>
+    <span class="t ${n.pin ? 'pin' : ''}">${n.title}${isNew(n.date) ? '<i class="dot" title="새 글"></i>' : ''}</span>
+    <span class="d">${n.date.replaceAll('-', '.')}</span></a></li>`).join('');
+}
+ntabs.addEventListener('click', e => { const b = e.target.closest('button'); if (b) renderNotices(b.dataset.c); });
+renderNotices('전체');
+
+document.getElementById('sched').innerHTML = SCHEDULE.map(s => {
+  const [m, d] = s.date.split('.');
+  return `<li><div class="dd"><small>${+m}월</small>${d}</div><div><span>${s.tag}</span><b>${s.title}</b></div></li>`;
+}).join('');
+
+// ---- 범용성: 왼쪽 산업 목록 + 오른쪽 큰 사진 (자동 전환, 마우스 올리면 고정)
+(function () {
+  const w = document.getElementById('show'); if (!w) return;
+  const D = [["자동차", "현대자동차 · 기아 · 현대모비스", "차체 설계부터 자율주행 섀시까지"], ["반도체", "삼성전자 · SK하이닉스 · 삼성SDI", "공정 장비와 열·유체 설계의 핵심"], ["항공우주", "한화에어로스페이스 · KAI · 항공우주연구원", "로켓 엔진과 항공기 구조"], ["에너지", "한국전력 · 한국수력원자력 · 두산에너빌리티", "발전 터빈과 원자력 설비"], ["조선", "HD현대중공업 · 한화오션 · 삼성중공업", "LNG 운반선과 해양 플랜트"], ["로봇", "두산로보틱스 · 레인보우로보틱스 · 현대로보틱스", "협동 로봇과 스마트 팩토리"], ["의료기기", "삼성메디슨 · 오스템임플란트 · 바디프렌드", "의료 영상 장비와 헬스케어 기기"], ["연구소", "KIST · 한국기계연구원 · 생산기술연구원", "국가 연구소와 대학원 진학"]];
+  w.querySelectorAll('.sh-view img[data-fi]').forEach(im => { im.src = FIELD_IMG[im.dataset.fi][1]; });
+  const li = [...w.querySelectorAll('.sh-list li')], im = [...w.querySelectorAll('.sh-view img')];
+  const N = document.getElementById('shN'), T = document.getElementById('shT'), Ds = document.getElementById('shD'), C = document.getElementById('shC'), cap = w.querySelector('.sh-cap');
+  let i = 0, timer;
+  const show = k => { i = k; li.forEach((e, j) => e.classList.toggle('on', j === k)); im.forEach((e, j) => e.classList.toggle('on', j === k));
+    cap.classList.remove('in'); void cap.offsetWidth; N.textContent = String(k + 1).padStart(2, '0'); T.textContent = D[k][0]; Ds.textContent = D[k][2]; C.innerHTML = '<i>대표 진출처</i>' + D[k][1].split(' · ').map(x => `<span>${x}</span>`).join(''); cap.classList.add('in'); };
+  const run = () => { clearInterval(timer); timer = setInterval(() => show((i + 1) % li.length), 3000); };
+  li.forEach((e, k) => e.addEventListener('mouseenter', () => { clearInterval(timer); show(k); }));
+  w.addEventListener('mouseleave', run); show(0); run();
+})();
+
+// ---- 학과 소식 사진: 기사 사진이 안 뜨면 분야 사진으로 대체
+document.querySelectorAll('#news img').forEach(im => {
+  if (im.dataset.fi) im.src = FIELD_IMG[im.dataset.fi][+(im.dataset.idx || 1)];
+  im.addEventListener('error', () => { if (im.dataset.fb) { im.src = FIELD_IMG[im.dataset.fb][1]; im.dataset.fb = ''; } });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공지사항 게시판 데모</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="style.css?v=142">
+</head>
+<body>
+<div id="header"></div>
+
+<div class="subhero"><div class="wrap">
+  <div class="crumb">홈 › 게시판 › 공지사항</div>
+  <h1>공지사항</h1>
+</div></div>
+
+<main class="wrap">
+  <div class="tools">
+    <div class="cnt">총 <b id="cnt">0</b>건</div>
+    <form class="search" onsubmit="event.preventDefault();render()">
+      <select id="scope"><option>제목+내용</option><option>제목</option></select>
+      <input id="q" placeholder="검색어를 입력하세요" oninput="render()">
+    </form>
+  </div>
+  <table class="btable">
+    <thead><tr><th style="width:80px">번호</th><th style="width:90px">구분</th><th>제목</th>
+      <th class="hide-m" style="width:60px">첨부</th><th style="width:110px">작성일</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div class="paging"><a href="#" class="on">1</a><a href="#">2</a><a href="#">3</a><a href="#">›</a></div>
+</main>
+
+<div id="footer"></div>
+
+<script src="data.js?v=142"></script>
+<script src="common.js?v=142"></script>
+<script>
+renderHeader('게시판');
+renderFooter();
+let cat = new URLSearchParams(location.search).get('c') || '전체';
+
+function render() {
+  const q = document.getElementById('q').value.trim();
+  const items = NOTICES.filter(n => (cat === '전체' || n.cat === cat) && (!q || n.title.includes(q)))
+    .sort((a, b) => (b.pin - a.pin) || b.date.localeCompare(a.date));
+  document.getElementById('cnt').textContent = items.length;
+  let no = items.filter(n => !n.pin).length;
+  document.getElementById('rows').innerHTML = items.map(n => `
+    <tr class="${n.pin ? 'pinned' : ''}">
+      <td class="no">${n.pin ? '고정' : no--}</td>
+      <td><span class="b-cat">${n.cat}</span></td>
+      <td class="title"><a href="#">${n.title}</a>${isNew(n.date) ? '<span class="b-new" title="새 글"></span>' : ''}</td>
+      <td class="hide-m clip">${n.file ? '<svg class="b-clip" viewBox="0 0 24 24"><path d="M20 11.5l-8 8a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L9.7 17.2a1.7 1.7 0 0 1-2.4-2.4L15 7.2"/></svg>' : ''}</td>
+      <td class="d">${n.date.replaceAll('-', '.')}</td>
+    </tr>`).join('') || '<tr><td colspan="5" style="padding:60px;color:var(--ink-3)">검색 결과가 없습니다.</td></tr>';
+}
+render();
+</script>
+</body>
+</html>

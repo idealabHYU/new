@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>기계공학과 하위 페이지 데모</title>
+<title>기계공학과 홈페이지 Demo</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="style.css?v=142">
 </head>
@@ -28,7 +28,7 @@ let s = Math.min(+q.get('s') || 0, menu.subs.length - 1);
 renderHeader(menu.name);
 renderFooter();
 function paintHead() {
-  document.title = `${menu.subs[s][0]} · 기계공학과 데모`;
+  document.title = `${menu.subs[s][0]} · 기계공학과 홈페이지 Demo`;
   document.getElementById('crumb').textContent = `홈 › ${menu.name} › ${menu.subs[s][0]}`;
   document.getElementById('ptitle').textContent = menu.subs[s][0];
   document.getElementById('subtabs').innerHTML = menu.subs.map(([n], k) => `<a href="${subHref(m, k)}" class="${k === s ? 'on' : ''}">${n}</a>`).join('');

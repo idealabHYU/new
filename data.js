@@ -62,7 +62,7 @@ const FIELD_IMG = {
 };
 const LAB_IMG = {
   '윤준용': T + 'a/a1/HSW_1000_wind_turbine_close_up_in_the_wind_farm_Schwesing.jpg/1920px-HSW_1000_wind_turbine_close_up_in_the_wind_farm_Schwesing.jpg',
-  '이성환': 'https://niml.vercel.app/_next/image?url=%2Fresearch%2Fresearch-workflow-hero-v3.png&w=1920&q=75',
+  '이성환': 'https://images.unsplash.com/photo-1735494033576-9c882e80504c?auto=format&fit=crop&w=1920&q=80',
   '이도형': T + '6/64/Wind_turbine_close-up_%284613873354%29.jpg/1920px-Wind_turbine_close-up_%284613873354%29.jpg',
   '오제훈': 'https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/An_MRI_scanner.JPG/1920px-An_MRI_scanner.JPG',
   '류근': T + 'd/dd/Raptor-test-9-25-2016.jpg/1920px-Raptor-test-9-25-2016.jpg',
@@ -73,13 +73,13 @@ const LAB_IMG = {
   '홍석준': 'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ee/EPROM_Microchip_SuperMacro.jpg/1920px-EPROM_Microchip_SuperMacro.jpg',
   '오준호': 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Cooling_tower_of_the_G%C3%B6sgen_Nuclear_Power_Plant%2C_close_view%2C_D%C3%A4niken%2C_Solothurn.jpg/1920px-Cooling_tower_of_the_G%C3%B6sgen_Nuclear_Power_Plant%2C_close_view%2C_D%C3%A4niken%2C_Solothurn.jpg',
   '김호준': T + '6/6d/CNE_cleanroom_1.jpg/1920px-CNE_cleanroom_1.jpg',
-  '김진용': 'https://real.hanyang.ac.kr/assets/img/article%2014%20figure.png',
+  '김진용': 'https://images.unsplash.com/photo-1742899273038-67ff67477663?auto=format&fit=crop&w=1920&q=80',
   '최이현': T + 'f/f6/Star_Wars_Bionic_hand.jpg/1920px-Star_Wars_Bionic_hand.jpg',
   '노형도': T + '6/64/Carbon_fiber_roving.jpg/1920px-Carbon_fiber_roving.jpg',
   '김태균': 'https://images.unsplash.com/photo-1647427060118-4911c9821b82?auto=format&fit=crop&w=1920&q=80',
   '박지혁': T + '0/0a/Anymal-robot-inspection-power-grid.jpg/1920px-Anymal-robot-inspection-power-grid.jpg',
   '박주현': 'https://images.unsplash.com/photo-1772376920820-4fb715c21e79?auto=format&fit=crop&w=1920&q=80',
-  '양선웅': 'https://idealab.hanyang.ac.kr/images/Research%20Overview_260209.png',
+  '양선웅': 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1920&q=80',
   '강석경': 'https://manufuture.hanyang.ac.kr/media/research/semiconductor-packaging_hu_d4416faf609e3e2c.jpeg',
 };
 FACULTY.forEach(f => { f.img = LAB_IMG[f.name] || FIELD_IMG[f.fields[0]][0]; });

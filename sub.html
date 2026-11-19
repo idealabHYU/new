@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>기계공학과 홈페이지 Demo</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="style.css?v=143">
+<link rel="stylesheet" href="style.css?v=144">
 </head>
 <body>
 <div id="header"></div>
@@ -17,8 +17,8 @@
 <main class="wrap pg" id="content"></main>
 <div id="footer"></div>
 
-<script src="data.js?v=143"></script>
-<script src="common.js?v=143"></script>
+<script src="data.js?v=144"></script>
+<script src="common.js?v=144"></script>
 <script>
 // 내용 출처: 현행 mech.hanyang.ac.kr (학과소개 -26-, 인사말 -27, 연혁 -29, 방문안내 -31, 교과과정 -19/-14, 학생회 -23, 장학 -32/-33, 사업단 -13, 리서치프로파일 -30)
 const q = new URLSearchParams(location.search);
@@ -165,9 +165,9 @@ const PAGES = {
     <ol class="tl">${[...HIST].reverse().map(([y, ev]) => `<li class="${['1979', '1999', '2004', '2010', '2020'].includes(y) ? 'key' : ''}"><b>${y}</b><span class="tl-d"></span><div>${ev.map(e => `<p>${e}</p>`).join('')}</div></li>`).join('')}</ol>`,
 
   '0-4': `${TOP('LOCATION', '찾아오시는 길')}
-    <div class="ab-map"><iframe src="https://maps.google.com/maps?q=%ED%95%9C%EC%96%91%EB%8C%80%ED%95%99%EA%B5%90%20ERICA%20%EC%A0%9C3%EA%B3%B5%ED%95%99%EA%B4%80&z=16&output=embed" loading="lazy" title="한양대학교 ERICA 지도"></iframe></div>
+    <div class="ab-map"><iframe src="https://maps.google.com/maps?q=%ED%95%9C%EC%96%91%EB%8C%80%ED%95%99%EA%B5%90%20ERICA%20%EC%A0%9C5%EA%B3%B5%ED%95%99%EA%B4%80&z=17&output=embed" loading="lazy" title="한양대학교 ERICA 지도"></iframe></div>
     ${ROWS([['주소', '(15588) 경기도 안산시 상록구 한양대학로 55<br>한양대학교 공학대학 기계공학과'], ['행정팀', '제3공학관 204호'], ['연락처', '학부 031-400-5115<br>대학원 031-400-5116']])}
-    ${LINKS(link('카카오맵에서 보기', 'https://map.kakao.com/?q=%ED%95%9C%EC%96%91%EB%8C%80%ED%95%99%EA%B5%90%20ERICA'), link('네이버지도에서 보기', 'https://map.naver.com/p/search/%ED%95%9C%EC%96%91%EB%8C%80%ED%95%99%EA%B5%90%20ERICA'))}`,
+    ${LINKS(link('카카오맵에서 보기', 'https://map.kakao.com/?q=%ED%95%9C%EC%96%91%EB%8C%80%ED%95%99%EA%B5%90%20ERICA%20%EC%A0%9C5%EA%B3%B5%ED%95%99%EA%B4%80'), link('네이버지도에서 보기', 'https://map.naver.com/p/search/%ED%95%9C%EC%96%91%EB%8C%80%ED%95%99%EA%B5%90%20ERICA%20%EC%A0%9C5%EA%B3%B5%ED%95%99%EA%B4%80'))}`,
 
   '1-0': `${TOP('UNDERGRADUATE', '기계공학과 <em>학부</em> 입학')}
     ${P('라이언스칼리지(자율전공) 학생과 신입생을 위한 기계공학 4년 흐름입니다. 실제 교과과정 기준입니다.')}

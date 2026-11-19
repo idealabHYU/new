@@ -2638,3 +2638,7 @@ section.sec { padding: 40px 0; }
 .tl li > div { padding: 16px 0 16px 6px; }
 .tl p { font-size: 17px; line-height: 30px; }
 .tl p + p { margin-top: 0; }
+
+/* v145 성능: 움직이는 카드 21장의 흐림(backdrop-filter) 제거 → 슬라이드 끊김 감소 */
+.lab-tag, #labs .lab-tag { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(10,18,30,.45); }
+.labs-track { will-change: transform; }

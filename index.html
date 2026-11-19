@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>기계공학과 홈페이지 Demo</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="style.css?v=144">
+<link rel="stylesheet" href="style.css?v=145">
 </head>
 <body>
 <div id="header"></div>
@@ -50,7 +50,7 @@
     <div class="sec-head row"><div class="why-tt"><span class="why-k">CAREER PATHS</span><h2>하나의 전공, <em>8개 산업</em>으로</h2></div><a class="more2 go-link" href="sub.html?m=1&s=0">졸업 후 진로 보기 <span>→</span></a></div>
     <div class="show v2" id="show">
       
-      <div class="sh-view"><img data-k="0" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Hyundai_car_assembly_line.jpg/1280px-Hyundai_car_assembly_line.jpg" alt="자동차"><img data-k="1" data-fi="semi" alt="반도체"><img data-k="2" data-fi="mobility" alt="항공우주"><img data-k="3" data-fi="energy" alt="에너지"><img data-k="4" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Shahamah_LNG_carrier.jpg/1280px-Shahamah_LNG_carrier.jpg" alt="조선"><img data-k="5" data-fi="robot" alt="로봇"><img data-k="6" data-fi="bio" alt="의료기기"><img data-k="7" data-fi="mfg" alt="연구소"><div class="sh-cap"><em id="shN">01</em><b id="shT">자동차</b><p id="shD"></p><small id="shC"></small></div><ol class="sh-list"><li data-k="0"><span>01</span>자동차<i class="bar"></i></li><li data-k="1"><span>02</span>반도체<i class="bar"></i></li><li data-k="2"><span>03</span>항공우주<i class="bar"></i></li><li data-k="3"><span>04</span>에너지<i class="bar"></i></li><li data-k="4"><span>05</span>조선<i class="bar"></i></li><li data-k="5"><span>06</span>로봇<i class="bar"></i></li><li data-k="6"><span>07</span>의료기기<i class="bar"></i></li><li data-k="7"><span>08</span>연구소<i class="bar"></i></li></ol></div>
+      <div class="sh-view"><img loading="lazy" decoding="async" data-k="0" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Hyundai_car_assembly_line.jpg/1280px-Hyundai_car_assembly_line.jpg" alt="자동차"><img loading="lazy" decoding="async" data-k="1" data-fi="semi" alt="반도체"><img loading="lazy" decoding="async" data-k="2" data-fi="mobility" alt="항공우주"><img loading="lazy" decoding="async" data-k="3" data-fi="energy" alt="에너지"><img loading="lazy" decoding="async" data-k="4" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Shahamah_LNG_carrier.jpg/1280px-Shahamah_LNG_carrier.jpg" alt="조선"><img loading="lazy" decoding="async" data-k="5" data-fi="robot" alt="로봇"><img loading="lazy" decoding="async" data-k="6" data-fi="bio" alt="의료기기"><img loading="lazy" decoding="async" data-k="7" data-fi="mfg" alt="연구소"><div class="sh-cap"><em id="shN">01</em><b id="shT">자동차</b><p id="shD"></p><small id="shC"></small></div><ol class="sh-list"><li data-k="0"><span>01</span>자동차<i class="bar"></i></li><li data-k="1"><span>02</span>반도체<i class="bar"></i></li><li data-k="2"><span>03</span>항공우주<i class="bar"></i></li><li data-k="3"><span>04</span>에너지<i class="bar"></i></li><li data-k="4"><span>05</span>조선<i class="bar"></i></li><li data-k="5"><span>06</span>로봇<i class="bar"></i></li><li data-k="6"><span>07</span>의료기기<i class="bar"></i></li><li data-k="7"><span>08</span>연구소<i class="bar"></i></li></ol></div>
     </div>
   </div>
 </section>
@@ -99,8 +99,8 @@
 
 <div id="footer"></div>
 
-<script src="data.js?v=144"></script>
-<script src="common.js?v=144"></script>
+<script src="data.js?v=145"></script>
+<script src="common.js?v=145"></script>
 <script>
 renderHeader('');
 renderFooter();
@@ -119,20 +119,27 @@ const EQ_SVG = (() => {
   o += '<g class="eqline"><path d="M120 640 q80 -120 160 0 t160 0 t160 0"/><path d="M900 200 l120 0 l60 90 l-180 0z"/><circle cx="1180" cy="660" r="70"/><path d="M1110 660 h140 M1180 590 v140"/></g>';
   return o + '</svg>';
 })();
+// 화면에 안 보이거나 탭이 숨겨지면 자동 전환을 멈춰 렉을 줄임
+const VIS = {};
+const watch = (id, el) => { VIS[id] = true; if (el && 'IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(e => VIS[id] = e.isIntersecting)).observe(el); };
+const idle = id => document.hidden || VIS[id] === false;
 // ---- 첫 화면: 분야 목록 + 배경 사진 + 문구 순환 ----
 (function hero() {
   const bg = document.getElementById('heroBg'), hf = document.getElementById('heroFields');
   bg.innerHTML = FIELDS.map((f, k) => FIELD_DUAL[f.id]
-    ? `<div class="dual" data-i="${k}"><img src="${FIELD_IMG[f.id][0]}" alt=""><img src="${FIELD_IMG[f.id][1]}" alt=""></div>`
-    : f.id === 'ai' ? `<div class="aiscene" data-i="${k}">${EQ_SVG}<img src="${FIELD_IMG.ai[0]}" alt=""></div>`
-    : `<img src="${fieldImg(f.id)}" alt="" data-i="${k}" style="object-position:${FIELD_POS[f.id] || 'center 40%'}">`).join('');
+    ? `<div class="dual" data-i="${k}"><img data-src="${FIELD_IMG[f.id][0]}" alt=""><img data-src="${FIELD_IMG[f.id][1]}" alt=""></div>`
+    : f.id === 'ai' ? `<div class="aiscene" data-i="${k}">${EQ_SVG}<img data-src="${FIELD_IMG.ai[0]}" alt=""></div>`
+    : `<img data-src="${fieldImg(f.id)}" alt="" data-i="${k}" style="object-position:${FIELD_POS[f.id] || 'center 40%'}">`).join('');
   hf.innerHTML = FIELDS.map((f, k) => `<li data-i="${k}"><a href="faculty.html?f=${f.id}"><span class="ar">↗</span>${f.name}</a></li>`).join('');
   let i = 0, timer;
+  const load = el => el && [el, ...el.querySelectorAll('img')].forEach(x => { if (x.dataset.src) { x.src = x.dataset.src; delete x.dataset.src; } });
   function show(k) {
     i = k;
+    load(bg.children[k]); load(bg.children[(k + 1) % bg.children.length]);   // 지금 사진 + 다음 사진만
     [...hf.children, ...bg.children].forEach(e => e.classList.toggle('on', +e.dataset.i === i));
   }
-  const start = () => timer = setInterval(() => show((i + 1) % FIELDS.length), 3200);
+  const start = () => { clearInterval(timer); timer = setInterval(() => { if (!idle('hero')) show((i + 1) % FIELDS.length); }, 3200); };
+  watch('hero', bg);
   [...hf.children].forEach(n => {
     n.addEventListener('mouseenter', () => { clearInterval(timer); show(+n.dataset.i); });
     n.addEventListener('mouseleave', start);
@@ -158,7 +165,7 @@ const FICON = {
   const track = document.getElementById('labsTrack');
   const card = f => `
     <a class="lab-card" ${f.lab ? `href="${f.lab}" target="_blank" rel="noopener"` : ''}>
-      <img src="${f.img}" alt="" loading="lazy">
+      <img src="${f.img}" alt="" loading="lazy" decoding="async">
       <span class="lab-tag">${fieldName(f.fields[0])}</span>
       <span class="lab-go">${f.lab ? '↗' : '·'}</span>
       <div class="lab-info">
@@ -189,7 +196,8 @@ const FICON = {
   pb.onclick = () => { paused = !paused; pb.textContent = paused ? '▶' : '❚❚'; };
   vp.addEventListener('mouseenter', () => paused = true);
   vp.addEventListener('mouseleave', () => paused = pb.textContent === '▶');
-  setInterval(() => { if (!paused) go(idx + 1); }, 3500);
+  watch('labs', vp);
+  setInterval(() => { if (!paused && !idle('labs')) go(idx + 1); }, 3500);
   addEventListener('resize', () => { pad(); go(idx); });
   pad(); go(1);
 })();
@@ -219,20 +227,22 @@ document.getElementById('sched').innerHTML = SCHEDULE.map(s => {
 (function () {
   const w = document.getElementById('show'); if (!w) return;
   const D = [["자동차", "현대자동차 · 기아 · 현대모비스", "차체 설계부터 자율주행 섀시까지"], ["반도체", "삼성전자 · SK하이닉스 · 삼성SDI", "공정 장비와 열·유체 설계의 핵심"], ["항공우주", "한화에어로스페이스 · KAI · 항공우주연구원", "로켓 엔진과 항공기 구조"], ["에너지", "한국전력 · 한국수력원자력 · 두산에너빌리티", "발전 터빈과 원자력 설비"], ["조선", "HD현대중공업 · 한화오션 · 삼성중공업", "LNG 운반선과 해양 플랜트"], ["로봇", "두산로보틱스 · 레인보우로보틱스 · 현대로보틱스", "협동 로봇과 스마트 팩토리"], ["의료기기", "삼성메디슨 · 오스템임플란트 · 바디프렌드", "의료 영상 장비와 헬스케어 기기"], ["연구소", "KIST · 한국기계연구원 · 생산기술연구원", "국가 연구소와 대학원 진학"]];
-  w.querySelectorAll('.sh-view img[data-fi]').forEach(im => { im.src = FIELD_IMG[im.dataset.fi][1]; });
+  w.querySelectorAll('.sh-view img[data-fi]').forEach(im => { im.loading = 'lazy'; im.decoding = 'async'; im.src = SZ(FIELD_IMG[im.dataset.fi][1], 1280); });
+  watch('show', w);
   const li = [...w.querySelectorAll('.sh-list li')], im = [...w.querySelectorAll('.sh-view img')];
   const N = document.getElementById('shN'), T = document.getElementById('shT'), Ds = document.getElementById('shD'), C = document.getElementById('shC'), cap = w.querySelector('.sh-cap');
   let i = 0, timer;
   const show = k => { i = k; li.forEach((e, j) => e.classList.toggle('on', j === k)); im.forEach((e, j) => e.classList.toggle('on', j === k));
+    [im[k], im[(k + 1) % im.length]].forEach(x => { if (x) x.loading = 'eager'; });   // 지금 + 다음 사진 미리 받기
     cap.classList.remove('in'); void cap.offsetWidth; N.textContent = String(k + 1).padStart(2, '0'); T.textContent = D[k][0]; Ds.textContent = D[k][2]; C.innerHTML = '<i>대표 진출처</i>' + D[k][1].split(' · ').map(x => `<span>${x}</span>`).join(''); cap.classList.add('in'); };
-  const run = () => { clearInterval(timer); timer = setInterval(() => show((i + 1) % li.length), 3000); };
+  const run = () => { clearInterval(timer); timer = setInterval(() => { if (!idle('show')) show((i + 1) % li.length); }, 3000); };
   li.forEach((e, k) => e.addEventListener('mouseenter', () => { clearInterval(timer); show(k); }));
   w.addEventListener('mouseleave', run); show(0); run();
 })();
 
 // ---- 학과 소식 사진: 기사 사진이 안 뜨면 분야 사진으로 대체
 document.querySelectorAll('#news img').forEach(im => {
-  if (im.dataset.fi) im.src = FIELD_IMG[im.dataset.fi][+(im.dataset.idx || 1)];
+  im.loading = 'lazy'; if (im.dataset.fi) im.src = SZ(FIELD_IMG[im.dataset.fi][+(im.dataset.idx || 1)], 1280);
   im.addEventListener('error', () => { if (im.dataset.fb) { im.src = FIELD_IMG[im.dataset.fb][1]; im.dataset.fb = ''; } });
 });
 </script>

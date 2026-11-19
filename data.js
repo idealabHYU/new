@@ -82,7 +82,17 @@ const LAB_IMG = {
   '양선웅': 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1920&q=80',
   '강석경': 'https://manufuture.hanyang.ac.kr/media/research/semiconductor-packaging_hu_d4416faf609e3e2c.jpeg',
 };
-FACULTY.forEach(f => { f.img = LAB_IMG[f.name] || FIELD_IMG[f.fields[0]][0]; });
+// 화면에 맞는 해상도만 받기 (원본·1920px 사진이 홈페이지를 무겁게 만듦)
+const SZ = (u, w) => {
+  if (!u) return u;
+  if (u.includes('images.unsplash.com')) return u.replace(/([?&])w=\d+/, `$1w=${w}`);
+  if (u.includes('/commons/thumb/')) return u.replace(/\/\d+px-([^/]+)$/, `/${w}px-$1`);
+  const m = u.match(/^https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/([0-9a-f]\/[0-9a-f]{2})\/([^/]+)$/);
+  return m ? `https://thumb.wikimedia.org/wikipedia/commons/thumb/${m[1]}/${m[2]}/${w}px-${m[2]}` : u;
+};
+// 위키 원본 파일(1.3MB 등)은 1280px 축소본으로
+Object.values(FIELD_IMG).forEach(a => a.forEach((u, k) => { if (u.startsWith('https://upload.wikimedia.org/')) a[k] = SZ(u, 1280); }));
+FACULTY.forEach(f => { f.img = SZ(LAB_IMG[f.name] || FIELD_IMG[f.fields[0]][0], 960); });   // 카드 폭 340px → 960px이면 충분
 
 const TODAY = '2026-11-07';
 const NOTICE_CATS = ['학부', '대학원', '장학', '취업'];

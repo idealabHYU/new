@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>기계공학과 홈페이지 Demo</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="style.css?v=147">
+<link rel="stylesheet" href="style.css?v=148">
 </head>
 <body>
 <div id="header"></div>
@@ -17,8 +17,8 @@
 <main class="wrap pg" id="content"></main>
 <div id="footer"></div>
 
-<script src="data.js?v=147"></script>
-<script src="common.js?v=147"></script>
+<script src="data.js?v=148"></script>
+<script src="common.js?v=148"></script>
 <script>
 // 내용 출처: 현행 mech.hanyang.ac.kr (학과소개 -26-, 인사말 -27, 연혁 -29, 방문안내 -31, 교과과정 -19/-14, 학생회 -23, 장학 -32/-33, 사업단 -13, 리서치프로파일 -30)
 const q = new URLSearchParams(location.search);
@@ -235,7 +235,7 @@ const PAGES = {
   '4-1': `${TOP('BK21 FOUR', '4단계 BK21 <em>교육연구단</em>')}
     ${P('ERICA 소재부품융합 첨단제조장비 혁신인재 교육연구단 (2020년 선정, 소재 · 부품 · 장비 분야)')}
     ${LINKS(link('BK21 FOUR 교육연구단 홈페이지', 'http://ericabk.hanyang.ac.kr/ace'))}
-    ${H('참여 사업 이력')}${ROWS([['1999', '1단계 BK21 기계분야 사업단 (서울대학교와 공동)'], ['2003', '학연산 클러스터(기계부품) 특성화사업'], ['2006', '2단계 BK21 기계분야 사업단'], ['2014', '수도권대학 특성화 사업 (CK-II)'], ['2016', 'PRIME 사업'], ['2017', '에너지인력양성사업'], ['2020', '4단계 BK21 교육연구단 · 스마트건설기계 인력양성사업']])}`,
+    ${H('참여 사업 이력')}${ROWS([['1999', '1단계 BK21 기계분야 사업단 (서울대학교와 공동)'], ['2003', '학연산 클러스터(기계부품) 특성화사업'], ['2006', '2단계 BK21 기계분야 사업단'], ['2014', '수도권대학 특성화 사업 (CK-II)'], ['2016', 'PRIME 사업'], ['2017', '에너지인력양성사업'], ['2020', '4단계 BK21 교육연구단 · 스마트건설기계 인력양성사업']].reverse())}`,
   '4-2': `${P('학과 연구 현황을 정리한 리서치 프로파일입니다. 그림을 누르면 상세 자료(PDF)가 열립니다.')}
     <a class="cl-img gap" href="${DOC}2025+ERICA+Research+Profiles+-%EA%B8%B0%EA%B3%84%EA%B3%B5%ED%95%99%EA%B3%BC.pdf/fd8da215-dbca-8405-ecdf-7b2836b0630b?t=1770006160132" target="_blank" rel="noopener"><img src="${DOC}%EB%A6%AC%EC%84%9C%EC%B9%98%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC_%EA%B5%AD%EB%AC%B8.png/8893ed7f-4c09-2997-42a9-24cfb87aa4cf?t=1698215302034&download=true" alt="학과 리서치 프로파일" loading="lazy"></a>
     ${LINKS(

@@ -2642,3 +2642,18 @@ section.sec { padding: 40px 0; }
 /* v145 성능: 움직이는 카드 21장의 흐림(backdrop-filter) 제거 → 슬라이드 끊김 감소 */
 .lab-tag, #labs .lab-tag { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(10,18,30,.45); }
 .labs-track { will-change: transform; }
+
+/* ===== v146 현행 사이트 실제 내용 반영 ===== */
+.nlist2 li a { grid-template-columns: 72px minmax(0, 1fr); }
+.nlist2.job li a { grid-template-columns: minmax(0, 1fr); }
+.nlist2 .k-취업 { color: #9A5B00; background: #FFF6E5; }
+.btable td.no { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.btable td.title a { display: block; word-break: keep-all; line-height: 1.5; }
+.b-go { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); color: var(--ink-3); font-size: 15px; transition: border-color .2s, color .2s; }
+.b-go:hover { border-color: var(--primary); color: var(--primary); }
+.cl-dl dd small { display: block; margin-top: 8px; font-size: 15px; font-weight: 700; color: var(--ink-3); }
+.cl-dl dd img { display: block; max-width: 420px; width: 100%; margin-top: 14px; border-radius: 14px; border: 1px solid var(--line); }
+.cl-img.gap { display: block; margin-top: 18px; }
+a.cl-img { transition: box-shadow .25s; }
+a.cl-img:hover { box-shadow: 0 20px 40px -28px rgba(15,27,45,.5); }
+.cl-table.labs td small { word-break: keep-all; }

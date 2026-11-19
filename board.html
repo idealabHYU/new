@@ -5,56 +5,64 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>공지사항 · 기계공학과 홈페이지 Demo</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="style.css?v=145">
+<link rel="stylesheet" href="style.css?v=146">
 </head>
 <body>
 <div id="header"></div>
 
 <div class="subhero"><div class="wrap">
-  <div class="crumb">홈 › 게시판 › 공지사항</div>
-  <h1>공지사항</h1>
+  <div class="crumb" id="crumb">홈 › 게시판 › 공지사항</div>
+  <h1 id="btitle">공지사항</h1>
 </div></div>
 
 <main class="wrap">
   <div class="tools">
     <div class="cnt">총 <b id="cnt">0</b>건</div>
-    <form class="search" onsubmit="event.preventDefault();render()">
-      <select id="scope"><option>제목+내용</option><option>제목</option></select>
-      <input id="q" placeholder="검색어를 입력하세요" oninput="render()">
+    <form class="search" onsubmit="event.preventDefault();page=1;render()">
+      <input id="q" placeholder="제목 검색" oninput="page=1;render()">
     </form>
   </div>
   <table class="btable">
-    <thead><tr><th style="width:80px">번호</th><th style="width:90px">구분</th><th>제목</th>
-      <th class="hide-m" style="width:60px">첨부</th><th style="width:110px">작성일</th></tr></thead>
+    <thead><tr><th style="width:90px">번호</th><th>제목</th><th class="hide-m" style="width:90px">원문</th></tr></thead>
     <tbody id="rows"></tbody>
   </table>
-  <div class="paging"><a href="#" class="on">1</a><a href="#">2</a><a href="#">3</a><a href="#">›</a></div>
+  <div class="paging" id="paging"></div>
 </main>
 
 <div id="footer"></div>
 
-<script src="data.js?v=145"></script>
-<script src="common.js?v=145"></script>
+<script src="data.js?v=146"></script>
+<script src="posts.js?v=146"></script>
+<script src="common.js?v=146"></script>
 <script>
 renderHeader('게시판');
 renderFooter();
-let cat = new URLSearchParams(location.search).get('c') || '전체';
+// 현행 mech.hanyang.ac.kr 게시판 글 (학부 공지 / 대학원 공지 / 취업정보). 제목을 누르면 현행 사이트 원문이 새 창으로 열림
+const NAME = { '학부': '학부 공지사항', '대학원': '대학원 공지사항', '취업': '취업정보' };
+let cat = new URLSearchParams(location.search).get('c'); if (!POSTS[cat]) cat = '학부';
+let page = 1; const PER = 10;
+document.getElementById('btitle').textContent = NAME[cat];
+document.getElementById('crumb').textContent = `홈 › 게시판 › ${NAME[cat]}`;
+document.title = `${NAME[cat]} · 기계공학과 홈페이지 Demo`;
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 function render() {
-  const q = document.getElementById('q').value.trim();
-  const items = NOTICES.filter(n => (cat === '전체' || n.cat === cat) && (!q || n.title.includes(q)))
-    .sort((a, b) => (b.pin - a.pin) || b.date.localeCompare(a.date));
-  document.getElementById('cnt').textContent = items.length;
-  let no = items.filter(n => !n.pin).length;
-  document.getElementById('rows').innerHTML = items.map(n => `
-    <tr class="${n.pin ? 'pinned' : ''}">
-      <td class="no">${n.pin ? '고정' : no--}</td>
-      <td><span class="b-cat">${n.cat}</span></td>
-      <td class="title"><a href="#">${n.title}</a>${isNew(n.date) ? '<span class="b-new" title="새 글"></span>' : ''}</td>
-      <td class="hide-m clip">${n.file ? '<svg class="b-clip" viewBox="0 0 24 24"><path d="M20 11.5l-8 8a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L9.7 17.2a1.7 1.7 0 0 1-2.4-2.4L15 7.2"/></svg>' : ''}</td>
-      <td class="d">${n.date.replaceAll('-', '.')}</td>
-    </tr>`).join('') || '<tr><td colspan="5" style="padding:60px;color:var(--ink-3)">검색 결과가 없습니다.</td></tr>';
+  const B = POSTS[cat], q = document.getElementById('q').value.trim().toLowerCase();
+  const all = B.items.map(([id, t], k) => ({ id, t, no: B.items.length - k })).filter(x => !q || x.t.toLowerCase().includes(q));
+  const pages = Math.max(1, Math.ceil(all.length / PER)); page = Math.min(page, pages);
+  document.getElementById('cnt').textContent = all.length;
+  document.getElementById('rows').innerHTML = all.slice((page - 1) * PER, page * PER).map(x => `
+    <tr><td class="no">${x.no}</td>
+      <td class="title"><a href="${POST_URL(B.path, x.id)}" target="_blank" rel="noopener">${esc(x.t)}</a></td>
+      <td class="hide-m"><a class="b-go" href="${POST_URL(B.path, x.id)}" target="_blank" rel="noopener" aria-label="원문 보기">↗</a></td></tr>`).join('')
+    || '<tr><td colspan="3" style="padding:60px;color:var(--ink-3)">검색 결과가 없습니다.</td></tr>';
+  const s = Math.max(1, Math.min(page - 2, pages - 4)), e = Math.min(pages, s + 4);
+  let h = page > 1 ? `<a href="#" data-p="${page - 1}">‹</a>` : '';
+  for (let p = s; p <= e; p++) h += `<a href="#" data-p="${p}" class="${p === page ? 'on' : ''}">${p}</a>`;
+  if (page < pages) h += `<a href="#" data-p="${page + 1}">›</a>`;
+  document.getElementById('paging').innerHTML = pages > 1 ? h : '';
 }
+document.getElementById('paging').addEventListener('click', e => { const a = e.target.closest('a[data-p]'); if (!a) return; e.preventDefault(); page = +a.dataset.p; render(); scrollTo({ top: 0 }); });
 render();
 </script>
 </body>

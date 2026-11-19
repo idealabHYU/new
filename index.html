@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>기계공학과 홈페이지 Demo</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="style.css?v=145">
+<link rel="stylesheet" href="style.css?v=146">
 </head>
 <body>
 <div id="header"></div>
@@ -34,12 +34,12 @@
 <section class="sec" id="notice">
   <div class="wrap news2">
     <div>
-      <div class="nhead"><h2>공지사항</h2><div class="tabs2" id="ntabs"></div><a class="more2" href="board.html">더보기 +</a></div>
+      <div class="nhead"><h2>공지사항</h2><div class="tabs2" id="ntabs"></div><a class="more2" id="nmore" href="board.html?c=학부">더보기 +</a></div>
       <ul class="nlist2" id="nlist"></ul>
     </div>
     <div>
-      <div class="nhead"><h2>학과 일정</h2><a class="more2" href="sub.html?m=2&s=4">더보기 +</a></div>
-      <ul class="slist2" id="sched"></ul>
+      <div class="nhead"><h2>취업정보</h2><a class="more2" href="board.html?c=취업">더보기 +</a></div>
+      <ul class="nlist2 job" id="jobs"></ul>
     </div>
   </div>
 </section>
@@ -99,8 +99,9 @@
 
 <div id="footer"></div>
 
-<script src="data.js?v=145"></script>
-<script src="common.js?v=145"></script>
+<script src="data.js?v=146"></script>
+<script src="posts.js?v=146"></script>
+<script src="common.js?v=146"></script>
 <script>
 renderHeader('');
 renderFooter();
@@ -202,26 +203,20 @@ const FICON = {
   pad(); go(1);
 })();
 
-// ---- 공지 & 일정 ----
+// ---- 공지 · 취업정보: 현행 사이트 게시판의 실제 최신 글 (posts.js) ----
 const ntabs = document.getElementById('ntabs'), nlist = document.getElementById('nlist');
-ntabs.innerHTML = ['전체', ...NOTICE_CATS].map((c, k) =>
-  `<button data-c="${c}" class="${k ? '' : 'on'}">${c}<i>${c === '전체' ? NOTICES.length : NOTICES.filter(n => n.cat === c).length}</i></button>`).join('');
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const postLi = (cat, [id, title], label) => `<li><a href="${POST_URL(POSTS[cat].path, id)}" target="_blank" rel="noopener">
+    ${label ? `<span class="c k-${cat}">${cat}</span>` : ''}<span class="t">${esc(title)}</span></a></li>`;
+ntabs.innerHTML = ['학부', '대학원'].map((c, k) => `<button data-c="${c}" class="${k ? '' : 'on'}">${c}<i>${POSTS[c].total}</i></button>`).join('');
 function renderNotices(c) {
   ntabs.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.c === c));
-  const items = NOTICES.filter(n => c === '전체' || n.cat === c)
-    .sort((a, b) => (b.pin - a.pin) || b.date.localeCompare(a.date)).slice(0, 5);
-  nlist.innerHTML = items.map(n => `<li><a href="board.html">
-    <span class="c k-${n.cat}">${n.cat}</span>
-    <span class="t ${n.pin ? 'pin' : ''}">${n.title}${isNew(n.date) ? '<i class="dot" title="새 글"></i>' : ''}</span>
-    <span class="d">${n.date.replaceAll('-', '.')}</span></a></li>`).join('');
+  nlist.innerHTML = POSTS[c].items.slice(0, 5).map(x => postLi(c, x, true)).join('');
+  document.getElementById('nmore').href = 'board.html?c=' + c;
 }
 ntabs.addEventListener('click', e => { const b = e.target.closest('button'); if (b) renderNotices(b.dataset.c); });
-renderNotices('전체');
-
-document.getElementById('sched').innerHTML = SCHEDULE.map(s => {
-  const [m, d] = s.date.split('.');
-  return `<li><div class="dd"><small>${+m}월</small>${d}</div><div><span>${s.tag}</span><b>${s.title}</b></div></li>`;
-}).join('');
+renderNotices('학부');
+document.getElementById('jobs').innerHTML = POSTS['취업'].items.slice(0, 5).map(x => postLi('취업', x, false)).join('');
 
 // ---- 범용성: 왼쪽 산업 목록 + 오른쪽 큰 사진 (자동 전환, 마우스 올리면 고정)
 (function () {

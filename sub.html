@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>기계공학과 홈페이지 Demo</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="style.css?v=145">
+<link rel="stylesheet" href="style.css?v=146">
 </head>
 <body>
 <div id="header"></div>
@@ -17,8 +17,8 @@
 <main class="wrap pg" id="content"></main>
 <div id="footer"></div>
 
-<script src="data.js?v=145"></script>
-<script src="common.js?v=145"></script>
+<script src="data.js?v=146"></script>
+<script src="common.js?v=146"></script>
 <script>
 // 내용 출처: 현행 mech.hanyang.ac.kr (학과소개 -26-, 인사말 -27, 연혁 -29, 방문안내 -31, 교과과정 -19/-14, 학생회 -23, 장학 -32/-33, 사업단 -13, 리서치프로파일 -30)
 const q = new URLSearchParams(location.search);
@@ -128,6 +128,30 @@ const schCard = (x, i) => `<article class="sc" data-other="${x.other ? 1 : 0}">
     <small class="sc-src">${x.name} · 입학금은 감면 대상 아님</small>
   </div></div></div></article>`;
 
+// 연구실 (현행 -12 표: 영문명 · 위치 · 전화 · 홈페이지). 교수 이름으로 data.js 와 연결
+const LABINFO = {
+  '윤준용': ['Fluid Engineering Laboratory', '333', '031-400-4707', ''],
+  '이성환': ['Nano Intelligent Manufacturing Laboratory', '428', '031-400-4706', 'http://iml.hanyang.ac.kr/'],
+  '이도형': ['Applied Computational Design & Fluid Dynamics Laboratory', '334', '031-400-4742', ''],
+  '오제훈': ['Advanced Materials & Innovative Design Laboratory', '227', '031-400-4704', 'https://amid.hanyang.ac.kr'],
+  '류근': ['Turbomachinery Laboratory', '226', '031-400-4746', 'http://turbolab.hanyang.ac.kr/'],
+  '김영득': ['Energy and Environmental Engineering Laboratory', '329', '031-400-8106', 'http://eee.hanyang.ac.kr/'],
+  '윤종헌': ['Computational Hybrid Analysis of Materials Processing Laboratory', '221', '031-436-8117', 'http://champ.hanyang.ac.kr/'],
+  '이원철': ['NanoBio Mechanical Systems Laboratory', '217', '031-400-4732', 'https://sites.google.com/site/nanobiohanyang/'],
+  '김남욱': ['Machine Dynamics Laboratory', '208', '031-400-5256', 'https://sites.google.com/view/mdlhyu/'],
+  '홍석준': ['Optical Nanoprocessing Laboratory', '221-1', '031-400-4719', 'https://sites.google.com/site/onlhanyang/'],
+  '오준호': ['Bio-inspired Energy and Thermal Transport Engineering Research Laboratory', '502', '031-400-5259', 'https://better.hanyang.ac.kr/'],
+  '김호준': ['Chaotic Systems and Plasma Physics Laboratory', '205-1', '', 'http://csppl.hanyang.ac.kr/'],
+  '김진용': ['Renewable Engine Analysis Laboratory', '427', '031-400-5240', 'https://real.hanyang.ac.kr/'],
+  '최이현': ['A Laboratory', '', '031-400-5241', ''],
+  '노형도': ['R Laboratory', '228', '031-400-5246', 'https://rhd1213.github.io/'],
+  '김태균': ['Intelligent Robotic Systems Laboratory', '231', '031-400-5283', 'https://sites.google.com/hanyang.ac.kr/irslab/'],
+  '박지혁': ['Mechatronics System Laboratory', '', '031-400-5284', 'https://mesy.hanyang.ac.kr'],
+  '박주현': ['Multiphysics Analysis and Reliable thermal Systems Laboratory', '', '031-400-5250', 'https://mars.hanyang.ac.kr'],
+  '양선웅': ['Intelligent Design for Engineering Applications Laboratory', '', '031-400-5243', 'https://idealab.hanyang.ac.kr'],
+  '강석경': ['ManuFuture Laboratory', '223', '031-400-5285', 'https://manufuture.hanyang.ac.kr'],
+};
+const DOC = 'https://mech.hanyang.ac.kr/documents/11097699/0/';
 const PAGES = {
   '0-0': `<div class="ed-top"><div><span class="ab-k">ABOUT</span><h2>1979년부터,<br>대한민국 <em>기계공학</em>의<br>중심</h2>
         <p>산업도시 안산에서 40여 년간 대한민국 기계공학의 고급 인력을 길러 왔습니다.</p></div>
@@ -184,16 +208,18 @@ const PAGES = {
   '2-1': `${P('전공 교과목 이수체계도입니다. (현행 학과 사이트 이미지)')}
     <div class="cl-img"><img src="https://mech.hanyang.ac.kr/documents/11097699/0/%EA%B5%90%EA%B3%BC%EB%AA%A9%EC%9D%B4%EC%88%98%EC%B2%B4%EA%B3%84%EB%8F%84.png/39c0e928-978d-47cc-baf4-19e944d0e423?t=1698193205826&download=true" alt="전공 교과목 이수체계도"></div>`,
   '2-2': `${P('수강신청, 학적, 졸업 등 학사 업무는 대학 학사 시스템에서 안내합니다.')}${LINKS(link('학사안내 바로가기', 'https://ehaksa.hanyang.ac.kr', 'ehaksa.hanyang.ac.kr'))}`,
-  '2-3': ROWS([['학생회', '<b>기계공학과 학생회</b>학생들의 권익을 보호하고 학과 구성원이 모이는 구심점이 되는 봉사기구입니다. 학생회실은 제1공학관 123호입니다.'],
-    ['자동차연구회', '<b>바쿠넷 BAQU4</b>차체와 차량을 직접 제작해 자동차 경주대회에 출전합니다. 전국대회 2위, 국제대회 입상.'],
-    ['학술 동아리', '<b>RED</b>기계공학 관련 CAE와 컴퓨터 프로그래밍을 함께 공부하는 동아리입니다.'],
-    ['운동 동아리', '<b>동틀무렵</b>기계공학과 축구 동아리입니다.']]),
+  '2-3': ROWS([['학생회', `<b>기계공학과 학생회</b>학생회는 학생들을 위해 존재하는 순수한 봉사기구입니다. 학생들의 권익을 보호하고, 학과 · 학부 구성원이 모일 수 있는 구심점이 되며, 학생들과 학교 사이의 다리 역할을 하는 중요한 기구입니다. 기계공학과는 우리 학교의 36년을 함께 해왔으며, 학생회도 올해 36회가 되었습니다. 600학우와 함께 하는 학생회가 되도록 노력하겠습니다.<small>학생회실 · 제1공학관 123호</small>`],
+    ['전공학회', `<b>BAQU4</b>자작자동차를 연구하고 제작하는 학회로서 1999년 시작되었습니다. 지도교수님은 엔진 및 광계측 연구실의 이기형 교수님이십니다. 교내에서 자동차에 대한 교육과 자작차량 제작을 수행하며, 여름방학에는 교외 대회에 참가합니다. 창단 이래로 많은 대회에서 다양한 수상경력을 가지고 있습니다.<img src="${DOC}04101958822.png/3da4e393-8268-1d7e-35f8-e63d48ceda3f?t=1698193933960&download=true" alt="BAQU4" loading="lazy">`],
+    ['축구학회', `<b>동틀무렵</b>1994년에 창단된 기계공학과 내의 유일한 축구학회로, 선후배 · 동기와의 친목 도모를 위해 시작되었습니다. 오래된 역사만큼 많은 선배님들께서 학회의 활동을 지원해 주고 계시며, 많은 회원들의 관심과 참여로 다양한 대회에 참가해 화려한 수상경력을 자랑합니다. 매 학기 1회씩 OB : YB 정기전을 개최하여 졸업하신 선배님들과 재학생들 간의 정기적인 교류를 이어 나가고 있습니다.`],
+    ['전공학회', `<b>RED</b>Renovative Engineering Design의 줄임말로, 기계공학과 학생들이 공학인으로서 가져야 할 기초적인 능력을 배양하고 더 나아가 설계 분야에 친숙함을 가지게 하는 데 목적을 두고 있습니다. Catia, Arduino, Matlab, Ansys 등의 프로그램 사용법을 멘토링 형식으로 교육한 후, Knowledge factory와 연계하여 팀별 프로젝트를 진행하고 있습니다.<img src="${DOC}04102239963.jpg/a3f0feff-b8ea-f9fc-0716-b933989d1485?t=1698194133404&download=true" alt="RED" loading="lazy">`]]),
   '2-4': `${P('학기별 주요 일정은 대학 학사일정에서 확인할 수 있습니다.')}${LINKS(link('학사일정 바로가기', 'https://www.hanyang.ac.kr/web/www/cal_academic', '한양대학교 학사일정'))}`,
   '2-5': `${P('학부생이 받을 수 있는 주요 장학금입니다.')}${LIST(['교내 장학금', '국가장학금 (1, 2 유형)', '국가우수장학금', '국가근로장학금', '교외장학금 등'])}
     ${LINKS(link('ERICA 장학제도 안내', 'https://www.hanyang.ac.kr/web/www/esc', '장학금별 자격 · 신청 방법'))}`,
 
   '3-0': grTable(),
-  '3-1': `${P('석사·박사 학위취득 로드맵은 학과 공식 문서로 안내합니다.')}${LINKS(link('학위취득 로드맵 (PDF)', 'https://mech.hanyang.ac.kr/documents/11097699/0/%ED%95%99%EC%9C%84%EC%B7%A8%EB%93%9D%EB%A1%9C%EB%93%9C%EB%A7%B5_%EA%B8%B0%EC%84%A4_%EA%B5%AD%EB%AC%B8.pdf/76f60324-eae9-de97-0356-4b92d329eb35?t=1698194620302', '대학원 기계설계공학과 석사 및 박사'))}`,
+  '3-1': `${P('대학원 기계설계공학과 석사 및 박사 학위취득 로드맵입니다.')}${LINKS(link('학위취득 로드맵 (PDF)', DOC + '%ED%95%99%EC%9C%84%EC%B7%A8%EB%93%9D%EB%A1%9C%EB%93%9C%EB%A7%B5_%EA%B8%B0%EC%84%A4_%EA%B5%AD%EB%AC%B8.pdf/76f60324-eae9-de97-0356-4b92d329eb35?t=1698194620302', '대학원 기계설계공학과 석사 및 박사'))}
+    <div class="cl-img gap"><img src="${DOC}%ED%95%99%EC%9C%84%EC%B7%A8%EB%93%9D%EB%A1%9C%EB%93%9C%EB%A7%B5_%EA%B5%AD%EB%AC%B81.png/e0d9ef54-6822-88cb-829c-27e8846f1905?t=1698194635732&download=true" alt="석사 학위취득 로드맵" loading="lazy"></div>
+    <div class="cl-img gap"><img src="${DOC}%ED%95%99%EC%9C%84%EC%B7%A8%EB%93%9D%EB%A1%9C%EB%93%9C%EB%A7%B5_%EA%B5%AD%EB%AC%B82.png/d9e76b90-a673-6ff6-df6f-ca4201e7da97?t=1698194665573&download=true" alt="박사 학위취득 로드맵" loading="lazy"></div>`,
   '3-2': `${P('대학원 학적 · 수강 등 학사 업무는 한양대학교 대학원에서 안내합니다.')}${LINKS(link('대학원 학사안내', 'http://www.grad.hanyang.ac.kr/academics/enrollment.php', '한양대학교 대학원'))}`,
   '3-3': `${P('학위논문 심사 절차와 일정은 한양대학교 대학원에서 안내합니다.')}${LINKS(link('논문심사 안내', 'http://www.grad.hanyang.ac.kr/academics/report.php', '한양대학교 대학원'))}`,
   '3-4': `${P('대학원 학기별 일정은 한양대학교 대학원 학사일정에서 확인할 수 있습니다.')}${LINKS(link('대학원 학사일정', 'http://www.grad.hanyang.ac.kr/academics/calendar.php', '한양대학교 대학원'))}`,
@@ -203,19 +229,21 @@ const PAGES = {
     ${H('알아두세요')}${LIST(['입학금은 감면 대상이 아닙니다.', '이미 입학한 학생에게 소급해 선발하지 않습니다.', '게시 내용 · 모집요강 · 내규가 서로 다를 때는 내규가 우선합니다.', '이 밖에 BK21사업 장학 등 학과 · 사업단 장학이 있습니다.'])}
     ${LINKS(link('일반대학원 장학 내규', 'http://www.grad.hanyang.ac.kr/board/data.php?ptype=view&idx=9669&page=1&code=data&category=121', '2022.5.19. 공포 · 2023학년도 전기 신입생부터 적용'), link('대학원 행정 문의', 'tel:031-400-5116', '031-400-5116'))}`,
 
-  '4-0': `<table class="cl-table labs"><thead><tr><th>연구실</th><th>지도교수</th><th>위치</th><th class="c">홈페이지</th></tr></thead><tbody>${FACULTY.map(f => `<tr><td><b>${f.labName}</b>${f.labEn ? `<small>${f.labEn}</small>` : ''}</td><td>${f.name}</td><td>${f.room}</td>
-      <td class="c">${f.lab ? `<a class="cl-ext" href="${f.lab}" target="_blank" rel="noopener">바로가기 ↗</a>` : '<span class="cl-mute">준비중</span>'}</td></tr>`).join('')}</tbody></table>`,
+  '4-0': `<table class="cl-table labs"><thead><tr><th>연구실</th><th>지도교수</th><th>위치 · 전화</th><th class="c">홈페이지</th></tr></thead><tbody>${FACULTY.map(f => { const [en, room, tel, web] = LABINFO[f.name] || ['', '', '', '']; const url = f.lab || web;
+      return `<tr><td><b>${f.labName}</b><small>${en || f.labEn || ''}</small></td><td>${f.name}</td><td>${room ? `제5공학관 ${room}호` : '제5공학관'}${tel ? `<small>${tel}</small>` : ''}</td>
+      <td class="c">${url ? `<a class="cl-ext" href="${url}" target="_blank" rel="noopener">바로가기 ↗</a>` : '<span class="cl-mute">준비중</span>'}</td></tr>`; }).join('')}</tbody></table>`,
   '4-1': `${TOP('BK21 FOUR', '4단계 BK21 <em>교육연구단</em>')}
     ${P('ERICA 소재부품융합 첨단제조장비 혁신인재 교육연구단 (2020년 선정, 소재 · 부품 · 장비 분야)')}
     ${LINKS(link('BK21 FOUR 교육연구단 홈페이지', 'http://ericabk.hanyang.ac.kr/ace'))}
     ${H('참여 사업 이력')}${ROWS([['1999', '1단계 BK21 기계분야 사업단 (서울대학교와 공동)'], ['2003', '학연산 클러스터(기계부품) 특성화사업'], ['2006', '2단계 BK21 기계분야 사업단'], ['2014', '수도권대학 특성화 사업 (CK-II)'], ['2016', 'PRIME 사업'], ['2017', '에너지인력양성사업'], ['2020', '4단계 BK21 교육연구단 · 스마트건설기계 인력양성사업']])}`,
-  '4-2': `${P('학과 연구 현황을 정리한 리서치 프로파일입니다.')}${LINKS(
-    link('2025 ERICA Research Profiles (국문)', 'https://mech.hanyang.ac.kr/documents/11097699/0/2025+ERICA+Research+Profiles+-%EA%B8%B0%EA%B3%84%EA%B3%B5%ED%95%99%EA%B3%BC.pdf/fd8da215-dbca-8405-ecdf-7b2836b0630b?t=1770006160132', 'PDF'),
-    link('2025 ERICA Research Profiles (English)', 'https://mech.hanyang.ac.kr/documents/11097699/0/2025+ERICA+Research+Profiles+-%EA%B8%B0%EA%B3%84%EA%B3%B5%ED%95%99%EA%B3%BC%28%EC%98%81%EB%AC%B8%29.pdf/df07e77b-83ea-d4b7-46d1-7a84a1bfafa9?t=1770945135295', 'PDF'))}`,
+  '4-2': `${P('학과 연구 현황을 정리한 리서치 프로파일입니다. 그림을 누르면 상세 자료(PDF)가 열립니다.')}
+    <a class="cl-img gap" href="${DOC}2025+ERICA+Research+Profiles+-%EA%B8%B0%EA%B3%84%EA%B3%B5%ED%95%99%EA%B3%BC.pdf/fd8da215-dbca-8405-ecdf-7b2836b0630b?t=1770006160132" target="_blank" rel="noopener"><img src="${DOC}%EB%A6%AC%EC%84%9C%EC%B9%98%ED%94%84%EB%A1%9C%ED%8C%8C%EC%9D%BC_%EA%B5%AD%EB%AC%B8.png/8893ed7f-4c09-2997-42a9-24cfb87aa4cf?t=1698215302034&download=true" alt="학과 리서치 프로파일" loading="lazy"></a>
+    ${LINKS(
+    link('2025 ERICA Research Profiles (국문)', DOC + '2025+ERICA+Research+Profiles+-%EA%B8%B0%EA%B3%84%EA%B3%B5%ED%95%99%EA%B3%BC.pdf/fd8da215-dbca-8405-ecdf-7b2836b0630b?t=1770006160132', 'PDF'),
+    link('2025 ERICA Research Profiles (English)', DOC + '2025+ERICA+Research+Profiles+-%EA%B8%B0%EA%B3%84%EA%B3%B5%ED%95%99%EA%B3%BC%28%EC%98%81%EB%AC%B8%29.pdf/df07e77b-83ea-d4b7-46d1-7a84a1bfafa9?t=1770945135295', 'PDF'))}`,
   '5-3': empty('학과 행사 사진이 올라오면 이곳에 앨범으로 보입니다.'),
   '5-4': empty('서식과 자료가 올라오면 이곳에서 내려받을 수 있습니다.'),
-  '5-5': `${ROWS(SCHEDULE.map(x => [x.date, `<b>${x.title}</b>${x.tag}`]))}
-    <p class="cl-note">※ 현행 사이트 행사일정이 비어 있어 예시 일정을 넣었습니다.</p>`,
+  '5-5': `<div class="empty"><b>등록된 일정이 없습니다</b><small>학과 행사 일정이 등록되면 이곳에 표시됩니다.</small></div>`,
 };
 const content = document.getElementById('content');
 content.innerHTML = PAGES[`${m}-${s}`] || empty('준비 중인 페이지입니다.');

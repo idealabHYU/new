@@ -4,8 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>기계공학과 홈페이지 Demo</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="style.css?v=148">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link rel="preconnect" href="https://thumb.wikimedia.org">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="style.css?v=149">
 </head>
 <body>
 <div id="header"></div>
@@ -17,8 +20,8 @@
 <main class="wrap pg" id="content"></main>
 <div id="footer"></div>
 
-<script src="data.js?v=148"></script>
-<script src="common.js?v=148"></script>
+<script src="data.js?v=149"></script>
+<script src="common.js?v=149"></script>
 <script>
 // 내용 출처: 현행 mech.hanyang.ac.kr (학과소개 -26-, 인사말 -27, 연혁 -29, 방문안내 -31, 교과과정 -19/-14, 학생회 -23, 장학 -32/-33, 사업단 -13, 리서치프로파일 -30)
 const q = new URLSearchParams(location.search);
@@ -42,7 +45,7 @@ const TOP = (k, h) => `<div class="ab-top"><span class="ab-k">${k}</span><h2>${h
 const link = (label, url, sub = '') => { const ext = /^https?:/.test(url); return `<a href="${url}"${ext ? ' target="_blank" rel="noopener"' : ''}><span><b>${label}</b>${sub ? `<small>${sub}</small>` : ''}</span><i>${ext ? '↗' : '→'}</i></a>`; };
 const LINKS = (...a) => `<div class="cl-links">${a.join('')}</div>`;
 const ROWS = r => `<dl class="cl-dl">${r.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
-const FOLD = (label, body) => `<div class="fold"><button class="fold-btn" aria-expanded="false"><span>${label}</span><i aria-hidden="true"></i></button><div class="fold-body"><div><div class="fold-in">${body}</div></div></div></div>`;
+const FOLD = (label, body) => `<div class="fold"><button class="fold-btn" aria-expanded="false"><span>${label}</span><i aria-hidden="true"><u></u></i></button><div class="fold-body"><div><div class="fold-in">${body}</div></div></div></div>`;
 const LIST = a => `<ul class="cl-list">${a.map(x => `<li>${x}</li>`).join('')}</ul>`;
 const empty = msg => `<div class="empty"><b>등록된 글이 없습니다</b><small>${msg}</small></div>`;
 
@@ -120,7 +123,7 @@ const schCard = (x, i) => `<article class="sc" data-other="${x.other ? 1 : 0}">
   <h3 class="sc-h">수업료 <em>${x.big}%</em> 지원</h3>
   <ul class="sc-who"><li class="y"><i></i>자대생 가능</li><li class="${x.other ? 'y' : 'n'}"><i></i>타대생 ${x.other ? '가능' : '불가'}</li></ul>
   <dl class="sc-kv"><dt>기간</dt><dd>${x.term}</dd><dt>조건</dt><dd>${x.cond}</dd></dl>
-  <button class="sc-plus" aria-expanded="false" aria-controls="scm${i}"><span>학기별 지원 · 자격 요건</span><i aria-hidden="true"></i></button>
+  <button class="sc-plus" aria-expanded="false" aria-controls="scm${i}"><span>학기별 지원 · 자격 요건</span><i aria-hidden="true"><u></u></i></button>
   <div class="sc-more" id="scm${i}"><div><div class="sc-in">
     <div class="sc-gpa"><span>지원 기준</span><b>${x.gpa}</b></div>
     <ol class="sc-sem" style="--n:${x.sem.length}">${x.sem.map((v, k) => `<li class="p${v}"><b>${v}%</b><span>${k + 1}학기</span></li>`).join('')}</ol>

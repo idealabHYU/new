@@ -6,7 +6,7 @@
   --radius: 18px; --max: 1240px;
 }
 /* ===== 글씨체: 전체 Pretendard로 통일 (현행 사이트 메인 제목 서체) ===== */
-:root { --f-body: 'Pretendard', sans-serif; --f-head: 'Pretendard', sans-serif; --hw: 700; }
+:root { --f-body: 'Pretendard Variable', 'Pretendard', sans-serif; --f-head: 'Pretendard Variable', 'Pretendard', sans-serif; --hw: 700; }
 h1, h2, h3, h4, .logo b, .stats b, .prof .nm, .lab-info b, .sch td b, .sched .dd, .why .num, .step::before, .subhero h1 {
   font-family: var(--f-head); font-weight: var(--hw); }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -2657,3 +2657,31 @@ section.sec { padding: 40px 0; }
 a.cl-img { transition: box-shadow .25s; }
 a.cl-img:hover { box-shadow: 0 20px 40px -28px rgba(15,27,45,.5); }
 .cl-table.labs td small { word-break: keep-all; }
+
+/* ===== v149 성능(렉) 개선 ===== */
+/* 1) 항상 떠 있는 상단 메뉴의 흐림 효과 제거: 스크롤할 때마다 화면을 다시 그리던 주원인 */
+header.gnb { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* 2) 첫 화면 큰 사진의 필터 제거 + 안 보이는 사진은 그리지 않기 */
+#heroBg img { filter: none; }
+#heroBg > * { visibility: hidden; transition-property: opacity, transform, visibility; transition-duration: 1s, 6s, 0s; transition-delay: 0s, 0s, 1s; }
+#heroBg > .on { visibility: visible; transition-delay: 0s, 0s, 0s; }
+.sh-view img { visibility: hidden; transition: opacity .8s ease, transform 3.2s ease, visibility 0s linear .8s; }
+.sh-view img.on { visibility: visible; transition: opacity .8s ease, transform 3.2s ease, visibility 0s; }
+/* 3) 진행 막대: 폭(width) 대신 transform 으로 → 3초 내내 레이아웃 다시 계산하던 것 제거 */
+.show.v2 .sh-list .bar { width: 100%; transform: scaleX(0); transform-origin: left center; }
+.show.v2 .sh-list li.on .bar { animation: shBarX 3s linear forwards; }
+.show.v2:hover .sh-list li.on .bar { animation: none; width: 100%; transform: scaleX(1); }
+@keyframes shBarX { to { transform: scaleX(1); } }
+/* 4) + 버튼 물결: box-shadow 애니메이션(매 프레임 다시 그림) → 고리 요소의 transform/opacity 로 */
+.sc-plus i, .fold-btn i { animation: none; }
+.sc-plus i u, .fold-btn i u { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(92,198,242,.7); animation: ringPulse 2.6s ease-out infinite; pointer-events: none; }
+.sc.open .sc-plus i u, .fold.open .fold-btn i u { display: none; }
+@keyframes ringPulse { 0% { transform: scale(1); opacity: .9; } 70%, 100% { transform: scale(1.55); opacity: 0; } }
+/* 5) 화면 아래쪽 구역은 보일 때만 그리기 */
+#why { content-visibility: auto; contain-intrinsic-size: auto 658px; }
+#news { content-visibility: auto; contain-intrinsic-size: auto 569px; }
+#labs { content-visibility: auto; contain-intrinsic-size: auto 682px; }
+footer { content-visibility: auto; contain-intrinsic-size: auto 305px; }
+/* 6) 페이지 넘김 효과는 짧게 */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .14s; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

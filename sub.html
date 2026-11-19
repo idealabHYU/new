@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>기계공학과 홈페이지 Demo</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="style.css?v=146">
+<link rel="stylesheet" href="style.css?v=147">
 </head>
 <body>
 <div id="header"></div>
@@ -17,8 +17,8 @@
 <main class="wrap pg" id="content"></main>
 <div id="footer"></div>
 
-<script src="data.js?v=146"></script>
-<script src="common.js?v=146"></script>
+<script src="data.js?v=147"></script>
+<script src="common.js?v=147"></script>
 <script>
 // 내용 출처: 현행 mech.hanyang.ac.kr (학과소개 -26-, 인사말 -27, 연혁 -29, 방문안내 -31, 교과과정 -19/-14, 학생회 -23, 장학 -32/-33, 사업단 -13, 리서치프로파일 -30)
 const q = new URLSearchParams(location.search);
@@ -128,28 +128,28 @@ const schCard = (x, i) => `<article class="sc" data-other="${x.other ? 1 : 0}">
     <small class="sc-src">${x.name} · 입학금은 감면 대상 아님</small>
   </div></div></div></article>`;
 
-// 연구실 (현행 -12 표: 영문명 · 위치 · 전화 · 홈페이지). 교수 이름으로 data.js 와 연결
+// 연구실 (현행 -12 표: 영문명 · 위치 · 홈페이지, 전화번호는 넣지 않음). 교수 이름으로 data.js 와 연결
 const LABINFO = {
-  '윤준용': ['Fluid Engineering Laboratory', '333', '031-400-4707', ''],
-  '이성환': ['Nano Intelligent Manufacturing Laboratory', '428', '031-400-4706', 'http://iml.hanyang.ac.kr/'],
-  '이도형': ['Applied Computational Design & Fluid Dynamics Laboratory', '334', '031-400-4742', ''],
-  '오제훈': ['Advanced Materials & Innovative Design Laboratory', '227', '031-400-4704', 'https://amid.hanyang.ac.kr'],
-  '류근': ['Turbomachinery Laboratory', '226', '031-400-4746', 'http://turbolab.hanyang.ac.kr/'],
-  '김영득': ['Energy and Environmental Engineering Laboratory', '329', '031-400-8106', 'http://eee.hanyang.ac.kr/'],
-  '윤종헌': ['Computational Hybrid Analysis of Materials Processing Laboratory', '221', '031-436-8117', 'http://champ.hanyang.ac.kr/'],
-  '이원철': ['NanoBio Mechanical Systems Laboratory', '217', '031-400-4732', 'https://sites.google.com/site/nanobiohanyang/'],
-  '김남욱': ['Machine Dynamics Laboratory', '208', '031-400-5256', 'https://sites.google.com/view/mdlhyu/'],
-  '홍석준': ['Optical Nanoprocessing Laboratory', '221-1', '031-400-4719', 'https://sites.google.com/site/onlhanyang/'],
-  '오준호': ['Bio-inspired Energy and Thermal Transport Engineering Research Laboratory', '502', '031-400-5259', 'https://better.hanyang.ac.kr/'],
-  '김호준': ['Chaotic Systems and Plasma Physics Laboratory', '205-1', '', 'http://csppl.hanyang.ac.kr/'],
-  '김진용': ['Renewable Engine Analysis Laboratory', '427', '031-400-5240', 'https://real.hanyang.ac.kr/'],
-  '최이현': ['A Laboratory', '', '031-400-5241', ''],
-  '노형도': ['R Laboratory', '228', '031-400-5246', 'https://rhd1213.github.io/'],
-  '김태균': ['Intelligent Robotic Systems Laboratory', '231', '031-400-5283', 'https://sites.google.com/hanyang.ac.kr/irslab/'],
-  '박지혁': ['Mechatronics System Laboratory', '', '031-400-5284', 'https://mesy.hanyang.ac.kr'],
-  '박주현': ['Multiphysics Analysis and Reliable thermal Systems Laboratory', '', '031-400-5250', 'https://mars.hanyang.ac.kr'],
-  '양선웅': ['Intelligent Design for Engineering Applications Laboratory', '', '031-400-5243', 'https://idealab.hanyang.ac.kr'],
-  '강석경': ['ManuFuture Laboratory', '223', '031-400-5285', 'https://manufuture.hanyang.ac.kr'],
+  '윤준용': ['Fluid Engineering Laboratory', '333', ''],
+  '이성환': ['Nano Intelligent Manufacturing Laboratory', '428', 'http://iml.hanyang.ac.kr/'],
+  '이도형': ['Applied Computational Design & Fluid Dynamics Laboratory', '334', ''],
+  '오제훈': ['Advanced Materials & Innovative Design Laboratory', '227', 'https://amid.hanyang.ac.kr'],
+  '류근': ['Turbomachinery Laboratory', '226', 'http://turbolab.hanyang.ac.kr/'],
+  '김영득': ['Energy and Environmental Engineering Laboratory', '329', 'http://eee.hanyang.ac.kr/'],
+  '윤종헌': ['Computational Hybrid Analysis of Materials Processing Laboratory', '221', 'http://champ.hanyang.ac.kr/'],
+  '이원철': ['NanoBio Mechanical Systems Laboratory', '217', 'https://sites.google.com/site/nanobiohanyang/'],
+  '김남욱': ['Machine Dynamics Laboratory', '208', 'https://sites.google.com/view/mdlhyu/'],
+  '홍석준': ['Optical Nanoprocessing Laboratory', '221-1', 'https://sites.google.com/site/onlhanyang/'],
+  '오준호': ['Bio-inspired Energy and Thermal Transport Engineering Research Laboratory', '502', 'https://better.hanyang.ac.kr/'],
+  '김호준': ['Chaotic Systems and Plasma Physics Laboratory', '205-1', 'http://csppl.hanyang.ac.kr/'],
+  '김진용': ['Renewable Engine Analysis Laboratory', '427', 'https://real.hanyang.ac.kr/'],
+  '최이현': ['A Laboratory', '', ''],
+  '노형도': ['R Laboratory', '228', 'https://rhd1213.github.io/'],
+  '김태균': ['Intelligent Robotic Systems Laboratory', '231', 'https://sites.google.com/hanyang.ac.kr/irslab/'],
+  '박지혁': ['Mechatronics System Laboratory', '', 'https://mesy.hanyang.ac.kr'],
+  '박주현': ['Multiphysics Analysis and Reliable thermal Systems Laboratory', '', 'https://mars.hanyang.ac.kr'],
+  '양선웅': ['Intelligent Design for Engineering Applications Laboratory', '', 'https://idealab.hanyang.ac.kr'],
+  '강석경': ['ManuFuture Laboratory', '223', 'https://manufuture.hanyang.ac.kr'],
 };
 const DOC = 'https://mech.hanyang.ac.kr/documents/11097699/0/';
 const PAGES = {
@@ -229,8 +229,8 @@ const PAGES = {
     ${H('알아두세요')}${LIST(['입학금은 감면 대상이 아닙니다.', '이미 입학한 학생에게 소급해 선발하지 않습니다.', '게시 내용 · 모집요강 · 내규가 서로 다를 때는 내규가 우선합니다.', '이 밖에 BK21사업 장학 등 학과 · 사업단 장학이 있습니다.'])}
     ${LINKS(link('일반대학원 장학 내규', 'http://www.grad.hanyang.ac.kr/board/data.php?ptype=view&idx=9669&page=1&code=data&category=121', '2022.5.19. 공포 · 2023학년도 전기 신입생부터 적용'), link('대학원 행정 문의', 'tel:031-400-5116', '031-400-5116'))}`,
 
-  '4-0': `<table class="cl-table labs"><thead><tr><th>연구실</th><th>지도교수</th><th>위치 · 전화</th><th class="c">홈페이지</th></tr></thead><tbody>${FACULTY.map(f => { const [en, room, tel, web] = LABINFO[f.name] || ['', '', '', '']; const url = f.lab || web;
-      return `<tr><td><b>${f.labName}</b><small>${en || f.labEn || ''}</small></td><td>${f.name}</td><td>${room ? `제5공학관 ${room}호` : '제5공학관'}${tel ? `<small>${tel}</small>` : ''}</td>
+  '4-0': `<table class="cl-table labs"><thead><tr><th>연구실</th><th>지도교수</th><th>위치</th><th class="c">홈페이지</th></tr></thead><tbody>${FACULTY.map(f => { const [en, room, web] = LABINFO[f.name] || ['', '', '']; const url = f.lab || web;
+      return `<tr><td><b>${f.labName}</b><small>${en || f.labEn || ''}</small></td><td>${f.name}</td><td>${room ? `제5공학관 ${room}호` : '제5공학관'}</td>
       <td class="c">${url ? `<a class="cl-ext" href="${url}" target="_blank" rel="noopener">바로가기 ↗</a>` : '<span class="cl-mute">준비중</span>'}</td></tr>`; }).join('')}</tbody></table>`,
   '4-1': `${TOP('BK21 FOUR', '4단계 BK21 <em>교육연구단</em>')}
     ${P('ERICA 소재부품융합 첨단제조장비 혁신인재 교육연구단 (2020년 선정, 소재 · 부품 · 장비 분야)')}

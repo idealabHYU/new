@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>기계공학과 홈페이지 Demo</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="style.css?v=142">
+<link rel="stylesheet" href="style.css?v=143">
 </head>
 <body>
 <div id="header"></div>
@@ -17,8 +17,8 @@
 <main class="wrap pg" id="content"></main>
 <div id="footer"></div>
 
-<script src="data.js?v=142"></script>
-<script src="common.js?v=142"></script>
+<script src="data.js?v=143"></script>
+<script src="common.js?v=143"></script>
 <script>
 // 내용 출처: 현행 mech.hanyang.ac.kr (학과소개 -26-, 인사말 -27, 연혁 -29, 방문안내 -31, 교과과정 -19/-14, 학생회 -23, 장학 -32/-33, 사업단 -13, 리서치프로파일 -30)
 const q = new URLSearchParams(location.search);
@@ -162,7 +162,7 @@ const PAGES = {
       <p>이러한 지금까지의 전통을 이어받아, 앞으로도 우리 학과는 국가의 기술경쟁력을 높이고 인류발전에 기여하며, 세계적 수준의 기계공학 교육을 통해 우수한 공학인재를 양성할 뿐 아니라 글로벌 수준의 기술개발 및 연구를 이어가기 위해 끊임없이 노력할 것입니다.</p>`)}`,
 
   '0-3': `<div class="ab-top"><span class="ab-k">HISTORY</span><h2>1979년부터 이어온 <em>40여 년</em></h2></div>
-    <ol class="tl">${HIST.map(([y, ev]) => `<li class="${['1979', '1999', '2004', '2010', '2020'].includes(y) ? 'key' : ''}"><b>${y}</b><span class="tl-d"></span><div>${ev.map(e => `<p>${e}</p>`).join('')}</div></li>`).join('')}</ol>`,
+    <ol class="tl">${[...HIST].reverse().map(([y, ev]) => `<li class="${['1979', '1999', '2004', '2010', '2020'].includes(y) ? 'key' : ''}"><b>${y}</b><span class="tl-d"></span><div>${ev.map(e => `<p>${e}</p>`).join('')}</div></li>`).join('')}</ol>`,
 
   '0-4': `${TOP('LOCATION', '찾아오시는 길')}
     <div class="ab-map"><iframe src="https://maps.google.com/maps?q=%ED%95%9C%EC%96%91%EB%8C%80%ED%95%99%EA%B5%90%20ERICA%20%EC%A0%9C3%EA%B3%B5%ED%95%99%EA%B4%80&z=16&output=embed" loading="lazy" title="한양대학교 ERICA 지도"></iframe></div>

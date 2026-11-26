@@ -6,9 +6,8 @@
 <title>기계공학과 홈페이지 Demo</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
-<link rel="preconnect" href="https://thumb.wikimedia.org">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="style.css?v=149">
+<link rel="stylesheet" href="style.css?v=204">
 </head>
 <body>
 <div id="header"></div>
@@ -20,8 +19,8 @@
 <main class="wrap pg" id="content"></main>
 <div id="footer"></div>
 
-<script src="data.js?v=149"></script>
-<script src="common.js?v=149"></script>
+<script src="data.js?v=204"></script>
+<script src="common.js?v=204"></script>
 <script>
 // 내용 출처: 현행 mech.hanyang.ac.kr (학과소개 -26-, 인사말 -27, 연혁 -29, 방문안내 -31, 교과과정 -19/-14, 학생회 -23, 장학 -32/-33, 사업단 -13, 리서치프로파일 -30)
 const q = new URLSearchParams(location.search);
@@ -155,20 +154,143 @@ const LABINFO = {
   '강석경': ['ManuFuture Laboratory', '223', 'https://manufuture.hanyang.ac.kr'],
 };
 const DOC = 'https://mech.hanyang.ac.kr/documents/11097699/0/';
+// ---- 전공 교과목 이수체계 (현행 학과 사이트의 이수체계도 이미지 그대로: 과목 배치 · 학점 · 전공기초/핵심/심화 구분)
+// [학년, 학기, 이미지에 적힌 학기 학점, [[과목, 학점, 구분 b=전공기초 c=전공핵심 a=전공심화], ...]]
+const CMAP = [
+  [1, 1, 12, [['기계공학개론', 2, 'b'], ['일반화학1', 3, 'b'], ['미분적분학1', 3, 'b'], ['일반물리학1', 3, 'b'], ['일반물리학실험1', 1, 'b']]],
+  [1, 2, 15, [['정역학', 3, 'c'], ['공업수학1', 3, 'b'], ['미분적분학2', 3, 'b'], ['일반물리학2', 3, 'b'], ['CADD', 3, 'b']]],
+  [2, 1, 15, [['고체역학', 3, 'c'], ['열역학', 3, 'c'], ['기계재료설계', 3, 'c'], ['기계공학입문설계', 3, 'c'], ['공업수학2', 3, 'b']]],
+  [2, 2, 18, [['고체역학응용설계', 3, 'c'], ['동역학', 3, 'c'], ['열역학응용설계', 3, 'c'], ['유체역학', 3, 'c'], ['기계계측공학', 3, 'c'], ['공업수학3', 3, 'b']]],
+  [3, 1, 22, [['유체역학응용설계', 3, 'c'], ['공학설계및응용', 3, 'c'], ['수치계산', 3, 'c'], ['기계설계', 3, 'c'], ['기계제작공정', 3, 'c'], ['컴퓨터지원설계', 3, 'a'], ['기계공작실습', 1, 'a'], ['계측시스템설계및응용', 3, 'a']]],
+  [3, 2, 17, [['기계진동학', 3, 'c'], ['열전달', 3, 'c'], ['기계가공과공정설계', 3, 'a'], ['기계가공실습', 2, 'a'], ['기계캡스톤디자인1', 3, 'a'], ['공학설계및응용2', 3, 'a']]],
+  [4, 1, 18, [['기계역학', 3, 'a'], ['응용유한요소해석', 3, 'a'], ['열시스템설계', 3, 'a'], ['유체기계설계', 3, 'a'], ['기계캡스톤디자인2', 3, 'a'], ['자동제어', 3, 'a'], ['기계공학특론', 1, 'a']]],
+  [4, 2, 24, [['기계융합제조공정설계', 3, 'a'], ['융합기계설계', 3, 'a'], ['설계방법론', 3, 'a'], ['수송기계설계', 3, 'a'], ['기계캡스톤디자인3', 3, 'a'], ['응용기계시스템설계', 3, 'a'], ['탄성학설계', 3, 'a'], ['동력기계설계', 3, 'a']]],
+];
+// 4대 역학별 추천 경로: 학과 공식 트랙이 아니라, 과목 이름과 내용의 연결에 따라 정리한 추천 (순서 = 듣는 순서)
+const CTRK = {
+  solid: { name: '고체역학', one: '힘을 받은 물체가 얼마나 버티고 얼마나 변형되는지 다룹니다.', job: '자동차 · 항공기 · 로봇 · 반도체 장비',
+    list: ['정역학', '고체역학', '기계재료설계', '고체역학응용설계', '기계설계', '기계제작공정', '응용유한요소해석', '설계방법론', '탄성학설계'] },
+  thermo: { name: '열역학', one: '열과 에너지가 어떻게 이동하고 일로 바뀌는지 다룹니다.', job: '배터리 · 발전소 · 에어컨 · 반도체',
+    list: ['열역학', '열역학응용설계', '수치계산', '열전달', '열시스템설계', '동력기계설계'] },
+  fluid: { name: '유체역학', one: '공기와 물처럼 흐르는 물질의 움직임을 다룹니다.', job: '항공기 · 로켓 · 풍력발전 · 선박',
+    list: ['유체역학', '유체역학응용설계', '수치계산', '열전달', '유체기계설계', '동력기계설계'] },
+  dyn: { name: '동역학', one: '움직이는 물체의 운동과 진동, 그리고 제어를 다룹니다.', job: '로봇 · 자율주행차 · 드론 · 방위산업',
+    list: ['정역학', '동역학', '기계계측공학', '계측시스템설계및응용', '기계진동학', '기계역학', '자동제어', '수송기계설계', '응용기계시스템설계'] },
+};
+const CTYPE = { b: '전공기초', c: '전공핵심', a: '전공심화' };
+// 긴 과목명은 원본 이미지처럼 뜻이 끊기는 자리에서 줄바꿈 (숫자 = 앞 줄 글자 수)
+const CBR = { '일반물리학실험1': 5, '기계공학입문설계': 4, '고체역학응용설계': 4, '열역학응용설계': 3, '유체역학응용설계': 4, '공학설계및응용': 4, '공학설계및응용2': 4, '컴퓨터지원설계': 3,
+  '계측시스템설계및응용': 5, '기계가공과공정설계': 5, '기계캡스톤디자인1': 5, '기계캡스톤디자인2': 5, '기계캡스톤디자인3': 5, '응용유한요소해석': 4, '기계융합제조공정설계': 6, '응용기계시스템설계': 4 };
+const cbr = n => CBR[n] ? n.slice(0, CBR[n]) + '<wbr>' + n.slice(CBR[n]) : n;
+const mapPage = () => `
+  <div class="cl-seg five" id="mtabs"><button class="on" data-t="">전체 보기</button>${Object.entries(CTRK).map(([k, v]) => `<button data-t="${k}">${v.name}</button>`).join('')}</div>
+  <div class="cm-info" id="minfo" hidden></div>
+  <ul class="cm-legend"><li><i class="mc b"></i>전공기초</li><li><i class="mc c"></i>전공핵심</li><li><i class="mc a"></i>전공심화</li></ul>
+  <div class="cm-scroll"><div class="cm" id="cmap">
+    <div class="cm-years">${[1, 2, 3, 4].map(y => `<b>${y}학년</b>`).join('')}</div>
+    <div class="cm-grid" id="cgrid">${CMAP.map(([y, s, tot, list]) => `<div class="cm-col"><span class="cm-sem">${s}학기 <i>${tot}학점</i></span>${list.map(([n, c, k]) => `<div class="mc ${k}" data-n="${n}" title="${CTYPE[k]} · ${c}학점"><b>${cbr(n)}</b><i>${c}</i></div>`).join('')}</div>`).join('')}
+      <svg class="cm-arrows" id="carrows" aria-hidden="true"><g></g></svg>
+    </div>
+  </div></div>`;
+let CUR_TRK = '';
+// 고른 역학의 과목들을 듣는 순서대로 잇기: 카드 사이 여백(세로 통로 · 가로 통로)으로만 다니는 직각 연결선 + 둥근 모서리.
+// 선이 다른 과목 카드 위를 지나가지 않고, 출발점은 작은 점, 도착점은 작은 화살촉.
+function drawArrows() {
+  const grid = document.getElementById('cgrid'), svg = document.getElementById('carrows'); if (!grid || !svg) return;
+  const g = svg.querySelector('g'), T = CTRK[CUR_TRK]; g.innerHTML = ''; if (!T) return;
+  const G = grid.getBoundingClientRect(), cols = [...grid.querySelectorAll('.cm-col')];
+  const C = cols.map(c => { const r = c.getBoundingClientRect(); return [r.left - G.left, r.right - G.left]; });
+  const box = n => { const e = grid.querySelector(`.mc[data-n="${n}"]`), r = e.getBoundingClientRect(); return { col: cols.indexOf(e.parentNode), l: r.left - G.left, r: r.right - G.left, t: r.top - G.top, b: r.bottom - G.top, cy: (r.top + r.bottom) / 2 - G.top }; };
+  const gapX = (i, f) => i < 0 ? C[0][0] - 9 : C[i][1] + (C[i + 1][0] - C[i][1]) * f;       // i번째 열 오른쪽 여백 안의 세로 통로
+  const round = pts => {          // 꺾이는 점마다 둥글게
+    let d = `M${pts[0][0]} ${pts[0][1]}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const [x0, y0] = pts[i - 1], [x, y] = pts[i], [x1, y1] = pts[i + 1];
+      const r = Math.min(6, Math.hypot(x - x0, y - y0) / 2, Math.hypot(x1 - x, y1 - y) / 2);
+      const ax = x - Math.sign(x - x0) * r, ay = y - Math.sign(y - y0) * r, bx = x + Math.sign(x1 - x) * r, by = y + Math.sign(y1 - y) * r;
+      d += `L${ax} ${ay}Q${x} ${y} ${bx} ${by}`;
+    }
+    const e = pts[pts.length - 1]; return d + `L${e[0]} ${e[1]}`;
+  };
+  let lines = '', heads = '';
+  for (let i = 0; i < T.list.length - 1; i++) {
+    const A = box(T.list[i]), B = box(T.list[i + 1]), ex = B.l - 8;      // 화살촉 길이만큼 앞에서 선을 끝냄
+    let pts;
+    if (A.col === B.col) { const x = gapX(A.col - 1, .72), sy = A.b - 13;                       // 같은 학기: 카드 왼쪽 아래에서 나와 왼쪽 통로로 내려감
+      pts = [[A.l, sy], [x, sy], [x, B.cy], [ex, B.cy]]; }
+    else if (B.col === A.col + 1) { const x = gapX(A.col, .4);                                    // 바로 다음 학기
+      pts = Math.abs(A.cy - B.cy) < 1 ? [[A.r, A.cy], [ex, B.cy]] : [[A.r, A.cy], [x, A.cy], [x, B.cy], [ex, B.cy]]; }
+    else { const x1 = gapX(A.col, .3), x2 = gapX(B.col - 1, .6), lane = A.cy <= B.cy ? B.t - 4 : B.b + 4;   // 학기를 건너뜀: 도착 과목 바로 위(아래) 가로 통로로
+      pts = [[A.r, A.cy], [x1, A.cy], [x1, lane], [x2, lane], [x2, B.cy], [ex, B.cy]]; }
+    lines += `<path d="${round(pts)}"/>`;
+    heads += `<path d="M${B.l - 2} ${B.cy}l-6.5 -3.8v7.6z"/>`;
+  }
+  g.innerHTML = `<g class="line">${lines}</g><g class="head">${heads}</g>`;
+}
+function setTrack(k) {
+  const m = document.getElementById('cmap'), info = document.getElementById('minfo'); if (!m) return;
+  CUR_TRK = CTRK[k] ? k : '';
+  document.querySelectorAll('#mtabs button').forEach(b => b.classList.toggle('on', b.dataset.t === CUR_TRK));
+  const T = CTRK[CUR_TRK];
+  m.classList.toggle('trk', !!T);
+  m.querySelectorAll('.mc').forEach(c => c.classList.toggle('on', !!T && T.list.includes(c.dataset.n)));
+  info.hidden = !T;
+  info.innerHTML = T ? `<div class="cm-head"><b>${T.name}</b><p>${T.one}</p></div>
+    <div class="cm-job"><span>이어지는 진로</span><ul>${T.job.split(' · ').map(x => `<li>${x}</li>`).join('')}</ul></div>
+    <div class="cm-path"><span>추천 과목</span><ol>${T.list.map(n => `<li>${n}</li>`).join('')}</ol></div>` : '';
+  requestAnimationFrame(drawArrows);
+}
+let cmRz; addEventListener('resize', () => { clearTimeout(cmRz); cmRz = setTimeout(drawArrows, 150); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawArrows);
+
+// ---- 2026학년도 학사일정 (한양대학교 학사캘린더 www.hanyang.ac.kr/web/www/cal_academic 를 2026-11-26에 확인해 옮김. 서울캠퍼스 전용 행사는 제외)
+// [연, 월, [[기간, 내용, 주요 일정이면 1], ...]]
+const ACAL = [
+  [2026, 3, [['03.03 (화)', '1학기 개강', 1], ['03.03 (화) ~ 03.06 (금)', '조기졸업 신청기간'], ['03.05 (목) ~ 03.10 (화)', '1학기 수강신청 최종 정정기간'], ['03.30 (월) ~ 04.10 (금)', '1학기 중간 강의평가 기간']]],
+  [2026, 4, [['04.06 (월) ~ 04.10 (금)', '2025학년도 후기 졸업예정자 졸업논문 제출기간'], ['04.21 (화)', '휴학자의 학기인정 기준일'], ['04.21 (화) ~ 04.23 (목)', '1학기 학점포기 신청기간']]],
+  [2026, 5, [['05.11 (월) ~ 05.14 (목)', '여름 계절학기 신청기간'], ['05.11 (월) ~ 05.15 (금)', '다중 · 복수 · 부전공 신청 및 포기기간'], ['05.19 (화) ~ 05.21 (목)', '1학기 S/U등급 신청기간']]],
+  [2026, 6, [['06.01 (월) ~ 06.29 (월)', '1학기 기말 강의평가 기간'], ['06.02 (화) ~ 06.05 (금)', '2학기 재입학 접수기간'], ['06.16 (화) ~ 06.29 (월)', '1학기 성적입력 및 열람기간 (이의신청 및 정정포함)'], ['06.22 (월)', '1학기 종강', 1], ['06.23 (화)', '보강가능일'], ['06.24 (수) ~ 07.14 (화)', '여름 계절학기'], ['06.24 (수) ~ 08.31 (월)', '하계방학', 1]]],
+  [2026, 7, [['07.06 (월) ~ 07.10 (금)', '1학기 학사학위취득유예 신청기간'], ['07.06 (월) ~ 08.31 (월)', '2학기 복학 신청기간'], ['07.06 (월) ~ 09.04 (금)', '2학기 휴학 신청기간'], ['07.29 (수) ~ 07.31 (금)', '2025학년도 후기 졸업사정']]],
+  [2026, 8, [['08.06 (목) ~ 08.13 (목)', '2학기 수강신청기간', 1], ['08.19 (수)', '2025학년도 후기 학위수여식 (ERICA)', 1]]],
+  [2026, 9, [['09.01 (화)', '2학기 개강', 1], ['09.01 (화) ~ 09.04 (금)', '조기졸업 신청기간'], ['09.07 (월) ~ 09.09 (수)', '2학기 수강신청 최종 정정기간'], ['09.28 (월) ~ 10.08 (목)', '2학기 중간 강의평가 기간']]],
+  [2026, 10, [['10.08 (목) ~ 10.14 (수)', '2026학년도 전기 졸업예정자 졸업논문 제출기간'], ['10.20 (화)', '휴학자의 학기인정 기준일'], ['10.20 (화) ~ 10.22 (목)', '2학기 학점포기 신청기간']]],
+  [2026, 11, [['11.02 (월) ~ 11.06 (금)', '2027학년도 1학기 재입학 접수기간'], ['11.09 (월) ~ 11.12 (목)', '겨울 계절학기 신청기간'], ['11.09 (월) ~ 11.13 (금)', '다중 · 복수 · 부전공 신청 및 포기기간'], ['11.17 (화) ~ 11.19 (목)', '2학기 S/U등급 신청기간']]],
+  [2026, 12, [['12.01 (화) ~ 12.29 (화)', '2학기 기말 강의평가 기간'], ['12.11 (금) ~ 12.29 (화)', '2학기 성적입력 및 열람기간 (이의신청 및 정정포함)'], ['12.21 (월)', '2학기 종강', 1], ['12.22 (화)', '보강가능일'], ['12.23 (수) ~ 01.14 (목)', '겨울 계절학기'], ['12.23 (수) ~ 02.28 (일)', '동계방학', 1]]],
+  [2027, 1, [['01.04 (월) ~ 01.08 (금)', '2학기 학사학위취득유예 신청기간'], ['01.04 (월) ~ 01.15 (금)', '2027학년도 1학기 휴 · 복학 신청기간'], ['01.13 (수) ~ 01.22 (금)', '2027학년도 전과 접수기간'], ['01.26 (화) ~ 01.27 (수)', '2027학년도 전과 면접']]],
+  [2027, 2, [['02.01 (월) ~ 02.03 (수)', '2026학년도 전기 졸업사정'], ['02.10 (수) ~ 02.16 (화)', '2027학년도 1학기 수강신청기간', 1], ['02.17 (수)', '2026학년도 전기 학위수여식 (ERICA)', 1], ['02.25 (목)', '2027학년도 입학식 (ERICA)', 1], ['02.26 (금) ~ 03.02 (화)', '신 · 편입생 수강신청기간']]],
+];
+const ACAL_G = [['1학기', [3, 4, 5, 6]], ['여름방학', [7, 8]], ['2학기', [9, 10, 11, 12]], ['겨울방학', [1, 2]]];
+const calPage = () => {
+  const now = new Date(), cy = now.getFullYear(), cm = now.getMonth() + 1;
+  const all = ACAL.flatMap(([y, m, ev]) => ev);
+  const pick = s => { const f = all.find(e => e[2] && e[1] === s); return f ? f[0].split(' ~ ')[0].replace(/\s*\(.\)/, '') : ''; };
+  const day = d => d.replace(/\s*\(.\)/g, '').replace(' ~ ', ' – ');            // 요일은 빼고 날짜만 (요일은 마우스를 올리면 보임)
+  const month = ([y, m, ev]) => `<div class="ac-m ${y === cy && m === cm ? 'now' : ''}">
+      <h4><b>${m}</b>월${y === cy && m === cm ? '<em>이번 달</em>' : ''}</h4>
+      <ul>${ev.map(([d, s, k]) => `<li class="${k ? 'k' : ''}"><time title="${d}">${day(d)}</time><span>${s}</span></li>`).join('')}</ul></div>`;
+  return `
+  <div class="ac-top"><b>2026<i>학년도</i></b>
+    <dl><div><dt>1학기 개강</dt><dd>${pick('1학기 개강')}</dd></div><div><dt>1학기 종강</dt><dd>${pick('1학기 종강')}</dd></div><div><dt>2학기 개강</dt><dd>${pick('2학기 개강')}</dd></div><div><dt>2학기 종강</dt><dd>${pick('2학기 종강')}</dd></div></dl></div>
+  ${ACAL_G.map(([name, ms]) => { const list = ACAL.filter(x => ms.includes(x[1])); const y = list[0][0];
+    return `<section class="ac-sec"><h3>${name}<i>${y}년 ${ms[0]}월 – ${ms[ms.length - 1]}월</i></h3><div class="ac-grid">${list.map(month).join('')}</div></section>`; }).join('')}
+  <div class="ac-foot"><span>학사일정은 사정에 따라 변경될 수 있습니다.</span>
+    <a href="https://www.hanyang.ac.kr/web/www/cal_academic" target="_blank" rel="noopener">한양대학교 학사캘린더에서 자세히 보기 <i>↗</i></a></div>`;
+};
+
 const PAGES = {
   '0-0': `<div class="ed-top"><div><span class="ab-k">ABOUT</span><h2>1979년부터,<br>대한민국 <em>기계공학</em>의<br>중심</h2>
         <p>산업도시 안산에서 40여 년간 대한민국 기계공학의 고급 인력을 길러 왔습니다.</p></div>
-      <div class="ed-ph"><img src="${FIELD_IMG.robot[0]}" alt="자동차 생산 라인"></div></div>
-    <div class="ed-num"><div><b>1979</b><span>ERICA와 함께 출범</span></div><div><b>20<i>여 명</i></b><span>전원 박사 교수진</span></div><div><b>6,500<i>+</i></b><span>졸업생</span></div><div><b>BK21</b><span>4단계 교육연구단</span></div></div>
+      <div class="ed-ph"><img src="${U(PIC.carLine, 1000)}" alt="자동차 생산 라인"></div></div>
+    <div class="ed-num"><div><b>1979</b><span>ERICA와 함께 출범</span></div><div><b>20<i>여 명</i></b><span>교수진</span></div><div><b>6,500<i>+</i></b><span>졸업생</span></div><div><b>BK21</b><span>4단계 교육연구단</span></div></div>
 
     <section class="ab-sec"><span class="ab-k">VISION</span><h3 class="ed-h3">어느 분야에서든 앞서가는 네 가지 힘</h3>
       <ol class="ed-words"><li><em>01</em><b>창의력</b><small>Creativity</small></li><li><em>02</em><b>해석력</b><small>Analysis</small></li><li><em>03</em><b>통합력</b><small>Integration</small></li><li><em>04</em><b>현실구현화</b><small>Realization</small></li></ol></section>
 
     <section class="ab-sec"><span class="ab-k">HOW WE LEARN</span><h3 class="ed-h3">이론에서 <em>현장</em>까지</h3>
       <div class="iv3 flat">
-        <a href="sub.html?m=2&s=0"><div class="iv3-im"><img src="${FIELD_IMG.mfg[0]}" alt=""></div><div class="iv3-tx"><span>교육과정</span><b>4년 단계별 교육</b><p>기초과학 → 4대 역학 → 설계·제작 → 응용<br>CATIA · ANSYS · FLUENT 실습</p><i>교과과정 보기 →</i></div></a>
-        <a href="sub.html?m=4&s=0"><div class="iv3-im"><img src="${FIELD_IMG.robot[1]}" alt=""></div><div class="iv3-tx"><span>산학협력</span><b>산업 현장과 함께</b><p>안산·시화공단, 서울·경기 산업체와<br>이론과 실무를 잇는 교육</p><i>연구실 보기 →</i></div></a>
-        <a href="sub.html?m=1&s=1"><div class="iv3-im"><img src="${FIELD_IMG.semi[0]}" alt=""></div><div class="iv3-tx"><span>대학원</span><b>기계설계공학과 석·박사</b><p>해석력과 창의력을 갖춘<br>정예 연구기술자 양성</p><i>대학원 입학 보기 →</i></div></a></div></section>
+        <a href="sub.html?m=2&s=0"><div class="iv3-im"><img src="${U(PIC.lathe, 800)}" alt="" loading="lazy"></div><div class="iv3-tx"><span>교육과정</span><b>4년 단계별 교육</b><p>기초과학 → 4대 역학 → 설계·제작 → 응용<br>CATIA · ANSYS · FLUENT 실습</p><i>교과과정 보기 →</i></div></a>
+        <a href="sub.html?m=4&s=0"><div class="iv3-im"><img src="${U(PIC.robots, 800)}" alt="" loading="lazy"></div><div class="iv3-tx"><span>산학협력</span><b>산업 현장과 함께</b><p>안산·시화공단, 서울·경기 산업체와<br>이론과 실무를 잇는 교육</p><i>연구실 보기 →</i></div></a>
+        <a href="sub.html?m=1&s=1"><div class="iv3-im"><img src="${U(PIC.wafer, 800)}" alt="" loading="lazy"></div><div class="iv3-tx"><span>대학원</span><b>기계설계공학과 석·박사</b><p>해석력과 창의력을 갖춘<br>정예 연구기술자 양성</p><i>대학원 입학 보기 →</i></div></a></div></section>
 
     ${FOLD('학과소개 전문 보기', `
       <p>한양대학교 기계공학과는 1979년 한양대학교 ERICA캠퍼스의 개교와 함께 출범하여 서해안시대를 주도할 전략적 산업 요충지인 전원공업도시 안산에 뿌리를 내려 지난 40여 년간 대한민국 기계공학 분야의 중추적인 역할을 담당하는 훌륭한 고급인력 양성에 주력하여 왔습니다. 본 대학의 '사랑의 실천'이라는 건학 이념을 바탕으로, 지성인으로서의 인격과 품성을 갖추도록 교육하며, 기계공학 분야의 깊이 있는 이론과 기술을 습득하게 하고, 창의력, 해석력, 통합력, 현실구현화 능력을 배양함으로써, 장차 기계공학 분야는 물론 산업기술, 과학 등 관련 어느 분야에서도 충분한 공학적 감각과 독창성을 발휘하여 선도적 역할을 수행하는 탁월한 인재 육성을 목표로 하고 있습니다.</p>
@@ -182,14 +304,15 @@ const PAGES = {
       <p class="gq-sign">기계공학과 학과장<b>김남욱</b></p></div>
     <div class="gq-num"><div><b>6,500<i>+</i></b><span>졸업생 배출</span></div><div><b>2<i>위</i></b><span>대교협 기계분야 평가 (2004)</span></div><div><b>10<i>위</i></b><span>중앙일보 학과평가 (2013)</span></div><div><b>109<i>위</i></b><span>QS 세계대학 학문분야 평가</span></div></div>
     ${FOLD('인사말 전문 보기', `
-      <p>기계공학은 21세기 지식기반 산업의 핵심 중추 분야에 해당하는 공학 분야이며, 우리나라 산업의 근간을 이루는 자동차, 선박, 고속 철도, 항공기, 반도체/디스플레이, 디지털 가전, IT 산업기기, 첨단제조, 로봇, 의공학 기기, 차세대 기계설비, 나노바이오, 신소재, 에너지, 각종 플랜트 산업 등을 모두 아우르고 있습니다.</p>
+      <p>기계공학은 21세기 지식기반 산업의 핵심 중추 분야에 해당하는 공학 분야이며, 우리나라 산업의 근간을 이루는 자동차, 선박, 고속 철도, 항공기, 반도체/디스플레이, 스마트 가전, IT 산업기기, 첨단제조, 로봇, 의공학 기기, 차세대 기계설비, 나노바이오, 신소재, 에너지, 각종 플랜트 산업 등을 모두 아우르고 있습니다.</p>
       <p>1979년 한양대학교 ERICA캠퍼스와 함께 시작된 공학대학 기계공학과는 세계 수준의 현장맞춤형 교육시스템 확립을 통한 기계 산업 발전을 선도하는 실용 / 창의 / 전문 / 융합형 글로벌 기계인력 배출을 목표로, 지금까지 약 6,500여 명의 졸업생을 배출하여 국내 대기업 및 중소기업, 연구소, 대학, 공공기관 등 우리 사회 각계각층뿐 아니라 해외에서도 활발하게 활약하고 있습니다.</p>
       <p>1999년부터 BK21 과학기술분야 1단계, 2단계 및 4단계 사업에 참여하여 우리나라 기계 분야의 고급인력을 양성하고 있으며, 2003년부터 교육부 학연산 클러스터 교육과정과 연계하여 현장 중심형, 연구 중심형, 창업 중심형 교육과정과 같은 맞춤형 교육프로그램을 제공하고 있습니다. 또한 한국과학재단 지정 최적설계신기술 연구센터와 산업자원부 지원 신뢰성분석 연구센터 및 마이크로바이오칩 센터에 참여하고 국가 창의적 연구 과제를 포함한 각종 국가연구개발과제와 산업체 과제를 수행하고 있습니다.</p>
       <p>특히 2004년 대교협 기계분야 평가에서 전국 2위의 성적으로 최우수 학과로 선정되었으며, 2012년도 한국대학교육협의회 주관 산업계 관점 대학평가 '최우수', 2013년도 중앙일보 학과평가 '전국 10위', QS 세계대학 학문분야 평가 '세계 109위', 2014년 수도권특성화대학 사업단 선정, 2020년 4단계 BK21 교육연구단 선정 등 명실공히 21세기 국가산업을 주도할 기계분야의 연구 및 교육중심 학과로 자리 잡고 있습니다.</p>
       <p>이러한 지금까지의 전통을 이어받아, 앞으로도 우리 학과는 국가의 기술경쟁력을 높이고 인류발전에 기여하며, 세계적 수준의 기계공학 교육을 통해 우수한 공학인재를 양성할 뿐 아니라 글로벌 수준의 기술개발 및 연구를 이어가기 위해 끊임없이 노력할 것입니다.</p>`)}`,
 
   '0-3': `<div class="ab-top"><span class="ab-k">HISTORY</span><h2>1979년부터 이어온 <em>40여 년</em></h2></div>
-    <ol class="tl">${[...HIST].reverse().map(([y, ev]) => `<li class="${['1979', '1999', '2004', '2010', '2020'].includes(y) ? 'key' : ''}"><b>${y}</b><span class="tl-d"></span><div>${ev.map(e => `<p>${e}</p>`).join('')}</div></li>`).join('')}</ol>`,
+    <div class="hs">${[...ERAS].reverse().map(([lab, title, from, to]) => `<section class="hs-era"><div class="hs-l"><b>${lab}</b><span>${title}</span></div>
+      <ol>${[...HIST].reverse().filter(([y]) => +y >= from && +y <= to).map(([y, ev]) => `<li class="${['1979', '1999', '2004', '2010', '2020'].includes(y) ? 'k' : ''}"><time>${y}</time><div>${ev.map(x => `<p>${x}</p>`).join('')}</div></li>`).join('')}</ol></section>`).join('')}</div>`,
 
   '0-4': `${TOP('LOCATION', '찾아오시는 길')}
     <div class="ab-map"><iframe src="https://maps.google.com/maps?q=%ED%95%9C%EC%96%91%EB%8C%80%ED%95%99%EA%B5%90%20ERICA%20%EC%A0%9C5%EA%B3%B5%ED%95%99%EA%B4%80&z=17&output=embed" loading="lazy" title="한양대학교 ERICA 지도"></iframe></div>
@@ -199,7 +322,7 @@ const PAGES = {
   '1-0': `${TOP('UNDERGRADUATE', '기계공학과 <em>학부</em> 입학')}
     ${P('라이언스칼리지(자율전공) 학생과 신입생을 위한 기계공학 4년 흐름입니다. 실제 교과과정 기준입니다.')}
     ${ROWS([['1학년', '<b>기초 다지기</b>기계공학개론 · 일반물리 · 미적분 · CADD · 정역학'], ['2학년', '<b>4대 역학</b>고체역학 · 열역학 · 동역학 · 유체역학'], ['3학년', '<b>설계와 제작</b>기계설계 · 열전달 · 기계진동학 · 캡스톤디자인1'], ['4학년', '<b>응용과 실전</b>자동제어 · 설계방법론 · 유한요소해석 · 캡스톤디자인2·3']])}
-    ${H('졸업 후 진로')}${P('자동차·모빌리티, 반도체·디스플레이, 항공·우주, 에너지·원자력, 조선·해양·건설, 로봇·스마트팩토리, 바이오·의료기기, 공기업·연구소·대학원')}
+    ${H('졸업 후 진로')}<ol class="cr">${['자동차 · 모빌리티', '반도체 · 디스플레이', '항공 · 우주', '에너지 · 원자력', '조선 · 해양 · 건설', '로봇 · 스마트팩토리', '바이오 · 의료기기', '공기업 · 연구소 · 대학원'].map((x, k) => `<li><i>${String(k + 1).padStart(2, '0')}</i><b>${x}</b></li>`).join('')}</ol>
     ${H('바로가기')}${LINKS(link('ERICA 입학처', 'http://goerica.hanyang.ac.kr/intro.asp', '모집요강 · 전형 안내'), link('학부 교과과정', 'sub.html?m=2&s=0', '학년별 전체 과목'))}`,
 
   '1-1': `${TOP('GRADUATE', '일반대학원 <em>기계설계공학과</em>')}
@@ -208,14 +331,14 @@ const PAGES = {
     ${H('바로가기')}${LINKS(link('대학원 입학 안내', 'http://www.grad.hanyang.ac.kr/', '한양대학교 대학원'), link('대학원 장학 안내', 'sub.html?m=3&s=5', '장학 제도 한눈에'), link('연구실 목록', 'sub.html?m=4&s=0', '20개 연구실'))}`,
 
   '2-0': ugTable(),
-  '2-1': `${P('전공 교과목 이수체계도입니다. (현행 학과 사이트 이미지)')}
-    <div class="cl-img"><img src="https://mech.hanyang.ac.kr/documents/11097699/0/%EA%B5%90%EA%B3%BC%EB%AA%A9%EC%9D%B4%EC%88%98%EC%B2%B4%EA%B3%84%EB%8F%84.png/39c0e928-978d-47cc-baf4-19e944d0e423?t=1698193205826&download=true" alt="전공 교과목 이수체계도"></div>`,
+  '2-1': mapPage(),
   '2-2': `${P('수강신청, 학적, 졸업 등 학사 업무는 대학 학사 시스템에서 안내합니다.')}${LINKS(link('학사안내 바로가기', 'https://ehaksa.hanyang.ac.kr', 'ehaksa.hanyang.ac.kr'))}`,
   '2-3': ROWS([['학생회', `<b>기계공학과 학생회</b>학생회는 학생들을 위해 존재하는 순수한 봉사기구입니다. 학생들의 권익을 보호하고, 학과 · 학부 구성원이 모일 수 있는 구심점이 되며, 학생들과 학교 사이의 다리 역할을 하는 중요한 기구입니다. 기계공학과는 우리 학교의 36년을 함께 해왔으며, 학생회도 올해 36회가 되었습니다. 600학우와 함께 하는 학생회가 되도록 노력하겠습니다.<small>학생회실 · 제1공학관 123호</small>`],
     ['전공학회', `<b>BAQU4</b>자작자동차를 연구하고 제작하는 학회로서 1999년 시작되었습니다. 지도교수님은 엔진 및 광계측 연구실의 이기형 교수님이십니다. 교내에서 자동차에 대한 교육과 자작차량 제작을 수행하며, 여름방학에는 교외 대회에 참가합니다. 창단 이래로 많은 대회에서 다양한 수상경력을 가지고 있습니다.<img src="${DOC}04101958822.png/3da4e393-8268-1d7e-35f8-e63d48ceda3f?t=1698193933960&download=true" alt="BAQU4" loading="lazy">`],
     ['축구학회', `<b>동틀무렵</b>1994년에 창단된 기계공학과 내의 유일한 축구학회로, 선후배 · 동기와의 친목 도모를 위해 시작되었습니다. 오래된 역사만큼 많은 선배님들께서 학회의 활동을 지원해 주고 계시며, 많은 회원들의 관심과 참여로 다양한 대회에 참가해 화려한 수상경력을 자랑합니다. 매 학기 1회씩 OB : YB 정기전을 개최하여 졸업하신 선배님들과 재학생들 간의 정기적인 교류를 이어 나가고 있습니다.`],
-    ['전공학회', `<b>RED</b>Renovative Engineering Design의 줄임말로, 기계공학과 학생들이 공학인으로서 가져야 할 기초적인 능력을 배양하고 더 나아가 설계 분야에 친숙함을 가지게 하는 데 목적을 두고 있습니다. Catia, Arduino, Matlab, Ansys 등의 프로그램 사용법을 멘토링 형식으로 교육한 후, Knowledge factory와 연계하여 팀별 프로젝트를 진행하고 있습니다.<img src="${DOC}04102239963.jpg/a3f0feff-b8ea-f9fc-0716-b933989d1485?t=1698194133404&download=true" alt="RED" loading="lazy">`]]),
-  '2-4': `${P('학기별 주요 일정은 대학 학사일정에서 확인할 수 있습니다.')}${LINKS(link('학사일정 바로가기', 'https://www.hanyang.ac.kr/web/www/cal_academic', '한양대학교 학사일정'))}`,
+    ['전공학회', `<b>RED</b>Renovative Engineering Design의 줄임말로, 기계공학과 학생들이 공학인으로서 가져야 할 기초적인 능력을 배양하고 더 나아가 설계 분야에 친숙함을 가지게 하는 데 목적을 두고 있습니다. Catia, Arduino, Matlab, Ansys 등의 프로그램 사용법을 멘토링 형식으로 교육한 후, Knowledge factory와 연계하여 팀별 프로젝트를 진행하고 있습니다.<img src="${DOC}04102239963.jpg/a3f0feff-b8ea-f9fc-0716-b933989d1485?t=1698194133404&download=true" alt="RED" loading="lazy">`]])
+    + H('공학대학 학회') + ROWS([['항공우주학회', `<b>COMET</b>COMET은 항공우주 분야에 대한 열정과 도전정신을 가진 학생들이 모여 2021년부터 활동을 시작한 학회입니다. 항공우주 분야에 대한 기초 지식을 쌓기 위한 스터디를 진행하며, 매년 여름 개최되는 전국대학생로켓학술대회 및 발사대회 참가를 목표로 CAD 설계 프로그램과 FEA, CFD 해석 프로그램 등을 활용하여 로켓을 설계하고 제작합니다.<span class="cl-para">또한 전국대학생로켓연합회(NURA)를 통해 타 대학 항공우주 동아리와 교류하며, 항공우주 관련 강연 및 세미나에 참여하는 등 다양한 활동을 통해 항공우주 분야에 대한 지식과 경험을 넓혀 나가고 있습니다.</span><div class="cl-duo"><img src="img/comet-1.jpg" alt="발사대에 세운 COMET 로켓" loading="lazy"><img src="img/comet-2.jpg" alt="COMET 로켓 발사 준비" loading="lazy"></div>`]]),
+  '2-4': calPage(),
   '2-5': `${P('학부생이 받을 수 있는 주요 장학금입니다.')}${LIST(['교내 장학금', '국가장학금 (1, 2 유형)', '국가우수장학금', '국가근로장학금', '교외장학금 등'])}
     ${LINKS(link('ERICA 장학제도 안내', 'https://www.hanyang.ac.kr/web/www/esc', '장학금별 자격 · 신청 방법'))}`,
 
@@ -252,6 +375,7 @@ const content = document.getElementById('content');
 content.innerHTML = PAGES[`${m}-${s}`] || empty('준비 중인 페이지입니다.');
 
 // 학년 탭 (내용이 바뀌어도 동작하도록 위임)
+document.addEventListener('click', e => { const b = e.target.closest('#mtabs button'); if (b) setTrack(b.dataset.t); });
 document.addEventListener('click', e => {
   const b = e.target.closest('#ytabs button'); if (!b) return;
   b.parentNode.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));

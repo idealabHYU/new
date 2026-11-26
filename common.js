@@ -6,7 +6,7 @@ const MENU = [
   { name: '학부',   subs: [['교과과정'], ['전공이수체계도'], ['학사안내'], ['학생활동'], ['학사일정'], ['장학안내']] },
   { name: '대학원', subs: [['교과과정'], ['학위취득 로드맵'], ['학사안내'], ['논문심사'], ['학사일정'], ['장학안내']] },
   { name: '연구',   subs: [['연구실'], ['사업단'], ['리서치 프로파일']] },
-  { name: '게시판', subs: [['학부 공지사항', 'board.html?c=학부'], ['대학원 공지사항', 'board.html?c=대학원'], ['취업정보', 'board.html?c=취업'], ['갤러리'], ['자료실'], ['행사일정']] },
+  { name: '게시판', subs: [['공지사항', 'board.html?c=공지'], ['뉴스', 'news.html'], ['취업정보', 'board.html?c=취업'], ['갤러리'], ['자료실'], ['행사일정']] },
 ];
 const subHref = (m, s) => MENU[m].subs[s][1] || `sub.html?m=${m}&s=${s}`;
 
@@ -20,7 +20,7 @@ const SH_EN = { '소개': 'ABOUT', '입학': 'ADMISSION', '학부': 'UNDERGRADUA
 function setSubheroImg(active) {
   const sh = document.querySelector('.subhero'); if (!sh || typeof FIELD_IMG === 'undefined') return;
   sh.dataset.en = SH_EN[active] || ''; sh.dataset.kr = active;
-  const [k, i] = SH_IMG[active] || ['robot', 0]; sh.style.setProperty('--sh-img', `url("${FIELD_IMG[k][i]}")`);
+  const [k, i] = SH_IMG[active] || ['robot', 0]; sh.style.setProperty('--sh-img', `url("${SZ(FIELD_IMG[k][i], 1000)}")`);
   const h1 = sh.querySelector('h1'); if (h1 && !sh.querySelector('.sh-desc')) h1.insertAdjacentHTML('afterend', `<p class="sh-desc">${SH_DESC[active] || ''}</p>`);
 }
 
@@ -79,13 +79,22 @@ function renderHeader(active) {
   }));
   // 메뉴 하나에 마우스를 올리면 모든 메뉴의 하위 목록이 한 번에 펼쳐짐 (헤더를 벗어나면 닫힘)
   const gnb = document.querySelector('.gnb');
-  document.querySelector('.menu').addEventListener('mouseenter', () => gnb.classList.add('mega'));
-  gnb.addEventListener('mouseleave', () => gnb.classList.remove('mega'));
+  // 메뉴가 열려 있는 동안에는 페이지의 자동 전환(첫 화면 사진·연구실 카드 등)을 멈춰, 메뉴 위에서 마우스를 움직일 때 다른 그리기 작업이 겹치지 않게 함
+  document.querySelector('.menu').addEventListener('mouseenter', () => { gnb.classList.add('mega'); window.MENU_OPEN = true; });
+  gnb.addEventListener('mouseleave', () => { gnb.classList.remove('mega'); window.MENU_OPEN = false; });
   document.addEventListener('click', () => closeAll());
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
 }
 
 function renderFooter() {
+  // 화면 오른쪽 가장자리 가운데에 늘 붙어 있는 퀵 메뉴 (대학 사이트들의 오른쪽 퀵 메뉴 방식): 전공 가이드 · 대학원 장학 · 맨 위로
+  if (!document.querySelector('.fab')) document.body.insertAdjacentHTML('beforeend', `<nav class="fab" aria-label="바로가기"><span class="fab-h">QUICK</span>
+    <a href="sub.html?m=1&s=0" title="전공을 아직 못 정했다면"><b>전공<br>가이드</b><i>→</i></a>
+    <a href="sub.html?m=3&s=5" title="대학원을 고민한다면"><b>대학원<br>장학</b><i>→</i></a>
+    <button type="button" class="fab-top" onclick="window.scrollTo({ top: 0, behavior: 'instant' })" aria-label="맨 위로">TOP<i>↑</i></button></nav>`);
+  // 홈 첫 화면에는 같은 버튼이 이미 있으므로, 첫 화면을 지나 내려온 뒤부터 보이게 함 (스크롤 이벤트 없이 화면 진입 감지만 사용)
+  const fab = document.querySelector('.fab'), hero = document.querySelector('.hero');
+  if (fab && hero && 'IntersectionObserver' in window) new IntersectionObserver(es => fab.classList.toggle('off', es[0].intersectionRatio > .3), { threshold: [0, .3, 1] }).observe(hero);
   document.getElementById('footer').innerHTML = `
   <footer>
     <div class="wrap ft-top">
@@ -124,7 +133,7 @@ const EN = {
   '교과과정': 'Curriculum', '전공이수체계도': 'Course Roadmap', '학사안내': 'Academic Info', '학생활동': 'Student Activities',
   '학사일정': 'Academic Calendar', '장학안내': 'Scholarships', '학위취득 로드맵': 'Degree Roadmap', '논문심사': 'Thesis Review',
   '연구실': 'Labs', '사업단': 'Research Programs', '리서치 프로파일': 'Research Profile', '학부 공지사항': 'Undergraduate Notices',
-  '대학원 공지사항': 'Graduate Notices', '취업정보': 'Careers', '갤러리': 'Gallery', '자료실': 'Archive', '행사일정': 'Events',
+  '대학원 공지사항': 'Graduate Notices', '뉴스': 'News', '구분': 'Type', '이전 기사': 'Previous', '다음 기사': 'Next', '목록': 'List', '취업정보': 'Careers', '갤러리': 'Gallery', '자료실': 'Archive', '행사일정': 'Events',
   // 첫 화면·숫자
   '한양대학교 ERICA 기계공학과': 'Department of Mechanical Engineering, Hanyang University ERICA',
   '모든 산업의 시작,': 'Where every industry begins:', '기계공학': 'Mechanical Engineering', '로봇부터 우주까지, 가장 넓은 진로가 열리는 전공입니다.': 'From robots to space — the major with the widest career paths.',
@@ -137,11 +146,11 @@ const EN = {
   'ERICA 개교와 함께 출범': 'Founded with ERICA campus', '전임 교수진': 'Full-time faculty', '연구 산업 분야': 'Industry fields',
   '2026년 신임 교수': 'New faculty in 2026', '명': '', '개': '', '년': ' yrs', '전국 2위': '2nd Nationwide',
   '1979년 ERICA 개교와 함께 이어온 역사': 'Of history since ERICA opened in 1979', '연구실 · 학부생도 학부연구생으로 참여': 'Labs · open to undergraduate researchers',
-  '자동차연구회 BAQU4 자작자동차 대회': 'BAQU4 team, student-built vehicle contest', '졸업생 취업률': 'Graduate employment rate', '취업률 71.3%': 'Employment rate 71.3%', 'ERICA 2023 정보공시 · 전국 7위': 'ERICA, 2023 public data · 7th nationwide', '대표 진출처': 'Where graduates go', '하나의 전공, 8개 산업으로': 'One major, eight industries', '졸업 후 진로 보기': 'See careers', '학과 소식': 'News', '우주공학': 'Space', '주소': 'Address', '뉴스 더 보기': 'More news', '연구 성과': 'Research', '취업': 'Careers', '1979년부터 이어온 한양대학교 ERICA 기계공학과를 소개합니다.': 'Hanyang University ERICA Mechanical Engineering, since 1979.', '학부와 대학원 입학 정보를 한눈에 안내합니다.': 'Undergraduate and graduate admissions at a glance.', '4년 교육과정과 학사 정보를 안내합니다.': 'Four-year curriculum and academic information.', '석·박사 과정과 장학 제도를 안내합니다.': 'M.S./Ph.D. programs and scholarships.', '연구실과 BK21 교육연구단을 소개합니다.': 'Our labs and the BK21 program.', '학과 소식과 자료를 확인하세요.': 'Department news and resources.', '기계공학 전공자는': 'Mechanical engineers', '어디서 일할까요?': 'where do they work?', '예시': 'sample',
+  '자동차연구회 BAQU4 자작자동차 대회': 'BAQU4 team, student-built vehicle contest', '졸업생 취업률': 'Graduate employment rate', '취업률 71.3%': 'Employment rate 71.3%', 'ERICA 2023 정보공시 · 전국 7위': 'ERICA, 2023 public data · 7th nationwide', '대표 진출처': 'Where graduates go', '하나의 전공, 8개 산업으로': 'One major, eight industries', '8개 산업': 'eight industries', '국방': 'Defense', '설계': 'Design', '생산': 'Manufacturing', '원자력': 'Nuclear', '바이오': 'Bio', '관련 연구기관': 'Research institutes', '졸업 후 진로 보기': 'See careers', '학과 소식': 'News', '우주공학': 'Space', '주소': 'Address', '뉴스 더 보기': 'More news', '연구 성과': 'Research', '취업': 'Careers', '1979년부터 이어온 한양대학교 ERICA 기계공학과를 소개합니다.': 'Hanyang University ERICA Mechanical Engineering, since 1979.', '학부와 대학원 입학 정보를 한눈에 안내합니다.': 'Undergraduate and graduate admissions at a glance.', '4년 교육과정과 학사 정보를 안내합니다.': 'Four-year curriculum and academic information.', '석·박사 과정과 장학 제도를 안내합니다.': 'M.S./Ph.D. programs and scholarships.', '연구실과 BK21 교육연구단을 소개합니다.': 'Our labs and the BK21 program.', '학과 소식과 자료를 확인하세요.': 'Department news and resources.', '기계공학 전공자는': 'Mechanical engineers', '어디서 일할까요?': 'where do they work?', '예시': 'sample',
   // 분야
   '로봇·자동화': 'Robotics & Automation', '반도체·전자': 'Semiconductors & Electronics', '모빌리티·우주': 'Mobility & Space',
   '에너지·원자력': 'Energy & Nuclear', '환경·플랜트': 'Environment & Plant', '바이오·의료': 'Bio & Medical',
-  'AI·디지털': 'AI & Digital', '제조·소재·구조': 'Manufacturing & Materials',
+  '인공지능': 'Artificial Intelligence', '제조·소재·구조': 'Manufacturing & Materials',
   '특수목적 로봇 · 소프트 로봇': 'Special-purpose & soft robots', '장비 · 플라즈마 · CMP': 'Equipment · Plasma · CMP',
   '자율주행 · 로켓 터보펌프': 'Autonomous driving · Rocket turbopumps', '배터리 · 수소 · 원자로': 'Batteries · Hydrogen · Reactors',
   '해수담수화 · 가스 정화': 'Desalination · Gas purification', '혈류역학 · 미세유체': 'Hemodynamics · Microfluidics',
@@ -205,7 +214,7 @@ const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct
 const EN_RULES = [
   [/^교수 (\d+)명$/, (m, n) => `${n} faculty`],
   [/^(\d+)월$/, (m, n) => MON[n - 1]],
-  [/^5공학관 (.+)호$/, (m, r) => `Eng. Bldg 5, Rm ${r}`],
+  [/^(\d)공학관 (.+)호$/, (m, b, r) => `Engineering Building #${b}, Room ${r}`],
   [/^(.+) 교수 · 5공학관 (.+)호 · (.+)$/, (m, n, r, f) => `Prof. ${n} · Eng. Bldg 5, Rm ${r}`],
 ];
 function translateNode(root) {
@@ -230,3 +239,21 @@ if (LANG === 'en') {
     }))).observe(document.body, { childList: true, subtree: true });
   });
 }
+
+// ---- 렉 진단 표시: 주소에 ?fps=1 을 붙였을 때만 화면 왼쪽 아래에 표시 (평소에는 아무 일도 하지 않음)
+if (new URLSearchParams(location.search).has('fps')) addEventListener('DOMContentLoaded', () => {
+  const box = document.createElement('div'); box.setAttribute('data-keep', '');
+  box.style.cssText = 'position:fixed;left:12px;bottom:12px;z-index:99999;padding:10px 14px;border-radius:10px;background:#111;color:#fff;font:600 14px/1.6 Consolas,monospace;white-space:pre;pointer-events:none';
+  document.body.appendChild(box);
+  let gpu = '?';
+  try { const gl = document.createElement('canvas').getContext('webgl'); const ex = gl && gl.getExtension('WEBGL_debug_renderer_info'); gpu = gl ? (ex ? gl.getParameter(ex.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER)) : 'WebGL 사용 불가'; } catch (e) { gpu = '확인 실패'; }
+  const soft = /swiftshader|software|llvmpipe|basic render/i.test(gpu);
+  let last = performance.now(), frames = [], slow50 = 0, slow100 = 0, worst = 0;
+  const tick = t => { const d = t - last; last = t; frames.push([t, d]); if (d > 50) slow50++; if (d > 100) slow100++; if (d > worst) worst = d; requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
+  setInterval(() => {
+    const now = performance.now(); frames = frames.filter(f => now - f[0] < 3000);
+    const sec = frames.filter(f => now - f[0] < 1000).length, w3 = Math.max(0, ...frames.map(f => f[1]));
+    box.textContent = `FPS ${sec}   최근 3초 최악 ${w3.toFixed(0)}ms   전체 최악 ${worst.toFixed(0)}ms\n50ms 넘은 프레임 ${slow50}회 · 100ms 넘은 프레임 ${slow100}회\n그래픽: ${gpu.slice(0, 70)}${soft ? '  ← 소프트웨어 렌더링(가속 꺼짐)' : ''}\n화면 ${innerWidth}×${innerHeight} · 배율 ${devicePixelRatio} · 애니메이션 줄이기 ${matchMedia('(prefers-reduced-motion: reduce)').matches ? '켜짐' : '꺼짐'}`;
+  }, 500);
+});

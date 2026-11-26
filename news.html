@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>뉴스 · 기계공학과 홈페이지 Demo</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="style.css?v=204">
+</head>
+<body>
+<div id="header"></div>
+
+<div class="subhero"><div class="wrap">
+  <div class="crumb" id="crumb">홈 › 게시판 › 뉴스</div>
+  <h1>뉴스</h1>
+</div></div>
+
+<main class="wrap" id="nvMain"></main>
+
+<div id="footer"></div>
+
+<script src="data.js?v=204"></script>
+<script src="common.js?v=204"></script>
+<script>
+renderHeader('게시판');
+renderFooter();
+// 뉴스: 주소에 ?n= 이 없으면 목록, 있으면 학과가 요약한 기사 + 이전 / 다음 기사 이동
+// NEWS는 최신순 → 이전 기사 = 한 칸 아래(더 오래된 기사), 다음 기사 = 한 칸 위(더 최근 기사)
+const M = document.getElementById('nvMain'), q = new URLSearchParams(location.search).get('n');
+const row = (x, k) => `<tr><td class="title"><a href="news.html?n=${k}">${x.title}</a></td><td class="hide-m b-date">${x.date}</td></tr>`;
+if (q === null || !NEWS[+q]) {
+  M.innerHTML = `<div class="tools"><div class="cnt">총 <b>${NEWS.length}</b>건</div></div>
+    <table class="btable"><thead><tr><th>제목</th><th class="hide-m" style="width:130px">날짜</th></tr></thead>
+    <tbody>${NEWS.map(row).join('')}</tbody></table>
+    <p class="nv-note">학과 관련 기사를 요약해 소개합니다. 원문은 각 기사 아래 링크에서 볼 수 있습니다. <a href="${NEWS_MORE}" target="_blank" rel="noopener">뉴스H에서 더 보기 ↗</a></p>`;
+} else {
+  const n = +q, x = NEWS[n], prev = NEWS[n + 1], next = NEWS[n - 1];
+  document.title = `${x.title} · 기계공학과 홈페이지 Demo`;
+  const pn = (lab, y, k) => `<li class="${y ? '' : 'off'}"><span>${lab}</span>${y ? `<a href="news.html?n=${k}">${y.title}</a><time>${y.date}</time>` : `<em>${lab}가 없습니다</em>`}</li>`;
+  M.innerHTML = `<article class="nv">
+      <h2>${x.title}</h2>
+      <time>${x.date}</time>
+      <p class="nv-lead">${x.lead}</p>
+      <ul class="nv-pts">${x.pts.map(p => `<li>${p}</li>`).join('')}</ul>
+      <div class="nv-src"><small>기사 내용을 학과에서 요약한 글입니다. 자세한 내용은 원문에서 확인하세요.</small>
+        <a href="${x.url}" target="_blank" rel="noopener">원문 기사 보기 <i>↗</i><em>뉴스H</em></a></div>
+    </article>
+    <ul class="nv-pn">${pn('이전 기사', prev, n + 1)}${pn('다음 기사', next, n - 1)}</ul>
+    <div class="nv-list"><a href="news.html">목록</a></div>`;
+}
+</script>
+</body>
+</html>

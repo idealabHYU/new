@@ -6,9 +6,8 @@
 <title>공지사항 · 기계공학과 홈페이지 Demo</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
-<link rel="preconnect" href="https://thumb.wikimedia.org">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="style.css?v=149">
+<link rel="stylesheet" href="style.css?v=204">
 </head>
 <body>
 <div id="header"></div>
@@ -19,6 +18,7 @@
 </div></div>
 
 <main class="wrap">
+  <div class="cl-seg three b-seg" id="ktabs" hidden></div>
   <div class="tools">
     <div class="cnt">총 <b id="cnt">0</b>건</div>
     <form class="search" onsubmit="event.preventDefault();page=1;render()">
@@ -34,31 +34,49 @@
 
 <div id="footer"></div>
 
-<script src="data.js?v=149"></script>
-<script src="posts.js?v=149"></script>
-<script src="common.js?v=149"></script>
+<script src="data.js?v=204"></script>
+<script src="posts.js?v=204"></script>
+<script src="common.js?v=204"></script>
 <script>
 renderHeader('게시판');
 renderFooter();
-// 현행 mech.hanyang.ac.kr 게시판 글 (학부 공지 / 대학원 공지 / 취업정보). 제목을 누르면 현행 사이트 원문이 새 창으로 열림
-const NAME = { '학부': '학부 공지사항', '대학원': '대학원 공지사항', '취업': '취업정보' };
-let cat = new URLSearchParams(location.search).get('c'); if (!POSTS[cat]) cat = '학부';
+// 현행 mech.hanyang.ac.kr 게시판 글. 제목을 누르면 현행 사이트 원문이 새 창으로 열림.
+// 공지사항 = 학부 + 대학원. 현행 사이트는 작성일을 보여주지 않아, 글마다 제목·본문에 적힌 날짜로 추정한 날짜(posts.js 3번째 값)로 최신순 정렬.
+const BOARDS = { '공지': { name: '공지사항', src: ['학부', '대학원'] }, '취업': { name: '취업정보', src: ['취업'] } };
+const QS = new URLSearchParams(location.search);
+let cat = QS.get('c'), kind = QS.get('k') || '';
+if (cat === '학부' || cat === '대학원') { kind = cat; cat = '공지'; }   // 예전 주소로 들어와도 합친 공지사항으로
+if (!BOARDS[cat]) cat = '공지';
+const B = BOARDS[cat], KIND = B.src.length > 1;
+if (!B.src.includes(kind)) kind = '';
+// 게시판별 원래 순서(사이트가 보여주는 순서)는 그대로 두고, 추정 날짜로 두 게시판을 합침
+const ALL = B.src.flatMap(k => POSTS[k].items.map(([id, t, d], i) => ({ id, t, k, d: d || '', i, path: POSTS[k].path })))
+  .sort((x, y) => x.k === y.k ? x.i - y.i : (y.d < x.d ? -1 : y.d > x.d ? 1 : 0));
 let page = 1; const PER = 10;
-document.getElementById('btitle').textContent = NAME[cat];
-document.getElementById('crumb').textContent = `홈 › 게시판 › ${NAME[cat]}`;
-document.title = `${NAME[cat]} · 기계공학과 홈페이지 Demo`;
+document.getElementById('btitle').textContent = B.name;
+document.getElementById('crumb').textContent = `홈 › 게시판 › ${B.name}`;
+document.title = `${B.name} · 기계공학과 홈페이지 Demo`;
+document.querySelector('.btable thead tr').innerHTML = `${KIND ? '<th style="width:120px">구분</th>' : ''}<th style="width:90px">번호</th><th>제목</th>`;
+const kt = document.getElementById('ktabs');
+if (KIND) {
+  kt.hidden = false;
+  const tabs = () => kt.innerHTML = [['', '전체', ALL.length], ...B.src.map(k => [k, k, POSTS[k].items.length])].map(([k, n, c]) => `<button data-k="${k}" class="${k === kind ? 'on' : ''}">${n}<i>${c}</i></button>`).join('');
+  tabs();
+  kt.addEventListener('click', e => { const bt = e.target.closest('button'); if (!bt) return; kind = bt.dataset.k; page = 1; tabs(); render();
+    history.replaceState(null, '', 'board.html?c=' + encodeURIComponent(cat) + (kind ? '&k=' + encodeURIComponent(kind) : '')); });
+}
 const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 function render() {
-  const B = POSTS[cat], q = document.getElementById('q').value.trim().toLowerCase();
-  const all = B.items.map(([id, t], k) => ({ id, t, no: B.items.length - k })).filter(x => !q || x.t.toLowerCase().includes(q));
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const base = ALL.filter(x => !kind || x.k === kind);
+  const all = base.map((x, k) => ({ ...x, no: base.length - k })).filter(x => !q || x.t.toLowerCase().includes(q));
   const pages = Math.max(1, Math.ceil(all.length / PER)); page = Math.min(page, pages);
   document.getElementById('cnt').textContent = all.length;
   document.getElementById('rows').innerHTML = all.slice((page - 1) * PER, page * PER).map(x => `
-    <tr><td class="no">${x.no}</td>
-      <td class="title"><a href="${POST_URL(B.path, x.id)}" target="_blank" rel="noopener">${esc(x.t)}</a></td>
-      <td class="hide-m"><a class="b-go" href="${POST_URL(B.path, x.id)}" target="_blank" rel="noopener" aria-label="원문 보기">↗</a></td></tr>`).join('')
-    || '<tr><td colspan="3" style="padding:60px;color:var(--ink-3)">검색 결과가 없습니다.</td></tr>';
+    <tr>${KIND ? `<td class="b-kind"><span class="${x.k === '대학원' ? 'g' : 'u'}">${x.k}</span></td>` : ''}<td class="no">${x.no}</td>
+      <td class="title"><a href="${POST_URL(x.path, x.id)}" target="_blank" rel="noopener">${esc(x.t)}</a></td></tr>`).join('')
+    || `<tr><td colspan="${KIND ? 3 : 2}" style="padding:60px;color:var(--ink-3)">검색 결과가 없습니다.</td></tr>`;
   const s = Math.max(1, Math.min(page - 2, pages - 4)), e = Math.min(pages, s + 4);
   let h = page > 1 ? `<a href="#" data-p="${page - 1}">‹</a>` : '';
   for (let p = s; p <= e; p++) h += `<a href="#" data-p="${p}" class="${p === page ? 'on' : ''}">${p}</a>`;

@@ -6,9 +6,8 @@
 <title>교수진 · 기계공학과 홈페이지 Demo</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
-<link rel="preconnect" href="https://thumb.wikimedia.org">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="style.css?v=149">
+<link rel="stylesheet" href="style.css?v=204">
 </head>
 <body>
 <div id="header"></div>
@@ -31,13 +30,13 @@
 
 <div id="footer"></div>
 
-<script src="data.js?v=149"></script>
-<script src="common.js?v=149"></script>
+<script src="data.js?v=204"></script>
+<script src="common.js?v=204"></script>
 <script>
 renderHeader('소개');
 renderFooter();
 const POS_EN = { '교수': 'Professor', '부교수': 'Associate Professor', '조교수': 'Assistant Professor' };
-const countOf = id => FACULTY.filter(f => f.fields.includes(id)).length;
+const countOf = id => FACULTY.filter(f => f.grp === id).length;
 const fil = document.getElementById('filters'), fac = document.getElementById('fac');
 // 분야 버튼: 아이콘 + 분야명 + 인원수 (세로 미니 카드)
 const FIC = {
@@ -51,16 +50,16 @@ const FIC = {
   mfg: '<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
 };
 const fbtn = (id, name, n) => `<button data-id="${id}"><span class="fi"><svg viewBox="0 0 24 24">${FIC[id] || FIC.all}</svg></span><b>${name}</b><i>${n}명</i></button>`;
-fil.innerHTML = fbtn('all', '전체', FACULTY.length) + FIELDS.map(f => fbtn(f.id, f.name, countOf(f.id))).join('');
+// 분류: 4대 역학 + 설계 + 생산
+fil.innerHTML = fbtn('all', '전체', FACULTY.length) + GROUPS.map(g => fbtn(g.id, g.name, countOf(g.id))).join('');
 // 연세대 기계공학부 교수진 페이지 형식: 사진 | 이름·직위 / 이메일 / 연구실 ↗ / 연구 키워드 / 오피스 (전화번호 제외)
 // 정렬: 학과장만 맨 위, 나머지는 현행 사이트(-28) 순서 그대로 = 임용 순 (신임 교수가 아래)
 const CHAIR = '김남욱';
 const ORDER = [...FACULTY.filter(f => f.name === CHAIR), ...FACULTY.filter(f => f.name !== CHAIR)];
-// 오피스 → 영문 주소 형식 (예: Engineering Building #5, Room 303)
-const ADDR = o => { const m = o.match(/(\d+)공학관\s*([\w-]+)호/); return m ? `Engineering Building #${m[1]}, Room ${m[2]}` : o; };
+// 주소는 한글(5공학관 208호)로 표시. 영어 보기(EN)에서는 common.js의 규칙이 Engineering Building #5, Room 208 형식으로 바꿈
 const ROLE = f => f.name === CHAIR ? '<em class="role">학과장</em>' : '';
 fac.innerHTML = ORDER.map(f => `
-  <div class="pf" data-f="${f.fields.join(' ')}">
+  <div class="pf" data-f="${f.grp}">
     <img class="pf-ph" src="${f.photo}" alt="${f.name} 교수" loading="lazy">
     <div class="pf-body">
       <div class="pf-name"><b>${f.name}</b><span>${POS_EN[f.pos] || f.pos}</span>${ROLE(f)}</div>
@@ -68,11 +67,12 @@ fac.innerHTML = ORDER.map(f => `
       <dl>
         <dt>연구실</dt><dd>${f.lab ? `<a href="${f.lab}" target="_blank" rel="noopener">${f.labName} <i>↗</i></a>` : f.labName}</dd>
         <dt>연구분야</dt><dd class="kw2">${f.kw}</dd>
-        <dt>주소</dt><dd class="addr">${ADDR(f.office)}</dd>
+        <dt>주소</dt><dd class="addr">${f.office}</dd>
       </dl>
     </div>
   </div>`).join('');
 function setFilter(id) {
+  if (id !== 'all' && !GROUPS.some(g => g.id === id)) id = 'all';   // 예전 분야 주소(?f=robot 등)로 들어오면 전체 보기
   fil.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.id === id));
   fac.querySelectorAll('.pf').forEach(p => p.classList.toggle('hide', id !== 'all' && !p.dataset.f.split(' ').includes(id)));
 }

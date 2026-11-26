@@ -7,7 +7,7 @@ const FIELDS = [
   { id: 'mobility', name: '모빌리티·우주', phrase: '자율주행차와 로켓 엔진을 다룹니다', kw: '자율주행 · 로켓 터보펌프' },
   { id: 'energy',   name: '에너지·원자력', phrase: '배터리·수소·원자로를 연구합니다', kw: '배터리 · 수소 · 원자로' },
   { id: 'bio',      name: '바이오·의료',   phrase: '혈류와 세포를 기계로 풀어냅니다', kw: '혈류역학 · 미세유체' },
-  { id: 'ai',       name: 'AI·디지털',     phrase: 'AI로 기계를 설계합니다',          kw: 'AI 설계 · 지능형 제조' },
+  { id: 'ai',       name: '인공지능',       phrase: 'AI로 기계를 설계합니다',          kw: 'AI 설계 · 지능형 제조' },
   { id: 'mfg',      name: '제조·소재·구조', phrase: '3D 프린팅과 복합재를 만듭니다',   kw: '3D 프린팅 · 복합재' },
 ];
 
@@ -35,64 +35,83 @@ const FACULTY = [
   { name: '강석경', email: 'skkang00@hanyang.ac.kr', office: '5공학관 213호', pos: '조교수', kw: '반도체 CMP · AI 지능형 제조',     fields: ['semi', 'ai', 'mfg'],  lab: 'https://manufuture.hanyang.ac.kr', labName: '미래 제조기술 연구실', labEn: 'ManuFuture Lab', room: '5공학관 223호', photo: PH + '864850882/sukkyung-kang.jpg/1f925746-006d-4eec-ef30-de4e99089af9?t=1788394518595&download=true' },
 ];
 
-// 연구실 대표사진 자리: 지금은 분야별 Wikimedia Commons 사진(임시). 실제 연구실 사진으로 교체 예정.
-const WM = 'https://upload.wikimedia.org/wikipedia/commons/thumb/';
-const HERO_IMG = WM + '9/95/Diff_gear-grayscale.jpg/1280px-Diff_gear-grayscale.jpg';
-const T = 'https://thumb.wikimedia.org/wikipedia/commons/thumb/';
-// 분야를 한눈에 알아볼 수 있는 대표 사진 (Wikimedia Commons, 임시 — 학과 실제 사진으로 교체 예정)
-// 첫 화면에서 사진 두 장을 나란히 보여줄 분야 (제조: 밀링 + 소재)
+// 교수진 묶음: 4대 역학 + 설계 + 생산 (2026-11-26 학과 지정). 교수진 페이지의 분류 버튼과 연구실 카드의 꼬리표에 사용.
+const GROUPS = [
+  { id: 'solid', name: '고체역학' }, { id: 'thermo', name: '열역학' }, { id: 'fluid', name: '유체역학' },
+  { id: 'dyn', name: '동역학' }, { id: 'design', name: '설계' }, { id: 'prod', name: '생산' },
+];
+const GROUP_OF = {
+  '윤준용': 'fluid', '이성환': 'prod', '이도형': 'fluid', '오제훈': 'solid', '류근': 'design', '김영득': 'thermo', '윤종헌': 'prod',
+  '이원철': 'solid', '김남욱': 'dyn', '홍석준': 'fluid', '오준호': 'thermo', '김호준': 'fluid', '김진용': 'thermo', '최이현': 'design',
+  '노형도': 'solid', '김태균': 'dyn', '박지혁': 'dyn', '박주현': 'thermo', '양선웅': 'design', '강석경': 'prod',
+};
+FACULTY.forEach(f => { f.grp = GROUP_OF[f.name]; f.grpName = (GROUPS.find(g => g.id === f.grp) || {}).name || ''; });
+
+// 사진: 전부 Unsplash 무료 라이선스 사진(상업적 이용 가능 · 출처 표기 불필요). 강석경 교수 카드만 연구실 홈페이지 사진.
+// U(id, 너비, 높이, [초점x, 초점y]) — 화면에 쓰이는 크기만큼만 받아서 가볍게.
+const U = (id, w = 1600, h = 0, fp) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}${h ? '&h=' + h : ''}${fp ? `&crop=focalpoint&fp-x=${fp[0]}&fp-y=${fp[1]}${fp[2] ? '&fp-z=' + fp[2] : ''}` : ''}&q=72`;
+const SZ = (u, w) => u && u.includes('images.unsplash.com') ? u.replace(/([?&])w=\d+/, `$1w=${w}`) : u;
+const PIC = {
+  robots:     '1647427060118-4911c9821b82',   // 산업용 로봇이 늘어선 자동화 공장
+  robotArm:   '1655393001768-d946c97d6fd1',   // 흰색 로봇 팔
+  wafer:      '1587845323226-bad89242c735',   // 반도체 웨이퍼 확대
+  wafers:     '1717962688747-7e13dfa31538',   // 무지갯빛 웨이퍼 두 장
+  rocket:     '1516849841032-87cbac4d88f7',   // 로켓 발사
+  rocket2:    '1518364538800-6bae3c2ea0f2',   // 로켓 발사(정면)
+  cooling:    '1630142895963-6996ae6b3a5b',   // 발전소 냉각탑
+  plant:      '1772376920820-4fb715c21e79',   // 원자력 발전소 전경
+  ct:         '1666214280352-db292c05fd80',   // 의료 영상 장비
+  mri:        '1693264882139-6a308957c9ae',   // MRI 장비
+  aiFace:     '1737644467636-6b0053476bb2',   // 휴머노이드(검은 배경)
+  aiChip:     '1697577418970-95d99b5a55cf',   // AI 칩
+  aiBrain:    '1753513291124-4f615bf1f6de',   // 칩 위에 떠 있는 두뇌(어두운 배경) — 첫 화면 인공지능
+  lathe:      '1666634157070-6fd830fb5672',   // CNC 선반 가공
+  milling:    '1740209475472-aa7d280f7452',   // CNC 밀링 가공
+  carLine:    '1777383975764-bec6f5cabf00',   // 자동차 차체 조립 라인
+  jet:        '1759610900660-b86f99e57c10',   // 비행 중인 전투기
+};
 const FIELD_DUAL = {};
-// 첫 화면 사진 위치(피사체가 문구에 가리지 않게)
-const FIELD_POS = { mobility: '70% 12%', energy: '70% 35%', robot: '50% 45%', mfg: '70% 50%' };
+// 첫 화면 사진 위치: 문구가 왼쪽에 있으므로 피사체가 오른쪽에 오도록
+const FIELD_POS = { robot: '60% 50%', semi: '50% 50%', mobility: '80% 55%', energy: '70% 85%', bio: '72% 50%', mfg: '65% 50%' };
 const FIELD_IMG = {
-  robot:    ['https://upload.wikimedia.org/wikipedia/commons/6/67/BMW_Leipzig_MEDIA_050719_Download_Karosseriebau_max.jpg',
-             'https://images.unsplash.com/photo-1637002722490-5f8ceed9774c?auto=format&fit=crop&w=1920&q=80'],
-  semi:     ['https://images.unsplash.com/photo-1587845323226-bad89242c735?auto=format&fit=crop&w=1920&q=80',
-             'https://images.unsplash.com/photo-1562408590-e32931084e23?auto=format&fit=crop&w=1920&q=80'],
-  mobility: [T + '4/4b/STS-125_Atlantis_Liftoff_02.jpg/1920px-STS-125_Atlantis_Liftoff_02.jpg',
-             T + 'c/c7/Space_Shuttle_Atlantis_launches_from_KSC_on_STS-132.jpg/1920px-Space_Shuttle_Atlantis_launches_from_KSC_on_STS-132.jpg'],
-  energy:   ['https://images.unsplash.com/photo-1630142895963-6996ae6b3a5b?auto=format&fit=crop&w=1920&q=80',
-             'https://images.unsplash.com/photo-1772376920820-4fb715c21e79?auto=format&fit=crop&w=1920&q=80'],
-  bio:      ['https://upload.wikimedia.org/wikipedia/commons/0/04/Vantage_Atlas_MRI_scanner_from_Toshiba.jpg',
-             T + '2/2d/An_MRI_scanner.JPG/1920px-An_MRI_scanner.JPG'],
-  ai:       ['https://images.unsplash.com/photo-1737644467636-6b0053476bb2?auto=format&fit=crop&w=1920&q=80',
-             'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1920&q=80'],
-  mfg:      ['https://images.unsplash.com/photo-1666634157070-6fd830fb5672?auto=format&fit=crop&w=1920&q=80',
-             'https://images.unsplash.com/photo-1740209475472-aa7d280f7452?auto=format&fit=crop&w=1920&q=80'],
+  robot:    [U(PIC.robotArm), U(PIC.robots)],     // 첫 화면: 흰색 로봇 팔
+  semi:     [U(PIC.wafer),   U(PIC.wafers)],
+  mobility: [U(PIC.rocket),  U(PIC.rocket2)],
+  energy:   [U(PIC.cooling), U(PIC.plant)],
+  bio:      [U(PIC.ct),      U(PIC.mri)],
+  ai:       [U(PIC.aiBrain), U(PIC.aiChip)],      // 첫 화면: 두뇌 + 칩 (휴머노이드 얼굴 사진은 타 대학 사이트와 겹쳐 교체)
+  mfg:      [U(PIC.lathe),   U(PIC.milling)],
 };
-const LAB_IMG = {
-  '윤준용': T + 'a/a1/HSW_1000_wind_turbine_close_up_in_the_wind_farm_Schwesing.jpg/1920px-HSW_1000_wind_turbine_close_up_in_the_wind_farm_Schwesing.jpg',
-  '이성환': 'https://images.unsplash.com/photo-1735494033576-9c882e80504c?auto=format&fit=crop&w=1920&q=80',
-  '이도형': T + '6/64/Wind_turbine_close-up_%284613873354%29.jpg/1920px-Wind_turbine_close-up_%284613873354%29.jpg',
-  '오제훈': 'https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/An_MRI_scanner.JPG/1920px-An_MRI_scanner.JPG',
-  '류근': T + 'd/dd/Raptor-test-9-25-2016.jpg/1920px-Raptor-test-9-25-2016.jpg',
-  '김영득': T + 'f/ff/Gear_Island_Water_Treatment_Plant_-_MC.jpg/1920px-Gear_Island_Water_Treatment_Plant_-_MC.jpg',
-  '윤종헌': T + '2/22/MELT_3D_printer_ESA401434.jpg/1920px-MELT_3D_printer_ESA401434.jpg',
-  '이원철': 'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Microfluidic_chip_for_point-of-care_medical_devices.jpg/1920px-Microfluidic_chip_for_point-of-care_medical_devices.jpg',
-  '김남욱': T + 'c/cf/Waymo_self-driving_car_front_view.gk.jpg/1920px-Waymo_self-driving_car_front_view.gk.jpg',
-  '홍석준': 'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ee/EPROM_Microchip_SuperMacro.jpg/1920px-EPROM_Microchip_SuperMacro.jpg',
-  '오준호': 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Cooling_tower_of_the_G%C3%B6sgen_Nuclear_Power_Plant%2C_close_view%2C_D%C3%A4niken%2C_Solothurn.jpg/1920px-Cooling_tower_of_the_G%C3%B6sgen_Nuclear_Power_Plant%2C_close_view%2C_D%C3%A4niken%2C_Solothurn.jpg',
-  '김호준': T + '6/6d/CNE_cleanroom_1.jpg/1920px-CNE_cleanroom_1.jpg',
-  '김진용': 'https://images.unsplash.com/photo-1742899273038-67ff67477663?auto=format&fit=crop&w=1920&q=80',
-  '최이현': T + 'f/f6/Star_Wars_Bionic_hand.jpg/1920px-Star_Wars_Bionic_hand.jpg',
-  '노형도': T + '6/64/Carbon_fiber_roving.jpg/1920px-Carbon_fiber_roving.jpg',
-  '김태균': 'https://images.unsplash.com/photo-1647427060118-4911c9821b82?auto=format&fit=crop&w=1920&q=80',
-  '박지혁': T + '0/0a/Anymal-robot-inspection-power-grid.jpg/1920px-Anymal-robot-inspection-power-grid.jpg',
-  '박주현': 'https://images.unsplash.com/photo-1772376920820-4fb715c21e79?auto=format&fit=crop&w=1920&q=80',
-  '양선웅': 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1920&q=80',
+// 홈 '8개 산업' 사진: 자동차 · 반도체 · 인공지능 · 항공우주 · 원자력 · 국방 · 로봇 · 바이오
+const SHOW_IMG = [PIC.carLine, PIC.wafers, PIC.aiChip, PIC.rocket2, PIC.plant, PIC.jet, PIC.robots, PIC.mri];
+// 연구실 대표 사진: 교수별 연구 키워드에 맞춘 사진 [id, 초점x, 초점y, 확대]. 어둡거나 추상적인 사진은 쓰지 않음
+const LAB_PIC = {
+  '윤준용': ['1583030225577-329fe6cc80d6'],            // 소용돌이치는 물 — 유체역학 · 난류
+  '이성환': ['1735494033576-9c882e80504c'],            // 레이저 가공 — 레이저 미세가공
+  '이도형': ['1548337138-e87d889cc369'],               // 해상 풍력 — 유체기계 · 신재생에너지
+  '오제훈': ['1623134915837-d2fdb4f59035'],            // 심장 모형 — 혈류역학
+  '류근':   ['1762208743487-11a4775c12f2'],            // 터보팬 엔진 — 회전기계 · 터보펌프
+  '김영득': ['1644389355109-15b26f71c36b'],            // 수처리 플랜트 — 해수담수화 · 정화 공정
+  '윤종헌': ['1741848137437-56fb14b7ba87'],            // 부품을 찍어내는 3D 프린터 — 3D 프린팅
+  '이원철': ['1579165467219-b648fd10237e'],            // 칩 위 피펫 — 나노바이오 · 미세유체
+  '김남욱': ['1555550252-fc3187f10240'],            // 미래형 친환경 콘셉트카 — 자동차 · 모빌리티
+  '홍석준': ['1574232889174-1a6051231cf6'],            // 광학 테이블 위 레이저 장비 — 레이저 공정
+  '오준호': ['1446608943998-cbd52b140335'],            // 잎 위 물방울 — 자연모사 · 상변화 열전달
+  '김호준': ['1507413245164-6160d8298b31'],            // 플라즈마
+  '김진용': ['1742899273038-67ff67477663'],            // 배터리 셀 — 배터리 열관리
+  '최이현': ['1682159672286-40790338349b', .6, .5],    // 사람 손과 맞닿는 로봇 손 — 소프트 로보틱스
+  '노형도': ['1771423406994-bb335b5ccd6f'],            // 탄소섬유 직조 — 복합재
+  '김태균': ['1716191299980-a6e8827ba10b'],            // 공장의 산업용 로봇 — 특수목적 로봇 · 스마트팩토리
+  '박지혁': ['1639782792143-d8ce97e5d330', .42, .5],   // 화성 탐사 로버 — 극한환경 로봇
+  '박주현': ['1630142896875-d71a6ee6db03'],            // 원전 냉각탑 — 차세대 원자로
+};
+// 직접 지정하는 사진: 강석경 = 연구실 홈페이지 사진, 양선웅 = Unsplash 사진 2장('AI' 칩 + 설계 도면·가공 부품)을 합성한 img/lab-ai-design.jpg
+const LAB_SITE_IMG = {
   '강석경': 'https://manufuture.hanyang.ac.kr/media/research/semiconductor-packaging_hu_d4416faf609e3e2c.jpeg',
+  '양선웅': 'img/lab-ai-design.jpg',
 };
-// 화면에 맞는 해상도만 받기 (원본·1920px 사진이 홈페이지를 무겁게 만듦)
-const SZ = (u, w) => {
-  if (!u) return u;
-  if (u.includes('images.unsplash.com')) return u.replace(/([?&])w=\d+/, `$1w=${w}`);
-  if (u.includes('/commons/thumb/')) return u.replace(/\/\d+px-([^/]+)$/, `/${w}px-$1`);
-  const m = u.match(/^https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/([0-9a-f]\/[0-9a-f]{2})\/([^/]+)$/);
-  return m ? `https://thumb.wikimedia.org/wikipedia/commons/thumb/${m[1]}/${m[2]}/${w}px-${m[2]}` : u;
-};
-// 위키 원본 파일(1.3MB 등)은 1280px 축소본으로
-Object.values(FIELD_IMG).forEach(a => a.forEach((u, k) => { if (u.startsWith('https://upload.wikimedia.org/')) a[k] = SZ(u, 1280); }));
-FACULTY.forEach(f => { f.img = SZ(LAB_IMG[f.name] || FIELD_IMG[f.fields[0]][0], 960); });   // 카드 폭 340px → 960px이면 충분
+// 카드(340×420) 크기에 맞춘 세로 사진만 받음
+FACULTY.forEach(f => { const p = LAB_PIC[f.name]; f.img = LAB_SITE_IMG[f.name] || (p ? U(p[0], 680, 840, p[1] != null ? [p[1], p[2], p[3]] : null) : U(PIC.lathe, 680, 840)); });
 
 const TODAY = '2026-11-07';
 const NOTICE_CATS = ['학부', '대학원', '장학', '취업'];
@@ -118,8 +137,28 @@ const SCHEDULE = [
   { date: '11.28', tag: '학부',   title: '캡스톤디자인 중간발표회' },
 ];
 
+// 학과 소식: 뉴스H 기사를 학과에서 직접 요약한 글. 홈에서는 news.html?n=번호 요약 페이지로 가고, 원문은 그 아래 링크로 연결.
+// 요약은 원문에 있는 사실만 짧게 옮김(새 기사를 넣을 때도 원문에 없는 내용은 쓰지 않기).
+const NEWS_MORE = 'https://www.newshyu.com/news/articleList.html?sc_area=A&view_type=sm&sc_word=%EA%B8%B0%EA%B3%84%EA%B3%B5%ED%95%99%EA%B3%BC';
 const NEWS = [
-  { tag: '학생활동', title: '자동차연구회 BAQU4, 자작자동차 대회 입상', icon: 'car' },
-  { tag: '교수진',   title: '2026년 신임 교수 4명 임용 — 로봇·원자력·AI·반도체', icon: 'people' },
-  { tag: '교육',     title: '실무형 CAE 실습: CATIA · ANSYS · FLUENT', icon: 'cube' },
+  { cat: '연구 성과', date: '2026.03.24', fi: 'semi', url: 'https://www.newshyu.com/news/articleView.html?idxno=1023461',
+    title: "홍석준 교수, 한국연구재단 '한우물파기 기초연구' 선정",
+    lead: "기계공학과 홍석준 교수가 2026년 3월 초 한국연구재단의 '한우물파기 기초연구' 과제에 선정됐습니다.",
+    pts: ['한 가지 연구 주제를 오랫동안 깊이 파고들 수 있도록 돕는 사업으로, 연간 약 1억 6천만 원을 최대 10년간 지원합니다.',
+          '전국에서 20명 미만의 연구자만 선정되는 것으로 알려져 있습니다.',
+          "홍 교수는 세계 상위 2% 연구자로, 주변 환경에 따라 색이 바뀌는 '카멜레온 로봇'과 레이저로 색을 구현하는 기술 등을 연구해 왔습니다.",
+          '이번 선정을 계기로 이 분야 연구를 장기간 이어갈 계획입니다.'] },
+  { cat: '우주공학', date: '2025.07.07', fi: 'mobility', url: 'https://www.newshyu.com/news/articleView.html?idxno=1019367',
+    title: "국내 최초 '국제우주대학 우주연구 프로그램(SSP25)' ERICA에서 개최",
+    lead: '국제우주대학 우주연구 프로그램(SSP25)이 2025년 6월 30일 ERICA 캠퍼스에서 개막했습니다. 국내에서는 처음, 아시아에서는 네 번째로 열린 행사입니다.',
+    pts: ['37개국에서 123명이 참가해 핵심 강의, 분과별 활동, 팀 프로젝트를 8주 동안 진행합니다.',
+          '우주공학 관련 기관 견학과 로켓 발사 행사 같은 실습 프로그램도 포함됩니다.',
+          'ERICA는 기계공학과 류근 교수, 로봇공학과 최영진 교수 등의 연구력을 바탕으로 일반대학원 우주공학과를 신설했고, 2026학년도에 첫 신입생을 모집합니다.'] },
+  { cat: '취업', date: '2024.03.25', fi: 'robot', url: 'https://www.newshyu.com/news/articleView.html?idxno=1013659',
+    title: '한양대 ERICA, 취업률 71.3%로 전국 4년제 대학 7위',
+    lead: 'ERICA 캠퍼스가 2023년 정보공시 취업통계(졸업생 2,000명 이상 4년제 대학 기준)에서 취업률 71.3%로 전국 7위를 기록했습니다.',
+    pts: ['현행 조사 방식이 도입된 2015년 이후 가장 높은 취업률입니다.',
+          '코로나 영향으로 62.8%까지 떨어졌던 2021년 공시와 비교해 빠르게 회복했습니다.',
+          '1~4학년이 모두 듣는 취업 교과목, 학과별 취업 · 진로 지도교수제, 활발한 현장실습이 배경으로 꼽힙니다.',
+          '현장실습에 참여한 학생의 취업률은 83%였습니다(대학 자체 조사).'] },
 ];

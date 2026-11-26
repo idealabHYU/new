@@ -2879,20 +2879,33 @@ header.gnb, header.gnb::before, header.gnb::after, header.gnb *, header.gnb *::b
 .pf dl dt { text-align: center; white-space: nowrap; }
 .pf dl { align-items: center; }
 
-/* ===== v187: 연혁 — 시대별로 묶은 연표 (왼쪽 큰 시대 이름 · 오른쪽 연도와 내용) ===== */
-.hs { margin-top: 34px; }
-.hs-era { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 0 24px; padding: 30px 0 22px; border-top: 2px solid var(--ink); }
-.hs-l b { display: block; font-size: 42px; font-weight: 800; letter-spacing: -1.8px; line-height: 1.05; color: var(--ink); white-space: nowrap; }
-.hs-l span { display: block; margin-top: 10px; font-size: 16px; font-weight: 800; color: #0E4A84; }
-.hs-era ol { list-style: none; }
-.hs-era li { display: grid; grid-template-columns: 92px minmax(0, 1fr); align-items: baseline; padding: 13px 0; border-bottom: 1px solid var(--line); }
-.hs-era li:first-child { padding-top: 6px; }
-.hs-era li:last-child { border-bottom: 0; }
-.hs-era time { font-size: 24px; font-weight: 800; letter-spacing: -.8px; color: var(--ink); font-variant-numeric: tabular-nums; }
+/* ===== v187→v205: 연혁 — 맨 위 주요 4장면 + 시대별 연표(왼쪽 시대 이름은 스크롤해도 따라옴, 오른쪽은 세로 선과 점) ===== */
+.hs-key { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 34px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line); }
+.hs-key li { position: relative; padding: 26px 20px 26px 0; }
+.hs-key li + li { padding-left: 26px; border-left: 1px solid var(--line); }
+.hs-key b { display: block; font-size: 46px; font-weight: 800; letter-spacing: -2px; line-height: 1; color: var(--primary); font-variant-numeric: tabular-nums; }
+.hs-key span { display: block; margin-top: 12px; font-size: 16.5px; font-weight: 700; line-height: 1.45; color: var(--ink); word-break: keep-all; }
+.hs { margin-top: 12px; }
+.hs-era { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 0 28px; padding: 44px 0 6px; align-items: start; }
+.hs-l { position: sticky; top: 24px; }
+.hs-l b { display: block; font-size: 38px; font-weight: 800; letter-spacing: -1.6px; line-height: 1.05; color: var(--ink); white-space: nowrap; }
+.hs-l span { display: block; margin-top: 10px; font-size: 16px; font-weight: 700; color: var(--ink-2); }
+.hs-era ol { list-style: none; border-left: 2px solid #D5DCE4; }
+.hs-era li { position: relative; display: grid; grid-template-columns: 86px minmax(0, 1fr); align-items: baseline; padding: 0 0 26px 30px; }
+.hs-era li:last-child { padding-bottom: 4px; }
+.hs-era li::before { content: ''; position: absolute; left: -7px; top: 8px; width: 12px; height: 12px; border-radius: 50%; background: #F4F5F7; border: 2.5px solid #9FB0C2; box-sizing: border-box; }
+.hs-era li.k::before { left: -8px; top: 7px; width: 14px; height: 14px; background: var(--primary); border-color: var(--primary); }
+.hs-era time { font-size: 23px; font-weight: 800; letter-spacing: -.8px; line-height: 1.25; color: var(--ink); font-variant-numeric: tabular-nums; }
 .hs-era p { font-size: 17.5px; line-height: 1.65; color: var(--ink-2); word-break: keep-all; }
+.hs-era p + p { margin-top: 2px; }
 .hs-era li.k time { color: var(--primary); }
 .hs-era li.k p { color: var(--ink); font-weight: 700; }
-@media (max-width: 900px) { .hs-era { grid-template-columns: 1fr; gap: 14px; } .hs-l b { font-size: 34px; } .hs-era li { grid-template-columns: 72px minmax(0, 1fr); } .hs-era time { font-size: 20px; } }
+@media (max-width: 900px) {
+  .hs-key { grid-template-columns: repeat(2, 1fr); } .hs-key li { padding: 20px 14px 20px 0; } .hs-key li + li { padding-left: 16px; }
+  .hs-key li:nth-child(3) { padding-left: 0; border-left: 0; } .hs-key li:nth-child(n+3) { border-top: 1px solid var(--line); } .hs-key b { font-size: 36px; } .hs-key span { font-size: 15px; }
+  .hs-era { grid-template-columns: 1fr; gap: 18px; padding-top: 34px; } .hs-l { position: static; } .hs-l b { font-size: 30px; }
+  .hs-era li { grid-template-columns: 1fr; gap: 2px; padding-left: 22px; padding-bottom: 20px; } .hs-era time { font-size: 20px; } .hs-era p { font-size: 16px; }
+}
 
 /* ===== v187: 졸업 후 진로 — 번호 + 큰 글씨 8칸 ===== */
 .cr { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 28px; border-top: 2px solid var(--ink); }
@@ -2979,3 +2992,96 @@ header.gnb, header.gnb::before, header.gnb::after, header.gnb *, header.gnb *::b
 .hero h1 { font-weight: 600; }
 .hero h1 em { font-weight: 900; }
 
+
+/* ===== v206: 마우스를 올렸을 때의 반응(바탕색 채움 없이 색 · 밑줄 · 테두리로) ===== */
+header.gnb .menu .top:hover, header.gnb .menu > li:hover .top, header.gnb .menu li.open .top { color: var(--primary) !important; box-shadow: inset 0 -3px 0 var(--primary); border-radius: 0; }
+.gnb .drop a:hover, .gnb.mega .drop a:hover { color: var(--primary); text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
+.gnb .utl a:hover { color: var(--primary); }
+.tabs2 button:hover { color: var(--primary); }
+#notice li a:hover, #nlist a:hover, #jobs a:hover { color: var(--primary); text-decoration: underline; text-underline-offset: 4px; }
+.show.v2 .sh-list li:hover { color: var(--primary); cursor: pointer; }
+.nA-feat:hover { box-shadow: 0 0 0 3px var(--primary); }
+.paging a:hover { border-color: var(--primary); color: var(--primary); }
+.paging a.on:hover { color: #fff; }
+.btable td.title a:hover { color: var(--primary); text-decoration: underline; text-underline-offset: 4px; }
+.lnb-nav a:hover, .lnb .subtabs a:hover { color: var(--primary); }
+.lnb-main .filters button:hover { border-color: var(--primary); }
+.lnb-main .filters button:hover b { color: var(--primary); }
+.cl-seg button:hover, .lnb-main .ptabs a:hover { color: var(--primary); }
+.cl-links a:hover b, .cl-links a:hover { color: var(--primary); }
+.more2:hover, .go-link:hover { text-decoration: underline; text-underline-offset: 5px; }
+.lab-card:hover .lab-info b { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; }
+.row2:hover .row2-t b { color: var(--primary); }
+.mc:hover { border-color: var(--primary); }
+.nv-pn a:hover, .ac-foot a:hover, .nv-src a:hover { text-decoration-thickness: 2px; }
+footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.fab a:hover b { color: var(--primary); }
+.gnb.mega .menu > li .drop a.hot:hover, .gnb.mega .menu > li .drop a.hot2:hover { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
+
+/* ===== v208: 모바일(900px 이하) 정리 — 나중에 추가된 PC용 규칙이 모바일 규칙을 덮어쓰던 곳들을 바로잡음 ===== */
+@media (max-width: 900px) {
+  main.wrap, .lnb-main, .lnb-layout { min-width: 0; max-width: 100%; }
+  /* 홈 첫 화면 버튼: 글씨가 두 줄로 꺾이지 않게 */
+  .cta4 { display: flex; flex-wrap: wrap; gap: 10px; }
+  .cta4 a { flex: 0 1 auto; white-space: nowrap; height: 48px; padding: 0 16px; font-size: 15.5px; gap: 8px; }
+  /* 숫자 띠: 2칸 × 2줄, 글씨가 칸 밖으로 나가지 않게 */
+  .keys { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .keys > div { display: block; padding: 18px 8px 16px; }
+  .keys > div:nth-child(3) { border-left: 0; } .keys > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .keys b, .keys small { white-space: normal; word-break: keep-all; }
+  .keys b { font-size: 18px; letter-spacing: -.6px; } .keys small { font-size: 13px; }
+  /* 공지사항 · 취업정보: 위아래로 */
+  #notice .wrap.news2 { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+  .nlist2 li a { grid-template-columns: 64px minmax(0, 1fr); }
+  /* 구역 제목: 왼쪽 정렬 */
+  .sec-head.row { align-items: flex-start; gap: 10px; }
+  .why-tt h2, .sec-head h2 { font-size: 30px; letter-spacing: -1px; }
+  /* 8개 산업: 사진 위, 설명 아래, 탭은 4칸 × 2줄 */
+  .show.v2 .sh-view { height: auto; padding-top: 210px; }
+  .show.v2 .sh-view img { position: absolute; left: 0; top: 0; width: 100%; height: 210px; }
+  .show.v2 .sh-cap { position: relative; left: auto; top: auto; bottom: auto; width: auto; max-width: none; padding: 22px 20px 20px; }
+  .show.v2 .sh-cap b { font-size: 34px; letter-spacing: -1.2px; margin: 2px 0 6px; }
+  .show.v2 .sh-cap p { font-size: 17px; }
+  .show.v2 .sh-cap small { margin-top: 14px; }
+  .show.v2 .sh-cap small span { font-size: 16px; white-space: normal; } .show.v2 .sh-cap small span.r { font-size: 14.5px; }
+  .show.v2 .sh-cap small span + span::before { margin: 0 9px; }
+  .show.v2 .sh-list { position: relative; left: auto; right: auto; bottom: auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); height: auto; }
+  .show.v2 .sh-list li { flex: none; min-height: 46px; padding: 0 4px; justify-content: center; font-size: 14.5px; border-left: 0; border-top: 1px solid var(--line); }
+  .show.v2 .sh-list li span { display: none; }
+  /* 전공 가이드 · 대학원 장학 안내 줄 */
+  .row2 { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 24px 22px; }
+  .row2-t b { font-size: 22px; } .row2-go { justify-self: start; }
+  /* 서브 페이지 */
+  .lnb-main .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lnb-main .ptabs, .cl-seg { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cl-seg.three, .cl-seg.five { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cl-seg button, .lnb-main .ptabs a { height: 46px; font-size: 15.5px; }
+  .b-seg button { height: 54px; }
+  .ed-top { grid-template-columns: minmax(0, 1fr); gap: 22px; } .ed-ph { height: 240px; }
+  .ed-num { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ed-words { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cm-scroll { max-width: 100%; }
+  .cl-table.labs { display: block; overflow-x: auto; white-space: nowrap; }
+  .cr { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .btable td.title a { white-space: normal; }
+  .btable th:nth-child(2), .btable td.no { display: none; }
+  .nv h2 { font-size: 26px; } .nv-lead { font-size: 18px; }
+  .ac-top > b { font-size: 44px; } .ac-top dl { gap: 12px 0; width: 100%; } .ac-top dl > div { flex: 1 0 50%; padding: 0 12px 0 0; border-left: 0; }
+  .ac-m { grid-template-columns: 60px minmax(0, 1fr); } .ac-m li { grid-template-columns: minmax(0, 1fr); gap: 0; } .ac-m time { font-size: 14px; }
+}
+@media (max-width: 900px) {
+  .sec-head.row, .sec-head.row .why-tt { align-items: flex-start !important; text-align: left !important; }
+  .sec-head.row > * { align-self: flex-start !important; margin-left: 0 !important; }
+  .rows2 .row2 { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; gap: 10px; }
+  .rows2 .row2 > * { grid-column: 1 !important; grid-row: auto !important; justify-self: start; }
+}
+@media (max-width: 900px) {
+  /* 교수 카드: 사진을 조금 줄이고, 이메일 · 연구실 이름이 카드 밖으로 나가지 않게 줄바꿈 */
+  .pf { grid-template-columns: 84px minmax(0, 1fr); gap: 14px; overflow: hidden; }
+  .pf-name { flex-wrap: wrap; row-gap: 2px; }
+  .pf-mail { display: flex; max-width: 100%; white-space: normal; word-break: break-all; font-size: 14px; }
+  .pf dl { grid-template-columns: 58px minmax(0, 1fr); font-size: 14.5px; }
+  .pf dd, .pf dd a { white-space: normal; overflow: visible; text-overflow: clip; word-break: keep-all; }
+  .pf dl dt { text-align: left; }
+  .em-card { min-width: 0; } .em-links a { word-break: break-all; }
+}

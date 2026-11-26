@@ -89,8 +89,8 @@ function renderHeader(active) {
 function renderFooter() {
   // 화면 오른쪽 가장자리 가운데에 늘 붙어 있는 퀵 메뉴 (대학 사이트들의 오른쪽 퀵 메뉴 방식): 전공 가이드 · 대학원 장학 · 맨 위로
   if (!document.querySelector('.fab')) document.body.insertAdjacentHTML('beforeend', `<nav class="fab" aria-label="바로가기"><span class="fab-h">QUICK</span>
-    <a href="sub.html?m=1&s=0" title="전공을 아직 못 정했다면"><b>전공<br>가이드</b><i>→</i></a>
-    <a href="sub.html?m=3&s=5" title="대학원을 고민한다면"><b>대학원<br>장학</b><i>→</i></a>
+    <a href="sub.html?m=1&s=0" title="전공을 아직 못 정했다면"><b>전공 <br>가이드</b><i>→</i></a>
+    <a href="sub.html?m=3&s=5" title="대학원을 고민한다면"><b>대학원 <br>장학</b><i>→</i></a>
     <button type="button" class="fab-top" onclick="window.scrollTo({ top: 0, behavior: 'instant' })" aria-label="맨 위로">TOP<i>↑</i></button></nav>`);
   // 홈 첫 화면에는 같은 버튼이 이미 있으므로, 첫 화면을 지나 내려온 뒤부터 보이게 함 (스크롤 이벤트 없이 화면 진입 감지만 사용)
   const fab = document.querySelector('.fab'), hero = document.querySelector('.hero');

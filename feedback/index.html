@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>홈페이지 피드백 · 기계공학과</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root { --primary: #0E4A84; --ink: #141A24; --ink-2: #4A5665; --ink-3: #7C8998; --line: #DCE2E8; --bg: #F4F5F7; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Malgun Gothic', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-text-size-adjust: 100%; }
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+header.top { background: #fff; border-bottom: 1px solid var(--line); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; padding-top: 18px; padding-bottom: 18px; }
+.brand { font-size: 19px; font-weight: 800; letter-spacing: -.5px; }
+.brand span { color: var(--primary); }
+.me { display: flex; align-items: center; gap: 14px; font-size: 15.5px; color: var(--ink-2); }
+.me b { color: var(--ink); font-weight: 800; }
+.link { background: none; border: 0; color: var(--primary); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+h1 { font-size: 34px; font-weight: 800; letter-spacing: -1.2px; line-height: 1.25; margin: 44px 0 8px; }
+.lead { font-size: 17px; color: var(--ink-2); word-break: keep-all; }
+.lead a { color: var(--primary); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+.note { margin-top: 18px; padding: 14px 16px; border: 1px solid #E1C98A; background: #FFF9E8; border-radius: 10px; font-size: 15px; color: #6B5310; }
+section { margin-top: 44px; }
+h2 { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); font-size: 22px; font-weight: 800; letter-spacing: -.6px; }
+h2 small { font-size: 14.5px; font-weight: 600; color: var(--ink-3); }
+
+/* 이름 고르기 */
+.names { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 22px; }
+.names button { height: 56px; border: 1px solid #C9D3DE; border-radius: 12px; background: #fff; font-size: 17px; font-weight: 700; }
+.names button:hover { border-color: var(--primary); color: var(--primary); }
+.other { display: flex; gap: 10px; margin-top: 16px; }
+.other input { flex: 1; min-width: 0; }
+
+/* 입력 */
+label.f { display: block; margin-top: 20px; font-size: 15px; font-weight: 800; }
+input[type=text], input[type=password], select, textarea { width: 100%; margin-top: 8px; padding: 13px 14px; border: 1px solid #C9D3DE; border-radius: 10px; background: #fff; font-size: 16.5px; outline: none; }
+input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14,74,132,.14); }
+textarea { min-height: 170px; resize: vertical; line-height: 1.65; }
+.drop { margin-top: 8px; padding: 22px 16px; border: 1.5px dashed #AEBBC9; border-radius: 12px; background: #fff; text-align: center; font-size: 15.5px; color: var(--ink-2); cursor: pointer; }
+.drop.over { border-color: var(--primary); background: #F3F6FA; }
+.drop b { color: var(--primary); }
+.drop small { display: block; margin-top: 4px; font-size: 13.5px; color: var(--ink-3); }
+.picked { list-style: none; margin-top: 10px; }
+.picked li { display: flex; align-items: center; gap: 12px; padding: 9px 2px; border-bottom: 1px solid var(--line); font-size: 15px; }
+.picked img { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; background: #E9ECF0; flex: none; }
+.picked span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.picked i { font-style: normal; color: var(--ink-3); font-size: 13.5px; white-space: nowrap; }
+.picked button { border: 0; background: none; color: var(--ink-3); font-size: 20px; line-height: 1; padding: 4px 6px; }
+.row { display: flex; align-items: center; gap: 16px; margin-top: 24px; flex-wrap: wrap; }
+.btn { height: 54px; padding: 0 30px; border: 0; border-radius: 12px; background: var(--primary); color: #fff; font-size: 17.5px; font-weight: 800; }
+.btn:hover { background: #0B3A6E; }
+.btn:disabled { background: #A9B4C1; cursor: default; }
+.btn.ghost { background: #fff; color: var(--ink); border: 1px solid #C9D3DE; }
+.msg { font-size: 15px; color: var(--ink-2); }
+.msg.err { color: #B3261E; font-weight: 700; }
+.msg.ok { color: #1B7A3E; font-weight: 700; }
+
+/* 목록 */
+.tabs { display: flex; gap: 22px; margin-top: 16px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.tabs button { padding: 12px 2px; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px; background: none; font-size: 16px; font-weight: 700; color: var(--ink-3); white-space: nowrap; }
+.tabs button.on { color: var(--primary); border-bottom-color: var(--primary); }
+.tabs button i { font-style: normal; margin-left: 6px; font-size: 14px; }
+.list { list-style: none; }
+.item { padding: 24px 0 26px; border-bottom: 1px solid var(--line); }
+.meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; font-size: 14.5px; color: var(--ink-3); }
+.meta b { font-size: 17px; font-weight: 800; color: var(--ink); }
+.meta .pg { color: var(--primary); font-weight: 700; }
+.st { padding: 3px 10px; border: 1.5px solid #AEBBC9; border-radius: 999px; font-size: 13px; font-weight: 800; color: var(--ink-2); background: #fff; }
+.st.done { border-color: #1B7A3E; color: #1B7A3E; }
+.text { margin-top: 12px; font-size: 16.5px; line-height: 1.75; white-space: pre-wrap; word-break: break-word; }
+.memo { margin-top: 12px; padding-left: 14px; border-left: 3px solid var(--primary); font-size: 15.5px; color: var(--ink-2); white-space: pre-wrap; }
+.memo b { color: var(--primary); }
+.files { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 16px; }
+.files li { min-width: 0; }
+.files .ph { display: grid; place-items: center; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden; background: #E3E7EC; color: var(--ink-3); font-size: 13px; font-weight: 700; }
+.files .ph img { width: 100%; height: 100%; object-fit: cover; }
+.files .nm { display: block; margin-top: 6px; font-size: 13.5px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.files button { margin-top: 4px; border: 0; background: none; padding: 0; font-size: 14px; font-weight: 800; color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+.adm { display: flex; gap: 14px; margin-top: 14px; }
+.empty { padding: 56px 0; text-align: center; color: var(--ink-3); font-size: 16px; }
+footer { margin: 60px 0 40px; font-size: 14px; color: var(--ink-3); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+[hidden] { display: none !important; }
+@media (max-width: 640px) {
+  h1 { font-size: 27px; margin-top: 32px; } .names { grid-template-columns: repeat(3, 1fr); } .names button { height: 52px; font-size: 16px; }
+  .btn { width: 100%; } .files { grid-template-columns: repeat(2, 1fr); } .brand { font-size: 17px; }
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand">기계공학과 <span>홈페이지 피드백</span></div>
+  <div class="me" id="me" hidden><span><b id="meName"></b> 교수님</span><button class="link" id="chg">이름 바꾸기</button></div>
+</div></header>
+
+<main class="wrap">
+  <!-- 입장 암호 (설정한 경우에만) -->
+  <div id="vCode" hidden>
+    <h1>입장 암호를 입력해 주세요</h1>
+    <p class="lead">학과에서 안내받은 암호를 입력하면 들어갈 수 있습니다.</p>
+    <div class="other"><input type="password" id="codeIn" placeholder="입장 암호" autocomplete="off"><button class="btn" id="codeOk">확인</button></div>
+    <p class="msg err" id="codeMsg" style="margin-top:12px"></p>
+  </div>
+
+  <!-- 1. 이름 고르기 -->
+  <div id="vName" hidden>
+    <h1>교수님 성함을 선택해 주세요</h1>
+    <p class="lead">한 번 고르면 이 기기에서는 다음부터 바로 들어옵니다.</p>
+    <div class="names" id="names"></div>
+    <div class="other"><input type="text" id="otherIn" placeholder="목록에 없으면 성함을 직접 입력" maxlength="20"><button class="btn ghost" id="otherOk">입장</button></div>
+  </div>
+
+  <!-- 2. 쓰기 + 목록 -->
+  <div id="vMain" hidden>
+    <h1>새 홈페이지, 어떻게 보셨나요?</h1>
+    <p class="lead"><a id="siteLink" target="_blank" rel="noopener">새 홈페이지 데모 보기 ↗</a> 를 둘러보시고, 고칠 점이나 넣고 싶은 내용을 남겨 주세요. 연구실 사진 등 자료도 함께 올리실 수 있습니다.</p>
+    <p class="note" id="preview" hidden>미리보기 모드입니다. 아직 저장소가 연결되지 않아, 지금 쓰는 글과 사진은 이 브라우저에만 임시로 보이고 다른 분께는 전달되지 않습니다.</p>
+
+    <section>
+      <h2>피드백 쓰기</h2>
+      <label class="f" for="page">어느 부분에 대한 의견인가요?</label>
+      <select id="page"><option>전체</option><option>홈 첫 화면</option><option>소개 (학과소개 · 인사말 · 연혁)</option><option>교수진 · 연구실</option><option>입학</option><option>학부 (교과과정 · 이수체계 · 학사일정)</option><option>대학원 · 장학</option><option>연구 · 사업단</option><option>게시판 · 뉴스</option><option>사진 · 자료 전달</option><option>기타</option></select>
+      <label class="f" for="text">내용</label>
+      <textarea id="text" placeholder="예) 연구실 소개 사진을 첨부한 사진으로 바꿔 주세요. / 교수진 페이지의 연구분야를 ○○로 수정해 주세요." maxlength="20000"></textarea>
+      <label class="f">사진 · 파일 첨부 <span style="font-weight:500;color:var(--ink-3)">(선택)</span></label>
+      <div class="drop" id="drop" tabindex="0" role="button"><b>파일 선택</b> 또는 여기로 끌어다 놓기<small>원본 그대로 저장됩니다(화질 변환 없음) · 파일 하나당 25MB까지</small></div>
+      <input type="file" id="file" multiple hidden>
+      <ul class="picked" id="picked"></ul>
+      <div class="row"><button class="btn" id="send">등록하기</button><span class="msg" id="sendMsg"></span></div>
+    </section>
+
+    <section>
+      <h2>올라온 피드백 <small id="count"></small></h2>
+      <div class="tabs" id="tabs"></div>
+      <ul class="list" id="list"></ul>
+      <div class="row"><button class="btn ghost" id="reload">새로 고침</button><span class="msg" id="listMsg"></span></div>
+    </section>
+
+    <footer><span>한양대학교 ERICA 기계공학과 · 홈페이지 개편 피드백</span><button class="link" id="admin">관리자</button></footer>
+  </div>
+</main>
+
+<script src="config.js?v=1"></script>
+<script>
+// 교수진(현행 학과 사이트 순서: 학과장 먼저)
+const PROFS = ['김남욱', '윤준용', '이성환', '이도형', '오제훈', '류근', '김영득', '윤종헌', '이원철', '홍석준', '오준호', '김호준', '김진용', '최이현', '노형도', '김태균', '박지혁', '박주현', '양선웅', '강석경'];
+const MAX_MB = 25;
+const $ = id => document.getElementById(id);
+const LS = { get: k => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }, set: (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} } };
+const LIVE = typeof API_URL === 'string' && /^https:\/\/script\.google\.com\//.test(API_URL);
+let who = LS.get('fb-who'), code = LS.get('fb-code'), admin = '', items = [], tab = 'all', picked = [];
+
+// ---- 저장소와 주고받기 (미리보기 모드에서는 이 브라우저 안에서만 흉내)
+const mem = { items: [], files: {} };
+async function api(method, body) {
+  if (!LIVE) return fake(body);
+  const r = method === 'GET'
+    ? await fetch(API_URL + '?' + new URLSearchParams({ ...body, code }), { redirect: 'follow' })
+    : await fetch(API_URL, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ ...body, code }) });
+  if (!r.ok) throw new Error('연결 실패 (' + r.status + ')');
+  return r.json();
+}
+function fake(b) {
+  const id = () => Math.random().toString(36).slice(2, 10);
+  if (b.action === 'ping') return { ok: true, needCode: false };
+  if (b.action === 'list') return { ok: true, items: [...mem.items].sort((x, y) => y.at - x.at) };
+  if (b.action === 'upload') { const k = id(); mem.files[k] = { id: k, name: b.name, size: Math.round(b.data.length * 3 / 4), mime: b.mime, thumb: b.thumb, data: b.data }; return { ok: true, id: k, name: b.name }; }
+  if (b.action === 'add') { mem.items.push({ id: id(), at: Date.now(), who: b.who, page: b.page, text: b.text, status: '접수', memo: '', files: (b.files || []).map(k => mem.files[k]) }); return { ok: true }; }
+  if (b.action === 'file') { const f = mem.files[b.id]; return f ? { ok: true, name: f.name, mime: f.mime, data: f.data } : { ok: false, error: '파일 없음' }; }
+  const it = mem.items.find(x => x.id === b.id);
+  if (b.action === 'status' && it) { it.status = b.status; if (b.memo !== undefined) it.memo = b.memo; return { ok: true }; }
+  if (b.action === 'delete' && it) { mem.items = mem.items.filter(x => x !== it); return { ok: true }; }
+  return { ok: false, error: '알 수 없는 요청' };
+}
+
+// ---- 화면 전환
+function show(v) { ['vCode', 'vName', 'vMain'].forEach(k => $(k).hidden = k !== v); $('me').hidden = v !== 'vMain'; if (v === 'vMain') $('meName').textContent = who; }
+async function start() {
+  $('siteLink').href = typeof SITE_URL === 'string' ? SITE_URL : '#';
+  $('preview').hidden = LIVE;
+  try { const p = await api('GET', { action: 'ping' }); if (p.ok && p.needCode && !code) return show('vCode'); } catch (e) {}
+  if (!who) return show('vName');
+  show('vMain'); load();
+}
+$('names').append(...PROFS.map(n => { const b = document.createElement('button'); b.textContent = n; b.onclick = () => enter(n); return b; }));
+function enter(n) { n = (n || '').trim(); if (!n) return; who = n; LS.set('fb-who', who); show('vMain'); load(); }
+$('otherOk').onclick = () => enter($('otherIn').value);
+$('otherIn').onkeydown = e => { if (e.key === 'Enter') enter($('otherIn').value); };
+$('chg').onclick = () => { who = ''; LS.set('fb-who', ''); show('vName'); };
+$('codeOk').onclick = async () => {
+  code = $('codeIn').value.trim(); $('codeMsg').textContent = '';
+  try { const r = await api('GET', { action: 'list' }); if (!r.ok) { code = ''; $('codeMsg').textContent = '암호가 맞지 않습니다.'; return; } LS.set('fb-code', code); start(); }
+  catch (e) { $('codeMsg').textContent = '연결에 실패했습니다. 잠시 뒤 다시 시도해 주세요.'; }
+};
+
+// ---- 첨부 파일 고르기
+const fmt = n => n >= 1048576 ? (n / 1048576).toFixed(1) + 'MB' : Math.max(1, Math.round(n / 1024)) + 'KB';
+function addFiles(list) {
+  for (const f of list) {
+    if (f.size > MAX_MB * 1048576) { say('sendMsg', `'${f.name}' 은(는) ${MAX_MB}MB를 넘어 올릴 수 없습니다.`, 'err'); continue; }
+    if (picked.length >= 20) { say('sendMsg', '한 번에 20개까지 올릴 수 있습니다.', 'err'); break; }
+    picked.push({ f, url: f.type.startsWith('image/') ? URL.createObjectURL(f) : '' });
+  }
+  drawPicked();
+}
+function drawPicked() {
+  const ul = $('picked'); ul.textContent = '';
+  picked.forEach((p, i) => {
+    const li = document.createElement('li');
+    if (p.url) { const im = document.createElement('img'); im.src = p.url; im.alt = ''; li.append(im); }
+    const s = document.createElement('span'); s.textContent = p.f.name;
+    const z = document.createElement('i'); z.textContent = fmt(p.f.size);
+    const x = document.createElement('button'); x.textContent = '×'; x.setAttribute('aria-label', '첨부 취소'); x.onclick = () => { if (p.url) URL.revokeObjectURL(p.url); picked.splice(i, 1); drawPicked(); };
+    li.append(s, z, x); ul.append(li);
+  });
+}
+const drop = $('drop');
+drop.onclick = () => $('file').click();
+drop.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('file').click(); } };
+$('file').onchange = e => { addFiles(e.target.files); e.target.value = ''; };
+['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+
+const b64 = file => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1] || ''); r.onerror = () => rej(new Error('파일을 읽지 못했습니다.')); r.readAsDataURL(file); });
+// 목록에 보일 작은 미리보기(240px). 원본은 그대로 따로 저장됨.
+const thumb = url => new Promise(res => { if (!url) return res(''); const im = new Image(); im.onload = () => { const s = Math.min(1, 240 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); try { res(c.toDataURL('image/jpeg', .7)); } catch (e) { res(''); } }; im.onerror = () => res(''); im.src = url; });
+function say(id, t, cls) { const m = $(id); m.textContent = t || ''; m.className = 'msg' + (cls ? ' ' + cls : ''); }
+
+// ---- 등록
+$('send').onclick = async () => {
+  const text = $('text').value.trim();
+  if (!text) { say('sendMsg', '내용을 입력해 주세요.', 'err'); $('text').focus(); return; }
+  const btn = $('send'); btn.disabled = true;
+  try {
+    const ids = [];
+    for (let i = 0; i < picked.length; i++) {
+      say('sendMsg', `파일 올리는 중… (${i + 1}/${picked.length}) ${picked[i].f.name}`);
+      const r = await api('POST', { action: 'upload', name: picked[i].f.name, mime: picked[i].f.type, data: await b64(picked[i].f), thumb: await thumb(picked[i].url) });
+      if (!r.ok) throw new Error(r.error || '파일을 올리지 못했습니다.');
+      ids.push(r.id);
+    }
+    say('sendMsg', '등록하는 중…');
+    const r = await api('POST', { action: 'add', who, page: $('page').value, text, files: ids });
+    if (!r.ok) throw new Error(r.error || '등록하지 못했습니다.');
+    $('text').value = ''; picked.forEach(p => p.url && URL.revokeObjectURL(p.url)); picked = []; drawPicked();
+    say('sendMsg', '등록되었습니다. 감사합니다.', 'ok'); await load();
+  } catch (e) { say('sendMsg', '실패: ' + e.message + ' — 다시 시도해 주세요. (쓴 내용은 그대로 남아 있습니다)', 'err'); }
+  btn.disabled = false;
+};
+
+// ---- 목록
+async function load() {
+  say('listMsg', '불러오는 중…');
+  try { const r = await api('GET', { action: 'list' }); if (!r.ok) throw new Error(r.error === 'code' ? '입장 암호가 필요합니다.' : r.error); items = r.items || []; say('listMsg', ''); }
+  catch (e) { say('listMsg', '목록을 불러오지 못했습니다: ' + e.message, 'err'); }
+  draw();
+}
+const TABS = [['all', '전체', () => true], ['mine', '내 글', x => x.who === who], ['open', '접수', x => x.status !== '반영 완료'], ['done', '반영 완료', x => x.status === '반영 완료']];
+const when = t => { const d = new Date(t), p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}.${p(d.getMonth() + 1)}.${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`; };
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+function draw() {
+  $('count').textContent = `총 ${items.length}건`;
+  const tb = $('tabs'); tb.textContent = '';
+  TABS.forEach(([k, n, fn]) => { const b = el('button', k === tab ? 'on' : '', n); b.append(el('i', '', String(items.filter(fn).length))); b.onclick = () => { tab = k; draw(); }; tb.append(b); });
+  const ul = $('list'); ul.textContent = '';
+  const rows = items.filter(TABS.find(t => t[0] === tab)[2]);
+  if (!rows.length) { ul.append(el('li', 'empty', '아직 올라온 피드백이 없습니다.')); return; }
+  rows.forEach(x => {
+    const li = el('li', 'item'), meta = el('div', 'meta');
+    meta.append(el('b', '', x.who + ' 교수'), el('span', 'pg', x.page || '전체'), el('span', '', when(x.at)), el('span', 'st' + (x.status === '반영 완료' ? ' done' : ''), x.status || '접수'));
+    li.append(meta, el('p', 'text', x.text));
+    if (x.memo) { const m = el('p', 'memo'); m.append(el('b', '', '답변  '), document.createTextNode(x.memo)); li.append(m); }
+    if (x.files && x.files.length) {
+      const fl = el('ul', 'files');
+      x.files.forEach(f => {
+        const fi = el('li'), ph = el('div', 'ph');
+        if (f.thumb && /^data:image\/jpeg;base64,/.test(f.thumb)) { const im = document.createElement('img'); im.src = f.thumb; im.alt = ''; ph.append(im); } else ph.textContent = (String(f.name).split('.').pop() || '파일').toUpperCase().slice(0, 5);
+        const dl = el('button', '', `원본 받기 (${fmt(+f.size || 0)})`); dl.onclick = () => download(f, dl);
+        fi.append(ph, el('span', 'nm', f.name), dl); fl.append(fi);
+      });
+      li.append(fl);
+    }
+    if (admin) {
+      const a = el('div', 'adm'), done = x.status === '반영 완료';
+      const s = el('button', 'link', done ? '접수로 되돌리기' : '반영 완료로 표시'); s.onclick = () => act({ action: 'status', id: x.id, status: done ? '접수' : '반영 완료' });
+      const m = el('button', 'link', '답변 쓰기'); m.onclick = () => { const t = prompt('교수님께 보일 답변', x.memo || ''); if (t !== null) act({ action: 'status', id: x.id, status: x.status, memo: t }); };
+      const d = el('button', 'link', '삭제'); d.onclick = () => { if (confirm('이 피드백을 목록에서 지울까요? (첨부 파일은 드라이브에 남습니다)')) act({ action: 'delete', id: x.id }); };
+      a.append(s, m, d); li.append(a);
+    }
+    ul.append(li);
+  });
+}
+async function act(body) {
+  try { const r = await api('POST', { ...body, admin }); if (!r.ok) { if (r.error === 'admin') { admin = ''; alert('관리자 암호가 맞지 않습니다.'); } else alert(r.error); } await load(); }
+  catch (e) { alert('실패: ' + e.message); }
+}
+// 원본 파일 받기: 저장된 내용을 그대로 내려받아 저장(다시 압축하지 않음)
+async function download(f, btn) {
+  const old = btn.textContent; btn.textContent = '받는 중…'; btn.disabled = true;
+  try {
+    const r = await api('GET', { action: 'file', id: f.id }); if (!r.ok) throw new Error(r.error);
+    const bin = atob(r.data), u8 = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+    const url = URL.createObjectURL(new Blob([u8], { type: r.mime || 'application/octet-stream' })), a = document.createElement('a');
+    a.href = url; a.download = r.name || f.name; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 30000);
+  } catch (e) { alert('파일을 받지 못했습니다: ' + e.message); }
+  btn.textContent = old; btn.disabled = false;
+}
+$('reload').onclick = load;
+$('admin').onclick = () => { if (admin) { admin = ''; draw(); return; } const c = prompt('관리자 암호'); if (c) { admin = c.trim(); draw(); } };
+start();
+</script>
+</body>
+</html>

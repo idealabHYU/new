@@ -100,7 +100,7 @@ textarea { min-height: 170px; resize: vertical; line-height: 1.65; }
 table.fl { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .fl th { padding: 13px 12px; border-bottom: 1px solid #C9D3DE; font-size: 14px; font-weight: 700; color: var(--ink-3); text-align: left; }
 .fl td { padding: 17px 12px; border-bottom: 1px solid var(--line); font-size: 16px; vertical-align: middle; }
-.fl .c-who { width: 116px; } .fl .c-pg { width: 200px; } .fl .c-at { width: 72px; text-align: center; } .fl .c-dt { width: 116px; text-align: center; } .fl .c-st { width: 104px; }
+.fl .c-who { width: 116px; } .fl .c-pg { width: 200px; } .fl .c-at { width: 72px; text-align: center; } .fl .c-dt { width: 116px; text-align: center; } .fl .c-who, .fl .c-pg, .fl .c-sum { text-align: center; }
 .fl td.c-who { font-weight: 800; font-size: 16.5px; border-right: 1px solid var(--line); background: #F7F8FA; }
 .fl td.c-pg { font-size: 14.5px; font-weight: 700; color: var(--primary); }
 .fl td.c-sum { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -170,7 +170,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wr
   .fl, .fl tbody, .fl tr, .fl td { display: block; width: auto !important; }
   .fl tbody tr { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 16px 2px; border-bottom: 1px solid var(--line); }
   .fl td { padding: 0; border: 0 !important; background: none !important; }
-  .fl td.c-who { grid-column: 1; } .fl td.c-st { grid-column: 2; grid-row: 1; }
+  .fl td.c-who { grid-column: 1; } .fl td.c-pg, .fl td.c-sum, .fl td.c-dt { text-align: left; }
   .fl td.c-sum { grid-column: 1 / -1; grid-row: 2; } .fl td.c-pg { grid-column: 1; grid-row: 3; } .fl td.c-dt { grid-column: 2; grid-row: 3; } .fl td.c-at { display: none; }
   .fl.my td.c-pg { grid-row: 1; } .fl.my td.c-dt { grid-column: 1; text-align: left; }
   .pn li em { display: none; }
@@ -252,7 +252,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wr
     <div class="wrap pane">
       <div class="bar"><div class="tabs" id="tabs"></div><select id="byWho" aria-label="교수별 보기"></select></div>
       <table class="fl">
-        <thead><tr><th class="c-who">교수</th><th class="c-pg">페이지</th><th class="c-sum">내용</th><th class="c-at">첨부</th><th class="c-dt">등록 일자</th><th class="c-st">상태</th></tr></thead>
+        <thead><tr><th class="c-who">교수</th><th class="c-pg">페이지</th><th class="c-sum">내용</th><th class="c-at">첨부</th><th class="c-dt">등록 일자</th></tr></thead>
         <tbody id="rows"></tbody>
       </table>
       <div class="row"><button class="btn ghost sm" id="reload">새로 고침</button><span class="msg" id="listMsg"></span></div>
@@ -581,11 +581,10 @@ function drawList() {
   if (!names.includes(byWho)) byWho = ''; sel.value = byWho;
   const tbody = $('rows'); tbody.textContent = '';
   const rows = visible();
-  if (!rows.length) { const tr = el('tr'), td = el('td', 'empty', '등록된 피드백이 없습니다.'); td.colSpan = 6; tr.append(td); tbody.append(tr); return; }
+  if (!rows.length) { const tr = el('tr'), td = el('td', 'empty', '등록된 피드백이 없습니다.'); td.colSpan = 5; tr.append(td); tbody.append(tr); return; }
   rows.forEach(x => {
     const tr = el('tr'); tr.tabIndex = 0;
-    const st = el('td', 'c-st'); st.append(stEl(x));
-    tr.append(el('td', 'c-who', x.who), el('td', 'c-pg', pageLabel(x)), el('td', 'c-sum', sumOf(x)), el('td', 'c-at', x.files && x.files.length ? x.files.length + '개' : '–'), el('td', 'c-dt', when(x.at)), st);
+    tr.append(el('td', 'c-who', x.who), el('td', 'c-pg', pageLabel(x)), el('td', 'c-sum', sumOf(x)), el('td', 'c-at', x.files && x.files.length ? x.files.length + '개' : '–'), el('td', 'c-dt', when(x.at)));
     tr.onclick = () => open(x);
     tr.onkeydown = e => { if (e.key === 'Enter') open(x); };
     tbody.append(tr);

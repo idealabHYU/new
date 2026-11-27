@@ -50,21 +50,28 @@ function doGet(e) {
     const q = e.parameter || {};
     if (!P.getProperty('SHEET_ID')) return out({ ok: false, error: 'setup 을 먼저 실행하세요.' });
     if (q.action === 'ping') return out({ ok: true, needCode: !!ACCESS_CODE });
-    if (!okAccess(q.code)) return out({ ok: false, error: 'code' });
-    if (q.action === 'list') return out({ ok: true, items: listAll() });
-    if (q.action === 'file') return out(readFile(q.id));
     return out({ ok: false, error: '알 수 없는 요청' });
   } catch (err) { return out({ ok: false, error: String(err) }); }
 }
 
+/** 교수님: 글 등록, 본인 글 보기 · 수정.  관리자(ADMIN_CODE): 전체 목록 · 원본 받기 · 상태 · 답변 · 삭제. */
 function doPost(e) {
   try {
     const b = JSON.parse(e.postData.contents);
     if (!okAccess(b.code)) return out({ ok: false, error: 'code' });
+    if (b.action === 'check') return out({ ok: true });
     if (b.action === 'upload') return out(saveFile(b));
     if (b.action === 'add') return out(addFeedback(b));
-    if (b.action === 'status') { if (!okAdmin(b.admin)) return out({ ok: false, error: 'admin' }); return out(setStatus(b)); }
-    if (b.action === 'delete') { if (!okAdmin(b.admin)) return out({ ok: false, error: 'admin' }); return out(removeFeedback(b)); }
+    const me = String(b.who || '').trim();
+    if (b.action === 'mine') return out({ ok: true, items: me ? listAll().filter(x => String(x.who) === me) : [] });
+    if (b.action === 'edit') return out(editFeedback(b, me));
+    if (b.action === 'file' && !okAdmin(b.admin)) return out(readFile(b.id, me));   // 교수님은 본인 글의 첨부만
+    if (!okAdmin(b.admin)) return out({ ok: false, error: 'admin' });
+    if (b.action === 'admin') return out({ ok: true });
+    if (b.action === 'list') return out({ ok: true, items: listAll() });
+    if (b.action === 'file') return out(readFile(b.id));
+    if (b.action === 'status') return out(setStatus(b));
+    if (b.action === 'delete') return out(removeFeedback(b));
     return out({ ok: false, error: '알 수 없는 요청' });
   } catch (err) { return out({ ok: false, error: String(err) }); }
 }
@@ -97,6 +104,27 @@ function addFeedback(b) {
   return { ok: true, id: id };
 }
 
+/** 본인 글 수정: 이름이 같은 글만. 내용 · 해당 부분을 바꾸고 첨부를 더할 수 있다. 수정하면 상태는 '접수'로 돌아간다. */
+function editFeedback(b, me) {
+  const text = String(b.text || '').trim().slice(0, 20000);
+  if (!me || !text) return { ok: false, error: '이름과 내용이 필요합니다.' };
+  const add = (b.files || []).map(String).slice(0, 30);
+  const lock = LockService.getScriptLock(); lock.waitLock(20000);
+  try {
+    const r = rowOf(b.id); if (!r) return { ok: false, error: '글을 찾을 수 없습니다.' };
+    const sh = sheet('피드백'), row = sh.getRange(r, 1, 1, 8).getValues()[0];
+    if (String(row[2]) !== me) return { ok: false, error: '본인이 쓴 글만 수정할 수 있습니다.' };
+    const files = String(row[6] || '').split(',').filter(String).concat(add).slice(0, 30);
+    sh.getRange(r, 4, 1, 4).setValues([[String(b.page || '').slice(0, 60), text, '접수', files.join(',')]]);
+    sh.getRange(r, 9).setValue(new Date());   // 수정 시각
+    if (add.length) {
+      const fs = sheet('파일'), v = fs.getDataRange().getValues();
+      for (let i = 1; i < v.length; i++) if (add.indexOf(String(v[i][0])) >= 0) fs.getRange(i + 1, 2).setValue(String(b.id));
+    }
+  } finally { lock.releaseLock(); }
+  return { ok: true };
+}
+
 function listAll() {
   const fv = sheet('파일').getDataRange().getValues(), files = {};
   for (let r = 1; r < fv.length; r++) files[String(fv[r][0])] = { id: String(fv[r][0]), name: fv[r][2], size: fv[r][3], mime: fv[r][4], thumb: fv[r][6] };
@@ -104,15 +132,19 @@ function listAll() {
   for (let r = 1; r < v.length; r++) {
     if (!v[r][0]) continue;
     items.push({ id: String(v[r][0]), at: new Date(v[r][1]).getTime(), who: v[r][2], page: v[r][3], text: v[r][4], status: v[r][5] || '접수',
-      files: String(v[r][6] || '').split(',').filter(String).map(k => files[k]).filter(Boolean), memo: v[r][7] || '' });
+      files: String(v[r][6] || '').split(',').filter(String).map(k => files[k]).filter(Boolean), memo: v[r][7] || '', edited: v[r][8] ? new Date(v[r][8]).getTime() : 0 });
   }
   return items.sort((x, y) => y.at - x.at);
 }
 
 /** 원본 파일을 그대로 돌려준다(사이트가 받아서 저장). 드라이브 공유 설정을 바꿀 필요가 없다. */
-function readFile(fileId) {
+function readFile(fileId, me) {
   const fv = sheet('파일').getDataRange().getValues();
   for (let r = 1; r < fv.length; r++) if (String(fv[r][0]) === String(fileId)) {
+    if (me !== undefined) {   // 관리자가 아니면 본인 글에 붙은 파일만
+      const fr = rowOf(fv[r][1]);
+      if (!me || !fr || String(sheet('피드백').getRange(fr, 3).getValue()) !== me) return { ok: false, error: '본인 글의 첨부 파일만 받을 수 있습니다.' };
+    }
     const blob = DriveApp.getFileById(fv[r][5]).getBlob();
     return { ok: true, name: fv[r][2], mime: fv[r][4] || blob.getContentType(), data: Utilities.base64Encode(blob.getBytes()) };
   }

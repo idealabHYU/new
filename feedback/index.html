@@ -10,43 +10,64 @@
 <style>
 :root { --primary: #0E4A84; --ink: #141A24; --ink-2: #4A5665; --ink-3: #7C8998; --line: #DCE2E8; --bg: #F4F5F7; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Malgun Gothic', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-text-size-adjust: 100%; }
+body { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Malgun Gothic', sans-serif; background: #fff; color: var(--ink); line-height: 1.6; -webkit-text-size-adjust: 100%; }
 a { color: inherit; text-decoration: none; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
-header.top { background: #fff; border-bottom: 1px solid var(--line); }
+body.wide .wrap { max-width: 1080px; }
+header.top { background: #fff; border-top: 3px solid var(--primary); border-bottom: 1px solid var(--line); }
 header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; padding-top: 18px; padding-bottom: 18px; }
-.brand { font-size: 19px; font-weight: 800; letter-spacing: -.5px; }
+.brand { display: flex; align-items: baseline; gap: 10px; font-size: 19px; font-weight: 800; letter-spacing: -.5px; }
 .brand span { color: var(--primary); }
+.brand small { font-size: 13px; font-weight: 600; letter-spacing: 0; color: var(--ink-3); }
 .me { display: flex; align-items: center; gap: 14px; font-size: 15.5px; color: var(--ink-2); }
 .me b { color: var(--ink); font-weight: 800; }
 .link { background: none; border: 0; color: var(--primary); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
-h1 { font-size: 34px; font-weight: 800; letter-spacing: -1.2px; line-height: 1.25; margin: 44px 0 8px; }
+.link:hover { color: #0B3A6E; }
+.hero { background: var(--bg); border-bottom: 1px solid var(--line); }
+.hero .wrap { padding-top: 48px; padding-bottom: 42px; }
+.hero.tabbed .wrap { padding-bottom: 0; }
+.eyebrow { font-size: 13.5px; font-weight: 800; letter-spacing: .2px; color: var(--primary); }
+.eyebrow::before { content: ''; display: inline-block; width: 22px; height: 2px; margin-right: 10px; background: var(--primary); vertical-align: 4px; }
+h1 { font-size: 37px; font-weight: 800; letter-spacing: -1.4px; line-height: 1.25; margin: 12px 0 10px; }
+.pane { padding-top: 34px; padding-bottom: 10px; }
+.pnav { display: flex; gap: 30px; margin-top: 32px; }
+.pnav button { padding: 14px 2px 15px; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px; background: none; font-size: 17px; font-weight: 800; color: var(--ink-3); white-space: nowrap; }
+.pnav button:hover { color: var(--primary); }
+.pnav button.on { color: var(--ink); border-bottom-color: var(--primary); }
+.pnav button i { font-style: normal; margin-left: 6px; font-size: 14.5px; color: var(--primary); }
+.hint { font-size: 15px; color: var(--ink-3); }
+.memo { margin-top: 22px; padding: 4px 0 4px 16px; border-left: 3px solid var(--primary); font-size: 16px; line-height: 1.7; color: var(--ink-2); white-space: pre-wrap; }
+.memo b { display: block; font-size: 14px; color: var(--primary); }
 .lead { font-size: 17px; color: var(--ink-2); word-break: keep-all; }
-.lead a { color: var(--primary); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+.go { display: inline-block; margin-top: 12px; font-size: 16px; color: var(--primary); font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
+.go:hover { color: #0B3A6E; }
 .note { margin-top: 18px; padding: 14px 16px; border: 1px solid #E1C98A; background: #FFF9E8; border-radius: 10px; font-size: 15px; color: #6B5310; }
-section { margin-top: 44px; }
 h2 { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); font-size: 22px; font-weight: 800; letter-spacing: -.6px; }
 h2 small { font-size: 14.5px; font-weight: 600; color: var(--ink-3); }
 
 /* 이름 고르기 */
-.names { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 26px; }
-.names button { height: 76px; border: 1px solid #C9D3DE; border-radius: 12px; background: #fff; font-size: 20px; font-weight: 700; letter-spacing: -.3px; }
+.names { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.names button { height: 78px; border: 1px solid #CBD3DC; border-radius: 12px; background: #fff; font-size: 20.5px; font-weight: 800; letter-spacing: -.4px; }
+.names button small { margin-left: 6px; font-size: 14px; font-weight: 600; letter-spacing: 0; color: var(--ink-3); }
 .names button:hover, .names button:focus-visible { border-color: var(--primary); color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); outline: none; }
-.other { display: flex; align-items: stretch; gap: 10px; margin-top: 22px; max-width: 520px; }
+.other { display: flex; align-items: stretch; gap: 10px; max-width: 520px; }
 .other input, .other input[type=password] { flex: 1; min-width: 0; margin-top: 0; height: 54px; }
 .other .btn { flex: none; width: auto; }
 .msg.warn { margin-top: 10px; color: #8A5A00; font-weight: 700; }
-#codeMsg { margin-top: 10px; }
+.gmsg { margin-top: 10px; }
 
 /* 입력 */
-label.f { display: block; margin-top: 20px; font-size: 15px; font-weight: 800; }
+label.f { display: block; margin-top: 24px; font-size: 15.5px; font-weight: 800; }
+.pane > label.f:first-of-type { margin-top: 0; }
+h2:not([hidden]) + label.f { margin-top: 22px !important; }
+label.f span { margin-left: 6px; font-weight: 500; color: var(--ink-3); }
 input[type=text], input[type=password], select, textarea { width: 100%; margin-top: 8px; padding: 13px 14px; border: 1px solid #C9D3DE; border-radius: 10px; background: #fff; font-size: 16.5px; outline: none; }
 input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14,74,132,.14); }
 textarea { min-height: 170px; resize: vertical; line-height: 1.65; }
 .drop { margin-top: 8px; padding: 22px 16px; border: 1.5px dashed #AEBBC9; border-radius: 12px; background: #fff; text-align: center; font-size: 15.5px; color: var(--ink-2); cursor: pointer; }
-.drop.over { border-color: var(--primary); background: #F3F6FA; }
+.drop:hover, .drop.over { border-color: var(--primary); background: #F3F6FA; }
 .drop b { color: var(--primary); }
 .drop small { display: block; margin-top: 4px; font-size: 13.5px; color: var(--ink-3); }
 .picked { list-style: none; margin-top: 10px; }
@@ -55,97 +76,189 @@ textarea { min-height: 170px; resize: vertical; line-height: 1.65; }
 .picked span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .picked i { font-style: normal; color: var(--ink-3); font-size: 13.5px; white-space: nowrap; }
 .picked button { border: 0; background: none; color: var(--ink-3); font-size: 20px; line-height: 1; padding: 4px 6px; }
-.row { display: flex; align-items: center; gap: 16px; margin-top: 24px; flex-wrap: wrap; }
+.row { display: flex; align-items: center; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
 .btn { height: 54px; padding: 0 30px; border: 0; border-radius: 12px; background: var(--primary); color: #fff; font-size: 17.5px; font-weight: 800; }
 .btn:hover { background: #0B3A6E; }
 .btn:disabled { background: #A9B4C1; cursor: default; }
 .btn.ghost { background: #fff; color: var(--ink); border: 1px solid #C9D3DE; }
+.btn.ghost:hover { border-color: var(--primary); color: var(--primary); }
+.btn.sm { height: 44px; padding: 0 20px; font-size: 15.5px; border-radius: 10px; }
+.btn.danger { background: #fff; color: #B3261E; border: 1px solid #E3B7B3; }
+.btn.danger:hover { border-color: #B3261E; }
 .msg { font-size: 15px; color: var(--ink-2); }
 .msg.err { color: #B3261E; font-weight: 700; }
 .msg.ok { color: #1B7A3E; font-weight: 700; }
 
-/* 목록 */
-.tabs { display: flex; flex-wrap: wrap; gap: 0 22px; margin-top: 16px; border-bottom: 1px solid var(--line); overflow: visible; }
+/* 관리자 목록 (게시판 형태) */
+.bar { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; border-bottom: 2px solid var(--ink); }
+.tabs { display: flex; flex-wrap: wrap; gap: 0 22px; }
 .tabs button { padding: 12px 2px; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px; background: none; font-size: 16px; font-weight: 700; color: var(--ink-3); white-space: nowrap; }
+.tabs button:hover { color: var(--primary); }
 .tabs button.on { color: var(--primary); border-bottom-color: var(--primary); }
 .tabs button i { font-style: normal; margin-left: 6px; font-size: 14px; }
-.list { list-style: none; }
-.item { padding: 24px 0 26px; border-bottom: 1px solid var(--line); }
-.meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; font-size: 14.5px; color: var(--ink-3); }
-.meta b { font-size: 17px; font-weight: 800; color: var(--ink); }
-.meta .pg { color: var(--primary); font-weight: 700; }
-.st { padding: 3px 10px; border: 1.5px solid #AEBBC9; border-radius: 999px; font-size: 13px; font-weight: 800; color: var(--ink-2); background: #fff; }
+.bar select { width: auto; margin: 0 0 8px; padding: 8px 12px; font-size: 15px; }
+table.fl { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.fl th { padding: 13px 12px; border-bottom: 1px solid #C9D3DE; font-size: 14px; font-weight: 700; color: var(--ink-3); text-align: left; }
+.fl td { padding: 17px 12px; border-bottom: 1px solid var(--line); font-size: 16px; vertical-align: middle; }
+.fl .c-who { width: 116px; } .fl .c-pg { width: 200px; } .fl .c-at { width: 72px; text-align: center; } .fl .c-dt { width: 116px; } .fl .c-st { width: 104px; }
+.fl td.c-who { font-weight: 800; font-size: 16.5px; border-right: 1px solid var(--line); background: #F7F8FA; }
+.fl td.c-pg { font-size: 14.5px; font-weight: 700; color: var(--primary); }
+.fl td.c-sum { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fl td.c-at, .fl td.c-dt { font-size: 14.5px; color: var(--ink-3); }
+.fl tbody tr { cursor: pointer; }
+.fl tbody tr:hover td { background: #F7F9FC; }
+.fl tbody tr:hover td.c-who { background: #EFF2F6; color: var(--primary); }
+.fl tbody tr:hover td.c-sum, .fl tbody tr:focus-visible td.c-sum { color: var(--primary); text-decoration: underline; text-underline-offset: 4px; }
+.fl tbody tr:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.fl td.empty { padding: 56px 0; text-align: center; color: var(--ink-3); cursor: default; background: none !important; border-right: 0; }
+.st { display: inline-block; padding: 3px 10px; border: 1.5px solid #AEBBC9; border-radius: 999px; font-size: 13px; font-weight: 800; color: var(--ink-2); background: #fff; white-space: nowrap; }
 .st.done { border-color: #1B7A3E; color: #1B7A3E; }
-.text { margin-top: 12px; font-size: 16.5px; line-height: 1.75; white-space: pre-wrap; word-break: break-word; }
-.memo { margin-top: 12px; padding-left: 14px; border-left: 3px solid var(--primary); font-size: 15.5px; color: var(--ink-2); white-space: pre-wrap; }
-.memo b { color: var(--primary); }
-.files { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 16px; }
+
+/* 상세 보기 (뉴스 글 형태) */
+.dv-pg { margin-top: 12px; font-size: 15px; font-weight: 800; color: var(--primary); }
+.dv-t { margin: 6px 0 14px; font-size: 30px; word-break: keep-all; }
+.dv-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; padding-bottom: 18px; border-bottom: 2px solid var(--ink); font-size: 15px; color: var(--ink-3); }
+.dv-meta b { font-size: 17px; font-weight: 800; color: var(--ink); }
+.dv-body { padding: 30px 0 34px; font-size: 17px; line-height: 1.8; white-space: pre-wrap; word-break: break-word; border-bottom: 1px solid var(--line); }
+.dv-sec { margin-top: 32px; }
+.dv-sec h3 { font-size: 17px; font-weight: 800; }
+.dv-sec h3 small { margin-left: 8px; font-size: 14px; font-weight: 600; color: var(--ink-3); }
+.files { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; margin-top: 14px; }
 .files li { min-width: 0; }
 .files .ph { display: grid; place-items: center; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden; background: #E3E7EC; color: var(--ink-3); font-size: 13px; font-weight: 700; }
 .files .ph img { width: 100%; height: 100%; object-fit: cover; }
 .files .nm { display: block; margin-top: 6px; font-size: 13.5px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .files button { margin-top: 4px; border: 0; background: none; padding: 0; font-size: 14px; font-weight: 800; color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
-.adm { display: flex; gap: 14px; margin-top: 14px; }
-.empty { padding: 56px 0; text-align: center; color: var(--ink-3); font-size: 16px; }
-footer { margin: 60px 0 40px; font-size: 14px; color: var(--ink-3); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.dv-sec textarea { min-height: 110px; }
+.pn { list-style: none; margin-top: 44px; border-top: 1px solid #C9D3DE; }
+.pn li { display: flex; gap: 18px; align-items: center; padding: 16px 4px; border-bottom: 1px solid var(--line); font-size: 16px; cursor: pointer; }
+.pn li span { flex: none; width: 64px; font-size: 14px; font-weight: 700; color: var(--ink-3); }
+.pn li b { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.pn li em { flex: none; font-style: normal; font-size: 14.5px; color: var(--ink-3); }
+.pn li:hover b { color: var(--primary); text-decoration: underline; text-underline-offset: 4px; }
+.pn li.off { cursor: default; color: var(--ink-3); }
+.pn li.off:hover b { color: inherit; text-decoration: none; }
+.dv-end { display: flex; justify-content: center; margin-top: 30px; }
+
+footer { margin-top: 70px; border-top: 1px solid var(--line); }
+footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 22px; padding-bottom: 40px; font-size: 14px; color: var(--ink-3); }
 [hidden] { display: none !important; }
 @media (max-width: 640px) {
-  h1 { font-size: 27px; margin-top: 32px; } .names { grid-template-columns: repeat(3, 1fr); } .names button { height: 52px; font-size: 16px; }
-  .btn { width: 100%; } .files { grid-template-columns: repeat(2, 1fr); } .brand { font-size: 17px; }
+  h1 { font-size: 28px; } .dv-t { font-size: 24px; } .hero .wrap { padding-top: 32px; padding-bottom: 28px; } .pnav { margin-top: 22px; } .brand small { display: none; }
+  .names { grid-template-columns: repeat(3, 1fr); gap: 8px; } .names button { height: 58px; font-size: 17px; } .names button small { display: none; }
+  .btn { width: 100%; } .btn.sm { width: auto; } .files { grid-template-columns: repeat(2, 1fr); } .brand { font-size: 17px; }
+  .fl thead { display: none; }
+  .fl, .fl tbody, .fl tr, .fl td { display: block; width: auto !important; }
+  .fl tbody tr { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 16px 2px; border-bottom: 1px solid var(--line); }
+  .fl td { padding: 0; border: 0 !important; background: none !important; }
+  .fl td.c-who { grid-column: 1; } .fl td.c-st { grid-column: 2; grid-row: 1; }
+  .fl td.c-sum { grid-column: 1 / -1; grid-row: 2; } .fl td.c-pg { grid-column: 1; grid-row: 3; } .fl td.c-dt { grid-column: 2; grid-row: 3; } .fl td.c-at { display: none; }
+  .fl.my td.c-pg { grid-row: 1; } .fl.my td.c-dt { grid-column: 1; }
+  .pn li em { display: none; }
 }
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <div class="brand">기계공학과 <span>홈페이지 피드백</span></div>
-  <div class="me" id="me" hidden><span><b id="meName"></b> 교수님</span><button class="link" id="chg">이름 바꾸기</button></div>
+  <div class="brand"><span>기계공학과</span> 홈페이지 피드백 <small>한양대학교 ERICA</small></div>
+  <div class="me" id="meProf" hidden><span><b id="meName"></b> 교수님</span><button class="link" id="chg">이름 바꾸기</button></div>
+  <div class="me" id="meAdm" hidden><b>관리자</b><button class="link" id="logout">나가기</button></div>
 </div></header>
 
-<main class="wrap">
+<main>
   <!-- 입장 암호 (설정한 경우에만) -->
   <div id="vCode" hidden>
-    <h1>입장 암호</h1>
-    <p class="lead">안내받으신 입장 암호를 입력해 주십시오.</p>
-    <div class="other"><input type="password" id="codeIn" placeholder="입장 암호" autocomplete="off"><button class="btn" id="codeOk">확인</button></div>
-    <p class="msg warn" id="capsMsg" hidden>Caps Lock이 켜져 있습니다.</p>
-    <p class="msg err" id="codeMsg"></p>
+    <div class="hero"><div class="wrap"><p class="eyebrow">홈페이지 개편안 피드백</p><h1>입장 암호</h1><p class="lead">안내받으신 입장 암호를 입력해 주십시오.</p></div></div>
+    <div class="wrap pane">
+      <div class="other"><input type="password" id="codeIn" placeholder="입장 암호" autocomplete="off"><button class="btn" id="codeOk">확인</button></div>
+      <p class="msg warn" id="codeCaps" hidden>Caps Lock이 켜져 있습니다.</p>
+      <p class="msg err gmsg" id="codeMsg"></p>
+    </div>
+  </div>
+
+  <!-- 관리자 로그인 -->
+  <div id="vLogin" hidden>
+    <div class="hero"><div class="wrap"><p class="eyebrow">관리자</p><h1>관리자 로그인</h1><p class="lead">관리자 암호가 확인되면 등록된 피드백 목록으로 이동합니다.</p></div></div>
+    <div class="wrap pane">
+      <div class="other"><input type="password" id="loginIn" placeholder="관리자 암호" autocomplete="off"><button class="btn" id="loginOk">확인</button></div>
+      <p class="msg warn" id="loginCaps" hidden>Caps Lock이 켜져 있습니다.</p>
+      <p class="msg err gmsg" id="loginMsg"></p>
+      <div class="row"><button class="link" id="loginBack">← 돌아가기</button></div>
+    </div>
   </div>
 
   <!-- 1. 이름 고르기 -->
   <div id="vName" hidden>
-    <h1>성함 선택</h1>
-    <div class="names" id="names"></div>
+    <div class="hero"><div class="wrap"><p class="eyebrow">홈페이지 개편안 피드백</p><h1>성함 선택</h1></div></div>
+    <div class="wrap pane"><div class="names" id="names"></div></div>
   </div>
 
-  <!-- 2. 쓰기 + 목록 -->
-  <div id="vMain" hidden>
+  <!-- 교수님 화면 공통 머리 -->
+  <div id="profTop" class="hero tabbed" hidden><div class="wrap">
+    <p class="eyebrow">한양대학교 ERICA 기계공학과</p>
     <h1>홈페이지 개편안 피드백</h1>
-    <p class="lead">학과 홈페이지 개편안에 대한 수정 의견과 자료를 등록하는 페이지입니다. 등록된 내용은 담당자가 확인한 뒤 반영합니다. <a id="siteLink" target="_blank" rel="noopener">개편안 보기 ↗</a></p>
-    <p class="note" id="preview" hidden>미리보기 모드입니다. 아직 저장소가 연결되지 않아, 지금 쓰는 글과 사진은 이 브라우저에만 임시로 보이고 다른 분께는 전달되지 않습니다.</p>
+    <p class="lead">학과 홈페이지 개편안에 대한 수정 의견과 자료를 등록하는 페이지입니다. 등록된 내용은 담당자가 확인한 뒤 반영합니다.</p>
+    <a class="go" id="siteLink" target="_blank" rel="noopener">학과 홈페이지 이동 ↗</a>
+    <nav class="pnav" id="pnav"><button data-v="write">피드백 쓰기</button><button data-v="mine">내가 쓴 글<i id="mineN"></i></button></nav>
+  </div></div>
 
-    <section>
-      <h2>피드백 쓰기</h2>
-      <label class="f" for="page">해당 부분</label>
-      <select id="page"><option>전체</option><option>홈 첫 화면</option><option>소개 (학과소개 · 인사말 · 연혁)</option><option>교수진 · 연구실</option><option>입학</option><option>학부 (교과과정 · 이수체계 · 학사일정)</option><option>대학원 · 장학</option><option>연구 · 사업단</option><option>게시판 · 뉴스</option><option>사진 · 자료 전달</option><option>기타</option></select>
-      <label class="f" for="text">내용</label>
-      <textarea id="text" placeholder="예) 연구실 소개 사진을 첨부한 사진으로 바꿔 주세요. / 교수진 페이지의 연구분야를 ○○로 수정해 주세요." maxlength="20000"></textarea>
-      <label class="f">사진 · 파일 첨부 <span style="font-weight:500;color:var(--ink-3)">(선택)</span></label>
-      <div class="drop" id="drop" tabindex="0" role="button"><b>파일 선택</b> 또는 여기로 끌어다 놓기<small>원본 그대로 저장됩니다(화질 변환 없음) · 파일 하나당 25MB까지</small></div>
-      <input type="file" id="file" multiple hidden>
-      <ul class="picked" id="picked"></ul>
-      <div class="row"><button class="btn" id="send">등록하기</button><span class="msg" id="sendMsg"></span></div>
-    </section>
+  <!-- 2. 교수님: 피드백 쓰기 · 수정 -->
+  <div id="vMain" hidden><div class="wrap pane">
+    <p class="note" id="preview" hidden style="margin:0 0 24px">미리보기 모드입니다. 아직 저장소가 연결되지 않아, 지금 쓰는 글과 사진은 이 브라우저에만 임시로 보이고 다른 분께는 전달되지 않습니다.</p>
+    <h2 id="formH" hidden>피드백 수정 <small id="formHs"></small></h2>
+    <label class="f" for="page">해당 부분</label>
+    <select id="page"><option>전체</option><option>홈 첫 화면</option><option>소개 (학과소개 · 인사말 · 연혁)</option><option>교수진 · 연구실</option><option>입학</option><option>학부 (교과과정 · 이수체계 · 학사일정)</option><option>대학원 · 장학</option><option>연구 · 사업단</option><option>게시판 · 뉴스</option><option>사진 · 자료 전달</option><option>기타</option></select>
+    <label class="f" for="text">내용</label>
+    <textarea id="text" placeholder="예) 연구실 소개 사진을 첨부한 사진으로 바꿔 주세요. / 교수진 페이지의 연구분야를 ○○로 수정해 주세요." maxlength="20000"></textarea>
+    <div id="oldSec" hidden><label class="f">등록된 첨부 파일</label><ul class="files" id="oldFiles"></ul></div>
+    <label class="f"><b id="dropLab" style="font-weight:inherit">사진 · 파일 첨부</b><span>(선택)</span></label>
+    <div class="drop" id="drop" tabindex="0" role="button"><b>파일 선택</b> 또는 여기로 끌어다 놓기<small>원본 그대로 저장됩니다(화질 변환 없음) · 파일 하나당 25MB까지</small></div>
+    <input type="file" id="file" multiple hidden>
+    <ul class="picked" id="picked"></ul>
+    <p class="memo" id="memoBox" hidden></p>
+    <div class="row"><button class="btn" id="send">등록하기</button><button class="btn ghost" id="cancel" hidden>취소</button><span class="msg" id="sendMsg"></span></div>
+  </div></div>
 
-    <section>
-      <h2>올라온 피드백 <small id="count"></small></h2>
-      <div class="tabs" id="tabs"></div>
-      <ul class="list" id="list"></ul>
-      <div class="row"><button class="btn ghost" id="reload">새로 고침</button><span class="msg" id="listMsg"></span></div>
-    </section>
+  <!-- 3. 교수님: 내가 쓴 글 -->
+  <div id="vMine" hidden><div class="wrap pane">
+    <p class="hint" style="margin-bottom:14px">글을 누르면 내용을 확인하고 수정할 수 있습니다.</p>
+    <table class="fl my" style="border-top:2px solid var(--ink)">
+      <thead><tr><th class="c-pg">해당 부분</th><th class="c-sum">내용</th><th class="c-at">첨부</th><th class="c-dt">등록일</th><th class="c-st">상태</th></tr></thead>
+      <tbody id="myRows"></tbody>
+    </table>
+    <div class="row"><span class="msg" id="mineMsg"></span></div>
+  </div></div>
 
-    <footer><span>한양대학교 ERICA 기계공학과 · 홈페이지 개편 피드백</span><button class="link" id="admin">관리자</button></footer>
+  <!-- 4. 관리자: 목록 -->
+  <div id="vList" hidden>
+    <div class="hero"><div class="wrap"><p class="eyebrow">관리자</p><h1>등록된 피드백</h1><p class="lead" id="count"></p></div></div>
+    <div class="wrap pane">
+      <div class="bar"><div class="tabs" id="tabs"></div><select id="byWho" aria-label="교수별 보기"></select></div>
+      <table class="fl">
+        <thead><tr><th class="c-who">교수</th><th class="c-pg">해당 부분</th><th class="c-sum">내용</th><th class="c-at">첨부</th><th class="c-dt">등록일</th><th class="c-st">상태</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="row"><button class="btn ghost sm" id="reload">새로 고침</button><span class="msg" id="listMsg"></span></div>
+    </div>
   </div>
+
+  <!-- 5. 관리자: 글 보기 -->
+  <div id="vView" hidden><div class="wrap pane">
+    <p class="dv-pg" id="dPg"></p>
+    <h1 class="dv-t" id="dT"></h1>
+    <div class="dv-meta" id="dMeta"></div>
+    <div class="dv-body" id="dBody"></div>
+    <div class="dv-sec" id="dFilesSec"><h3>첨부 파일 <small id="dFilesN"></small></h3><ul class="files" id="dFiles"></ul></div>
+    <div class="dv-sec">
+      <h3>답변 <small>작성한 교수님의 '내가 쓴 글'에 표시됩니다</small></h3>
+      <textarea id="dMemo" maxlength="2000" placeholder="반영 내용이나 확인 사항을 적어 주세요."></textarea>
+      <div class="row" style="margin-top:14px"><button class="btn sm" id="dSave">답변 저장</button><button class="btn ghost sm" id="dStat"></button><button class="btn danger sm" id="dDel">삭제</button><span class="msg" id="dMsg"></span></div>
+    </div>
+    <ul class="pn" id="dPn"></ul>
+    <div class="dv-end"><button class="btn ghost sm" id="dList">목록</button></div>
+  </div></div>
 </main>
+<footer id="foot"><div class="wrap"><span>한양대학교 ERICA 기계공학과 · 홈페이지 개편 피드백</span><button class="link" id="adminBtn">관리자</button></div></footer>
 
 <script src="config.js?v=2"></script>
 <script>
@@ -153,55 +266,87 @@ footer { margin: 60px 0 40px; font-size: 14px; color: var(--ink-3); display: fle
 const PROFS = ['김남욱', '윤준용', '이성환', '이도형', '오제훈', '류근', '김영득', '윤종헌', '이원철', '홍석준', '오준호', '김호준', '김진용', '최이현', '노형도', '김태균', '박지혁', '박주현', '양선웅', '강석경'];
 const MAX_MB = 25;
 const $ = id => document.getElementById(id);
-const LS = { get: k => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }, set: (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} } };
+const store = s => ({ get: k => { try { return s().getItem(k) || ''; } catch (e) { return ''; } }, set: (k, v) => { try { v ? s().setItem(k, v) : s().removeItem(k); } catch (e) {} } });
+const LS = store(() => localStorage), SS = store(() => sessionStorage);
 const LIVE = typeof API_URL === 'string' && /^https:\/\/script\.google\.com\//.test(API_URL);
-let who = LS.get('fb-who'), code = LS.get('fb-code'), admin = '', items = [], tab = 'all', picked = [];
+let who = LS.get('fb-who'), code = LS.get('fb-code'), admin = SS.get('fb-admin'), items = [], tab = 'all', byWho = '', picked = [], mine = [], editing = null, draft = null;
 
 // ---- 저장소와 주고받기 (미리보기 모드에서는 이 브라우저 안에서만 흉내)
 const mem = { items: [], files: {} };
-async function api(method, body) {
-  if (!LIVE) return fake(body);
-  const r = method === 'GET'
-    ? await fetch(API_URL + '?' + new URLSearchParams({ ...body, code }), { redirect: 'follow' })
-    : await fetch(API_URL, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ ...body, code }) });
+async function api(body) {
+  if (!LIVE) return fake({ ...body, admin });
+  const r = body.action === 'ping'
+    ? await fetch(API_URL + '?action=ping', { redirect: 'follow' })
+    : await fetch(API_URL, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(admin ? { ...body, code, admin } : { ...body, code }) });
   if (!r.ok) throw new Error('연결 실패 (' + r.status + ')');
   return r.json();
 }
 function fake(b) {
   const id = () => Math.random().toString(36).slice(2, 10);
-  if (b.action === 'ping') return { ok: true, needCode: false };
-  if (b.action === 'list') return { ok: true, items: [...mem.items].sort((x, y) => y.at - x.at) };
+  if (b.action === 'ping' || b.action === 'check') return { ok: true, needCode: false };
   if (b.action === 'upload') { const k = id(); mem.files[k] = { id: k, name: b.name, size: Math.round(b.data.length * 3 / 4), mime: b.mime, thumb: b.thumb, data: b.data }; return { ok: true, id: k, name: b.name }; }
   if (b.action === 'add') { mem.items.push({ id: id(), at: Date.now(), who: b.who, page: b.page, text: b.text, status: '접수', memo: '', files: (b.files || []).map(k => mem.files[k]) }); return { ok: true }; }
+  if (b.action === 'mine') return { ok: true, items: mem.items.filter(x => x.who === b.who).sort((x, y) => y.at - x.at) };
+  if (b.action === 'edit') { const x = mem.items.find(y => y.id === b.id && y.who === b.who); if (!x) return { ok: false, error: '글을 찾을 수 없습니다.' }; Object.assign(x, { page: b.page, text: b.text, status: '접수', edited: Date.now(), files: x.files.concat((b.files || []).map(k => mem.files[k])) }); return { ok: true }; }
+  if (b.action === 'file' && !b.admin) { const f = mem.files[b.id]; return f ? { ok: true, name: f.name, mime: f.mime, data: f.data } : { ok: false, error: '파일 없음' }; }
+  if (!b.admin) return { ok: false, error: 'admin' };
+  if (b.action === 'admin') return { ok: true };
+  if (b.action === 'list') return { ok: true, items: [...mem.items].sort((x, y) => y.at - x.at) };
   if (b.action === 'file') { const f = mem.files[b.id]; return f ? { ok: true, name: f.name, mime: f.mime, data: f.data } : { ok: false, error: '파일 없음' }; }
   const it = mem.items.find(x => x.id === b.id);
   if (b.action === 'status' && it) { it.status = b.status; if (b.memo !== undefined) it.memo = b.memo; return { ok: true }; }
   if (b.action === 'delete' && it) { mem.items = mem.items.filter(x => x !== it); return { ok: true }; }
   return { ok: false, error: '알 수 없는 요청' };
 }
+const errText = e => e === 'admin' ? '관리자 암호가 맞지 않습니다.' : e === 'code' ? '입장 암호가 맞지 않습니다.' : e === '알 수 없는 요청' ? '저장소(Apps Script)를 새 버전으로 다시 배포해 주세요.' : (e || '처리하지 못했습니다.');
 
 // ---- 화면 전환
-function show(v) { ['vCode', 'vName', 'vMain'].forEach(k => $(k).hidden = k !== v); $('me').hidden = v !== 'vMain'; if (v === 'vMain') $('meName').textContent = who; if (v === 'vCode') $('codeIn').focus(); }
+const VIEWS = ['vCode', 'vLogin', 'vName', 'vMain', 'vMine', 'vList', 'vView'];
+function show(v) {
+  VIEWS.forEach(k => $(k).hidden = k !== v);
+  const adm = v === 'vList' || v === 'vView', prof = v === 'vMain' || v === 'vMine';
+  $('profTop').hidden = !prof; $('meProf').hidden = !prof; $('meAdm').hidden = !adm;
+  $('foot').hidden = adm || v === 'vLogin';
+  document.body.classList.toggle('wide', adm);
+  if (prof) { $('meName').textContent = who; document.querySelectorAll('#pnav button').forEach(b => b.classList.toggle('on', b.dataset.v === (v === 'vMine' || editing ? 'mine' : 'write'))); }
+  if (v === 'vCode') $('codeIn').focus();
+  if (v === 'vLogin') { $('loginIn').value = ''; say('loginMsg', '', 'err'); $('loginIn').focus(); }
+}
 async function start() {
   $('siteLink').href = typeof SITE_URL === 'string' ? SITE_URL : '#';
   $('preview').hidden = LIVE;
-  try { const p = await api('GET', { action: 'ping' }); if (p.ok && p.needCode && !code) return show('vCode'); } catch (e) {}
-  if (!who) return show('vName');
-  show('vMain'); load();
+  try { const p = await api({ action: 'ping' }); if (p.ok && p.needCode && !code) return show('vCode'); } catch (e) {}
+  if (admin) return load();
+  home();
 }
-$('names').append(...PROFS.map(n => { const b = document.createElement('button'); b.textContent = n; b.onclick = () => enter(n); return b; }));
-function enter(n) { n = (n || '').trim(); if (!n) return; who = n; LS.set('fb-who', who); show('vMain'); load(); }
-$('chg').onclick = () => { who = ''; LS.set('fb-who', ''); show('vName'); };
-// 입장 암호: 엔터로 확인, Caps Lock 알림
-const caps = e => { if (e.getModifierState) $('capsMsg').hidden = !e.getModifierState('CapsLock'); };
-$('codeIn').addEventListener('keydown', e => { caps(e); if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); $('codeOk').click(); } });
-$('codeIn').addEventListener('keyup', caps);
-$('codeIn').addEventListener('blur', () => { $('capsMsg').hidden = true; });
+function home() { if (!who) return show('vName'); goWrite(); loadMine(true); }
+$('names').append(...PROFS.map(n => { const b = el('button', '', n); b.append(el('small', '', '교수')); b.onclick = () => { who = n; LS.set('fb-who', who); mine = []; home(); }; return b; }));
+$('chg').onclick = () => { who = ''; LS.set('fb-who', ''); leaveEdit(); show('vName'); };
+$('pnav').onclick = e => { const b = e.target.closest('button'); if (!b) return; b.dataset.v === 'mine' ? goMine() : goWrite(); };
+
+// 암호 칸: 엔터로 확인, Caps Lock 알림
+function pwBox(input, btn, capsEl) {
+  const caps = e => { if (e.getModifierState) $(capsEl).hidden = !e.getModifierState('CapsLock'); };
+  $(input).addEventListener('keydown', e => { caps(e); if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); $(btn).click(); } });
+  $(input).addEventListener('keyup', caps);
+  $(input).addEventListener('blur', () => { $(capsEl).hidden = true; });
+}
+pwBox('codeIn', 'codeOk', 'codeCaps'); pwBox('loginIn', 'loginOk', 'loginCaps');
 $('codeOk').onclick = async () => {
-  code = $('codeIn').value.trim(); $('codeMsg').textContent = '';
-  try { const r = await api('GET', { action: 'list' }); if (!r.ok) { code = ''; $('codeMsg').textContent = '암호가 맞지 않습니다.'; return; } LS.set('fb-code', code); start(); }
-  catch (e) { $('codeMsg').textContent = '연결에 실패했습니다. 잠시 뒤 다시 시도해 주세요.'; }
+  const c = $('codeIn').value.trim(); if (!c) return $('codeIn').focus();
+  code = c; say('codeMsg', '확인하는 중…');
+  try { const r = await api({ action: 'check' }); if (!r.ok) { code = ''; say('codeMsg', errText(r.error), 'err'); return; } LS.set('fb-code', code); say('codeMsg', ''); admin ? load() : home(); }
+  catch (e) { code = ''; say('codeMsg', '연결에 실패했습니다. 잠시 뒤 다시 시도해 주세요.', 'err'); }
 };
+$('adminBtn').onclick = () => show('vLogin');
+$('loginBack').onclick = () => home();
+$('loginOk').onclick = async () => {
+  const c = $('loginIn').value.trim(); if (!c) return $('loginIn').focus();
+  admin = c; say('loginMsg', '확인하는 중…');
+  try { const r = await api({ action: 'admin' }); if (!r.ok) { admin = ''; say('loginMsg', errText(r.error), 'err'); return; } SS.set('fb-admin', admin); load(); }
+  catch (e) { admin = ''; say('loginMsg', '연결에 실패했습니다. 잠시 뒤 다시 시도해 주세요.', 'err'); }
+};
+$('logout').onclick = () => { admin = ''; SS.set('fb-admin', ''); items = []; history.replaceState(null, '', location.pathname + location.search); home(); };
 
 // ---- 첨부 파일 고르기
 const fmt = n => n >= 1048576 ? (n / 1048576).toFixed(1) + 'MB' : Math.max(1, Math.round(n / 1024)) + 'KB';
@@ -216,12 +361,10 @@ function addFiles(list) {
 function drawPicked() {
   const ul = $('picked'); ul.textContent = '';
   picked.forEach((p, i) => {
-    const li = document.createElement('li');
+    const li = el('li');
     if (p.url) { const im = document.createElement('img'); im.src = p.url; im.alt = ''; li.append(im); }
-    const s = document.createElement('span'); s.textContent = p.f.name;
-    const z = document.createElement('i'); z.textContent = fmt(p.f.size);
-    const x = document.createElement('button'); x.textContent = '×'; x.setAttribute('aria-label', '첨부 취소'); x.onclick = () => { if (p.url) URL.revokeObjectURL(p.url); picked.splice(i, 1); drawPicked(); };
-    li.append(s, z, x); ul.append(li);
+    const x = el('button', '', '×'); x.setAttribute('aria-label', '첨부 취소'); x.onclick = () => { if (p.url) URL.revokeObjectURL(p.url); picked.splice(i, 1); drawPicked(); };
+    li.append(el('span', '', p.f.name), el('i', '', fmt(p.f.size)), x); ul.append(li);
   });
 }
 const drop = $('drop');
@@ -235,9 +378,42 @@ drop.addEventListener('drop', e => addFiles(e.dataTransfer.files));
 const b64 = file => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1] || ''); r.onerror = () => rej(new Error('파일을 읽지 못했습니다.')); r.readAsDataURL(file); });
 // 목록에 보일 작은 미리보기(240px). 원본은 그대로 따로 저장됨.
 const thumb = url => new Promise(res => { if (!url) return res(''); const im = new Image(); im.onload = () => { const s = Math.min(1, 240 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); try { res(c.toDataURL('image/jpeg', .7)); } catch (e) { res(''); } }; im.onerror = () => res(''); im.src = url; });
-function say(id, t, cls) { const m = $(id); m.textContent = t || ''; m.className = 'msg' + (cls ? ' ' + cls : ''); }
+function say(id, t, cls) { const m = $(id); m.textContent = t || ''; m.className = 'msg' + (cls ? ' ' + cls : '') + (id === 'codeMsg' || id === 'loginMsg' ? ' gmsg' : ''); }
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
 
-// ---- 등록
+// ---- 등록 · 수정 (교수님)
+function fileList(ul, files) {
+  ul.textContent = '';
+  (files || []).forEach(f => {
+    const li = el('li'), ph = el('div', 'ph');
+    if (f.thumb && /^data:image\/jpeg;base64,/.test(f.thumb)) { const im = document.createElement('img'); im.src = f.thumb; im.alt = ''; ph.append(im); } else ph.textContent = (String(f.name).split('.').pop() || '파일').toUpperCase().slice(0, 5);
+    const dl = el('button', '', `원본 받기 (${fmt(+f.size || 0)})`); dl.onclick = () => download(f, dl);
+    li.append(ph, el('span', 'nm', f.name), dl); ul.append(li);
+  });
+}
+function setForm(text, page, files) {
+  $('text').value = text || '';
+  const sel = $('page'); if (page && ![...sel.options].some(o => o.value === page)) sel.append(new Option(page)); sel.value = page || '전체';
+  picked = files || []; drawPicked();
+}
+function goWrite() { leaveEdit(); show('vMain'); }
+function goMine() { leaveEdit(); show('vMine'); loadMine(); }
+function leaveEdit() {
+  if (!editing) return;
+  editing = null; setForm(draft && draft.text, draft && draft.page, draft && draft.picked); draft = null;
+  $('formH').hidden = true; $('oldSec').hidden = true; $('memoBox').hidden = true; $('cancel').hidden = true;
+  $('send').textContent = '등록하기'; $('dropLab').textContent = '사진 · 파일 첨부'; say('sendMsg', '');
+}
+function edit(x) {
+  if (!editing) draft = { text: $('text').value, page: $('page').value, picked };
+  editing = x; setForm(x.text, x.page, []);
+  $('formH').hidden = false; $('formHs').textContent = '등록 ' + when(x.at, true) + (x.edited ? ' · 수정 ' + when(x.edited, true) : '');
+  $('oldSec').hidden = !(x.files && x.files.length); fileList($('oldFiles'), x.files);
+  const m = $('memoBox'); m.hidden = !x.memo; m.textContent = ''; if (x.memo) m.append(el('b', '', '담당자 답변'), document.createTextNode(x.memo));
+  $('cancel').hidden = false; $('send').textContent = '수정 저장'; $('dropLab').textContent = '사진 · 파일 추가'; say('sendMsg', '');
+  show('vMain'); window.scrollTo(0, 0);
+}
+$('cancel').onclick = goMine;
 $('send').onclick = async () => {
   const text = $('text').value.trim();
   if (!text) { say('sendMsg', '내용을 입력해 주세요.', 'err'); $('text').focus(); return; }
@@ -246,78 +422,134 @@ $('send').onclick = async () => {
     const ids = [];
     for (let i = 0; i < picked.length; i++) {
       say('sendMsg', `파일 올리는 중… (${i + 1}/${picked.length}) ${picked[i].f.name}`);
-      const r = await api('POST', { action: 'upload', name: picked[i].f.name, mime: picked[i].f.type, data: await b64(picked[i].f), thumb: await thumb(picked[i].url) });
-      if (!r.ok) throw new Error(r.error || '파일을 올리지 못했습니다.');
+      const r = await api({ action: 'upload', name: picked[i].f.name, mime: picked[i].f.type, data: await b64(picked[i].f), thumb: await thumb(picked[i].url) });
+      if (!r.ok) throw new Error(errText(r.error));
       ids.push(r.id);
     }
-    say('sendMsg', '등록하는 중…');
-    const r = await api('POST', { action: 'add', who, page: $('page').value, text, files: ids });
-    if (!r.ok) throw new Error(r.error || '등록하지 못했습니다.');
-    $('text').value = ''; picked.forEach(p => p.url && URL.revokeObjectURL(p.url)); picked = []; drawPicked();
-    say('sendMsg', '등록되었습니다. 감사합니다.', 'ok'); await load();
+    say('sendMsg', editing ? '저장하는 중…' : '등록하는 중…');
+    const r = await api(editing ? { action: 'edit', id: editing.id, who, page: $('page').value, text, files: ids } : { action: 'add', who, page: $('page').value, text, files: ids });
+    if (!r.ok) throw new Error(errText(r.error));
+    picked.forEach(p => p.url && URL.revokeObjectURL(p.url)); picked = [];
+    if (editing) { leaveEdit(); show('vMine'); await loadMine(); say('mineMsg', '수정되었습니다.', 'ok'); }
+    else { setForm('', '전체', []); say('sendMsg', "등록되었습니다. '내가 쓴 글'에서 확인하고 수정하실 수 있습니다.", 'ok'); loadMine(true); }
   } catch (e) { say('sendMsg', '실패: ' + e.message + ' — 다시 시도해 주세요. (쓴 내용은 그대로 남아 있습니다)', 'err'); }
   btn.disabled = false;
 };
 
-// ---- 목록
-async function load() {
-  say('listMsg', '불러오는 중…');
-  try { const r = await api('GET', { action: 'list' }); if (!r.ok) throw new Error(r.error === 'code' ? '입장 암호가 필요합니다.' : r.error); items = r.items || []; say('listMsg', ''); }
-  catch (e) { say('listMsg', '목록을 불러오지 못했습니다: ' + e.message, 'err'); }
-  draw();
-}
-const TABS = [['all', '전체', () => true], ['mine', '내 글', x => x.who === who], ['open', '접수', x => x.status !== '반영 완료'], ['done', '반영 완료', x => x.status === '반영 완료']];
-const when = t => { const d = new Date(t), p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}.${p(d.getMonth() + 1)}.${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`; };
-function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
-function draw() {
-  $('count').textContent = `총 ${items.length}건`;
-  const tb = $('tabs'); tb.textContent = '';
-  TABS.forEach(([k, n, fn]) => { const b = el('button', k === tab ? 'on' : '', n); b.append(el('i', '', String(items.filter(fn).length))); b.onclick = () => { tab = k; draw(); }; tb.append(b); });
-  const ul = $('list'); ul.textContent = '';
-  const rows = items.filter(TABS.find(t => t[0] === tab)[2]);
-  if (!rows.length) { ul.append(el('li', 'empty', '아직 올라온 피드백이 없습니다.')); return; }
-  rows.forEach(x => {
-    const li = el('li', 'item'), meta = el('div', 'meta');
-    meta.append(el('b', '', x.who + ' 교수'), el('span', 'pg', x.page || '전체'), el('span', '', when(x.at)), el('span', 'st' + (x.status === '반영 완료' ? ' done' : ''), x.status || '접수'));
-    li.append(meta, el('p', 'text', x.text));
-    if (x.memo) { const m = el('p', 'memo'); m.append(el('b', '', '답변  '), document.createTextNode(x.memo)); li.append(m); }
-    if (x.files && x.files.length) {
-      const fl = el('ul', 'files');
-      x.files.forEach(f => {
-        const fi = el('li'), ph = el('div', 'ph');
-        if (f.thumb && /^data:image\/jpeg;base64,/.test(f.thumb)) { const im = document.createElement('img'); im.src = f.thumb; im.alt = ''; ph.append(im); } else ph.textContent = (String(f.name).split('.').pop() || '파일').toUpperCase().slice(0, 5);
-        const dl = el('button', '', `원본 받기 (${fmt(+f.size || 0)})`); dl.onclick = () => download(f, dl);
-        fi.append(ph, el('span', 'nm', f.name), dl); fl.append(fi);
-      });
-      li.append(fl);
-    }
-    if (admin) {
-      const a = el('div', 'adm'), done = x.status === '반영 완료';
-      const s = el('button', 'link', done ? '접수로 되돌리기' : '반영 완료로 표시'); s.onclick = () => act({ action: 'status', id: x.id, status: done ? '접수' : '반영 완료' });
-      const m = el('button', 'link', '답변 쓰기'); m.onclick = () => { const t = prompt('교수님께 보일 답변', x.memo || ''); if (t !== null) act({ action: 'status', id: x.id, status: x.status, memo: t }); };
-      const d = el('button', 'link', '삭제'); d.onclick = () => { if (confirm('이 피드백을 목록에서 지울까요? (첨부 파일은 드라이브에 남습니다)')) act({ action: 'delete', id: x.id }); };
-      a.append(s, m, d); li.append(a);
-    }
-    ul.append(li);
+// ---- 교수님: 내가 쓴 글
+async function loadMine(quiet) {
+  if (!quiet) say('mineMsg', '불러오는 중…');
+  try { const r = await api({ action: 'mine', who }); if (!r.ok) throw new Error(errText(r.error)); mine = r.items || []; if (!quiet) say('mineMsg', ''); }
+  catch (e) { if (!quiet) say('mineMsg', '불러오지 못했습니다: ' + e.message, 'err'); }
+  $('mineN').textContent = mine.length ? String(mine.length) : '';
+  const tbody = $('myRows'); tbody.textContent = '';
+  if (!mine.length) { const tr = el('tr'), td = el('td', 'empty', '아직 등록하신 피드백이 없습니다.'); td.colSpan = 5; tr.append(td); tbody.append(tr); return; }
+  mine.forEach(x => {
+    const tr = el('tr'); tr.tabIndex = 0;
+    const st = el('td', 'c-st'); st.append(stEl(x));
+    tr.append(el('td', 'c-pg', x.page || '전체'), el('td', 'c-sum', flat(x.text)), el('td', 'c-at', x.files && x.files.length ? x.files.length + '개' : '–'), el('td', 'c-dt', when(x.at)), st);
+    tr.onclick = () => edit(x); tr.onkeydown = e => { if (e.key === 'Enter') edit(x); };
+    tbody.append(tr);
   });
 }
-async function act(body) {
-  try { const r = await api('POST', { ...body, admin }); if (!r.ok) { if (r.error === 'admin') { admin = ''; alert('관리자 암호가 맞지 않습니다.'); } else alert(r.error); } await load(); }
-  catch (e) { alert('실패: ' + e.message); }
+
+// ---- 관리자: 목록
+async function load() {
+  say('listMsg', '불러오는 중…');
+  try {
+    const r = await api({ action: 'list' });
+    if (!r.ok) { if (r.error === 'admin') { admin = ''; SS.set('fb-admin', ''); show('vLogin'); say('loginMsg', '관리자 암호를 다시 입력해 주세요.', 'err'); return; } throw new Error(errText(r.error)); }
+    items = r.items || []; say('listMsg', '');
+  } catch (e) { say('listMsg', '목록을 불러오지 못했습니다: ' + e.message, 'err'); }
+  route();
 }
+const TABS = [['all', '전체', () => true], ['open', '접수', x => x.status !== '반영 완료'], ['done', '반영 완료', x => x.status === '반영 완료']];
+const when = (t, full) => { const d = new Date(t), p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}.${p(d.getMonth() + 1)}.${p(d.getDate())}` + (full ? ` ${p(d.getHours())}:${p(d.getMinutes())}` : ''); };
+const flat = s => String(s || '').replace(/\s+/g, ' ').trim();
+const title = x => { const l = String(x.text || '').split('\n').map(s => s.trim()).find(Boolean) || '(내용 없음)'; return l.length > 60 ? l.slice(0, 60) + '…' : l; };
+const visible = () => items.filter(TABS.find(t => t[0] === tab)[2]).filter(x => !byWho || x.who === byWho);
+const stEl = x => el('span', 'st' + (x.status === '반영 완료' ? ' done' : ''), x.status || '접수');
+const open = x => { location.hash = 'v=' + x.id; };
+
+function drawList() {
+  show('vList');
+  const nOpen = items.filter(x => x.status !== '반영 완료').length;
+  $('count').textContent = `총 ${items.length}건 · 접수 ${nOpen}건 · 반영 완료 ${items.length - nOpen}건`;
+  const tb = $('tabs'); tb.textContent = '';
+  TABS.forEach(([k, n, fn]) => { const b = el('button', k === tab ? 'on' : '', n); b.append(el('i', '', String(items.filter(fn).length))); b.onclick = () => { tab = k; drawList(); }; tb.append(b); });
+  const names = [...new Set(items.map(x => x.who))].sort((a, b) => (PROFS.indexOf(a) + 1 || 99) - (PROFS.indexOf(b) + 1 || 99));
+  const sel = $('byWho'); sel.textContent = ''; sel.append(new Option('교수 전체', ''), ...names.map(n => new Option(n + ' 교수', n)));
+  if (!names.includes(byWho)) byWho = ''; sel.value = byWho;
+  const tbody = $('rows'); tbody.textContent = '';
+  const rows = visible();
+  if (!rows.length) { const tr = el('tr'), td = el('td', 'empty', '등록된 피드백이 없습니다.'); td.colSpan = 6; tr.append(td); tbody.append(tr); return; }
+  rows.forEach(x => {
+    const tr = el('tr'); tr.tabIndex = 0;
+    const st = el('td', 'c-st'); st.append(stEl(x));
+    tr.append(el('td', 'c-who', x.who), el('td', 'c-pg', x.page || '전체'), el('td', 'c-sum', flat(x.text)), el('td', 'c-at', x.files && x.files.length ? x.files.length + '개' : '–'), el('td', 'c-dt', when(x.at)), st);
+    tr.onclick = () => open(x);
+    tr.onkeydown = e => { if (e.key === 'Enter') open(x); };
+    tbody.append(tr);
+  });
+}
+$('byWho').onchange = e => { byWho = e.target.value; drawList(); };
+$('reload').onclick = load;
+
+// ---- 관리자: 글 보기
+let cur = null;
+function view(x) {
+  cur = x; show('vView'); window.scrollTo(0, 0);
+  $('dPg').textContent = x.page || '전체';
+  $('dT').textContent = title(x);
+  const m = $('dMeta'); m.textContent = ''; m.append(el('b', '', x.who + ' 교수'), el('span', '', when(x.at, true)), stEl(x)); if (x.edited) m.append(el('span', '', '수정 ' + when(x.edited, true)));
+  $('dBody').textContent = x.text;
+  const fs = x.files || [];
+  $('dFilesSec').hidden = !fs.length; $('dFilesN').textContent = fs.length + '개'; fileList($('dFiles'), fs);
+  $('dMemo').value = x.memo || ''; say('dMsg', '');
+  $('dStat').textContent = x.status === '반영 완료' ? '접수로 되돌리기' : '반영 완료로 표시';
+  // 이전 글(더 오래된 글) · 다음 글(더 최근 글) — 지금 보고 있는 목록 기준
+  const list = visible().some(y => y.id === x.id) ? visible() : items, i = list.findIndex(y => y.id === x.id), pn = $('dPn'); pn.textContent = '';
+  [['다음 글', list[i - 1]], ['이전 글', list[i + 1]]].forEach(([lab, y]) => {
+    const li = el('li', y ? '' : 'off'); li.append(el('span', '', lab), el('b', '', y ? `${y.who} 교수 · ${title(y)}` : '없습니다'), el('em', '', y ? when(y.at) : ''));
+    if (y) li.onclick = () => open(y);
+    pn.append(li);
+  });
+}
+function route() {
+  if (!admin) return;
+  const m = location.hash.match(/^#v=(\w+)$/), x = m && items.find(y => y.id === m[1]);
+  x ? view(x) : drawList();
+}
+window.addEventListener('hashchange', route);
+$('dList').onclick = () => { location.hash = 'list'; };
+async function act(body, okText) {
+  say('dMsg', '저장하는 중…');
+  try {
+    const r = await api(body);
+    if (!r.ok) { say('dMsg', errText(r.error), 'err'); return false; }
+    say('dMsg', okText || '', 'ok'); return true;
+  } catch (e) { say('dMsg', '실패: ' + e.message, 'err'); return false; }
+}
+$('dSave').onclick = async () => { if (!cur) return; const memo = $('dMemo').value; if (await act({ action: 'status', id: cur.id, status: cur.status || '접수', memo }, '답변을 저장했습니다.')) cur.memo = memo; };
+$('dStat').onclick = async () => {
+  if (!cur) return; const next = cur.status === '반영 완료' ? '접수' : '반영 완료';
+  if (await act({ action: 'status', id: cur.id, status: next, memo: $('dMemo').value }, next === '반영 완료' ? '반영 완료로 표시했습니다.' : '접수로 되돌렸습니다.')) { cur.status = next; cur.memo = $('dMemo').value; const keep = $('dMsg').textContent; view(cur); say('dMsg', keep, 'ok'); }
+};
+$('dDel').onclick = async () => {
+  if (!cur || !confirm('이 피드백을 목록에서 지울까요? (첨부 파일은 드라이브 폴더에 그대로 남습니다)')) return;
+  if (await act({ action: 'delete', id: cur.id })) { location.hash = 'list'; load(); }
+};
 // 원본 파일 받기: 저장된 내용을 그대로 내려받아 저장(다시 압축하지 않음)
 async function download(f, btn) {
   const old = btn.textContent; btn.textContent = '받는 중…'; btn.disabled = true;
   try {
-    const r = await api('GET', { action: 'file', id: f.id }); if (!r.ok) throw new Error(r.error);
+    const r = await api({ action: 'file', id: f.id, who }); if (!r.ok) throw new Error(errText(r.error));
     const bin = atob(r.data), u8 = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
     const url = URL.createObjectURL(new Blob([u8], { type: r.mime || 'application/octet-stream' })), a = document.createElement('a');
     a.href = url; a.download = r.name || f.name; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 30000);
   } catch (e) { alert('파일을 받지 못했습니다: ' + e.message); }
   btn.textContent = old; btn.disabled = false;
 }
-$('reload').onclick = load;
-$('admin').onclick = () => { if (admin) { admin = ''; draw(); return; } const c = prompt('관리자 암호'); if (c) { admin = c.trim(); draw(); } };
 start();
 </script>
 </body>

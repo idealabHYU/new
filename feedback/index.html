@@ -110,6 +110,7 @@ table.fl { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .fl tbody tr:hover td.c-who { background: #EFF2F6; color: var(--primary); }
 .fl tbody tr:hover td.c-sum, .fl tbody tr:focus-visible td.c-sum { color: var(--primary); text-decoration: underline; text-underline-offset: 4px; }
 .fl tbody tr:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.fl tbody tr.pend { cursor: default; opacity: .6; }
 .fl td.empty { padding: 56px 0; text-align: center; color: var(--ink-3); cursor: default; background: none !important; border-right: 0; }
 .st { display: inline-block; padding: 3px 10px; border: 1.5px solid #AEBBC9; border-radius: 999px; font-size: 13px; font-weight: 800; color: var(--ink-2); background: #fff; white-space: nowrap; }
 .st.done { border-color: #1B7A3E; color: #1B7A3E; }
@@ -275,7 +276,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wr
 </main>
 <footer id="foot"><div class="wrap"><span>한양대학교 ERICA 기계공학과 · 홈페이지 개편 피드백</span><button class="link" id="adminBtn">관리자</button></div></footer>
 
-<script src="config.js?v=4"></script>
+<script src="config.js?v=5"></script>
 <script>
 // 교수진(현행 학과 사이트 순서: 학과장 먼저)
 const PROFS = ['김남욱', '윤준용', '이성환', '이도형', '오제훈', '류근', '김영득', '윤종헌', '이원철', '홍석준', '오준호', '김호준', '김진용', '최이현', '노형도', '김태균', '박지혁', '박주현', '양선웅', '강석경'];
@@ -461,52 +462,90 @@ function edit(x) {
   show('vMain'); window.scrollTo(0, 0);
 }
 $('cancel').onclick = goMine;
+// 화면은 바로 바꾸고, 저장소(구글) 응답은 뒤에서 기다린다. 실패하면 원래대로 되돌리고 알려 준다.
+let busy = 0, mutSeq = 0;   // mutSeq: 화면을 먼저 바꾼 횟수. 그 사이에 받은 옛 목록은 쓰지 않는다
+addEventListener('beforeunload', e => { if (busy) { e.preventDefault(); e.returnValue = ''; } });
+const sortMine = () => mine.sort((x, y) => y.at - x.at);
+async function uploadAll(list, msgId, label) {
+  const ids = [];
+  for (let i = 0; i < list.length; i++) {
+    say(msgId, `${label ? label + ' ' : ''}사진 올리는 중… (${i + 1}/${list.length})`);
+    const r = await api({ action: 'upload', name: list[i].f.name, mime: list[i].f.type, data: await b64(list[i].f), thumb: await thumb(list[i].url) });
+    if (!r.ok) throw new Error(errText(r.error));
+    ids.push(r.id);
+  }
+  return ids;
+}
 $('delMine').onclick = async () => {
   if (!editing || !confirm('이 피드백을 삭제할까요? 삭제하면 되돌릴 수 없습니다.')) return;
-  const btn = $('delMine'); btn.disabled = true;
-  try {
-    const r = await api({ action: 'remove', id: editing.id, who }); if (!r.ok) throw new Error(errText(r.error));
-    leaveEdit(); show('vMine'); await loadMine(); flash('mineMsg', '삭제되었습니다.');
-  } catch (e) { say('sendMsg', '삭제하지 못했습니다: ' + e.message, 'err'); }
-  btn.disabled = false;
+  const x = editing;
+  mutSeq++; leaveEdit(); mine = mine.filter(y => y !== x); show('vMine'); renderMine(); flash('mineMsg', '삭제되었습니다.');
+  busy++;
+  try { const r = await api({ action: 'remove', id: x.id, who }); if (!r.ok) throw new Error(errText(r.error)); }
+  catch (e) { mine.push(x); sortMine(); renderMine(); say('mineMsg', '삭제하지 못했습니다: ' + e.message, 'err'); }
+  mutSeq++; busy--;
 };
 $('send').onclick = async () => {
   const cs = C.map(c => ({ url: normUrl(c.url), text: String(c.text || '').trim() })).filter(c => c.url || c.text);
   const miss = cs.findIndex(c => !c.text);
   if (!cs.length) { say('sendMsg', '코멘트 내용을 입력해 주세요.', 'err'); $('c0t').focus(); return; }
   if (miss >= 0) { const k = C.findIndex(c => normUrl(c.url) === cs[miss].url && !String(c.text || '').trim()); say('sendMsg', `Comment ${k + 1}의 내용을 입력해 주세요.`, 'err'); if ($('c' + k + 't')) $('c' + k + 't').focus(); return; }
-  const btn = $('send'); btn.disabled = true;
-  try {
-    const ids = [];
-    for (let i = 0; i < picked.length; i++) {
-      say('sendMsg', `파일 올리는 중… (${i + 1}/${picked.length}) ${picked[i].f.name}`);
-      const r = await api({ action: 'upload', name: picked[i].f.name, mime: picked[i].f.type, data: await b64(picked[i].f), thumb: await thumb(picked[i].url) });
-      if (!r.ok) throw new Error(errText(r.error));
-      ids.push(r.id);
+  const files = picked.slice(), snapC = C.map(c => ({ ...c }));
+  const tmpFiles = files.map(p => ({ name: p.f.name, size: p.f.size, thumb: '' }));
+  busy++; mutSeq++;
+  if (editing) {   // 수정: 목록을 바로 고치고 뒤에서 저장
+    const x = editing, before = { comments: x.comments, text: x.text, status: x.status, edited: x.edited, files: x.files };
+    Object.assign(x, { comments: cs, text: cs.map(c => c.text).join('\n\n'), status: '접수', edited: Date.now(), files: (x.files || []).concat(tmpFiles), pending: true });
+    picked = []; leaveEdit(); show('vMine'); renderMine(); flash('mineMsg', '수정되었습니다.');
+    try {
+      const ids = await uploadAll(files, 'mineMsg', '');
+      const r = await api({ action: 'edit', id: x.id, who, comments: cs, files: ids }); if (!r.ok) throw new Error(errText(r.error));
+      delete x.pending; renderMine(); if (files.length) flash('mineMsg', '수정되었습니다.');
+      files.forEach(p => p.url && URL.revokeObjectURL(p.url)); mutSeq++; loadMine(true);
+    } catch (e) { Object.assign(x, before); delete x.pending; renderMine(); say('mineMsg', '수정하지 못했습니다: ' + e.message + ' — 다시 시도해 주세요.', 'err'); }
+  } else {         // 새 글: 입력칸을 바로 비우고 '내가 쓴 글'에 먼저 올린 뒤 뒤에서 저장
+    const tmp = { id: 'tmp' + Date.now(), at: Date.now(), who, page: '', text: cs.map(c => c.text).join('\n\n'), comments: cs, status: '접수', memo: '', files: tmpFiles, pending: true };
+    mine.unshift(tmp); renderMine();
+    picked = []; setForm([], []);
+    flash('sendMsg', '등록되었습니다. 이어서 코멘트를 작성하실 수 있습니다.');
+    try {
+      const ids = await uploadAll(files, 'sendMsg', '방금 쓴 글의');
+      const r = await api({ action: 'add', who, comments: cs, files: ids }); if (!r.ok) throw new Error(errText(r.error));
+      tmp.id = r.id; delete tmp.pending; renderMine();
+      if (files.length) flash('sendMsg', '사진까지 모두 등록되었습니다.');
+      files.forEach(p => p.url && URL.revokeObjectURL(p.url)); mutSeq++; loadMine(true);
+    } catch (e) {
+      mine = mine.filter(y => y !== tmp); renderMine();
+      if (!C.some(c => c.url || c.text) && !picked.length) { C = snapC; drawCmts(); picked = files; drawPicked(); }
+      say('sendMsg', '등록하지 못했습니다: ' + e.message + ' — 쓴 내용을 다시 채워 두었으니 한 번 더 눌러 주세요.', 'err');
     }
-    say('sendMsg', editing ? '저장하는 중…' : '등록하는 중…');
-    const r = await api(editing ? { action: 'edit', id: editing.id, who, comments: cs, files: ids } : { action: 'add', who, comments: cs, files: ids });
-    if (!r.ok) throw new Error(errText(r.error));
-    picked.forEach(p => p.url && URL.revokeObjectURL(p.url)); picked = [];
-    if (editing) { leaveEdit(); show('vMine'); await loadMine(); flash('mineMsg', '수정되었습니다.'); }
-    else { setForm([], []); window.scrollTo(0, $('cmts').getBoundingClientRect().top + scrollY - 120); flash('sendMsg', '등록되었습니다. 이어서 코멘트를 작성하실 수 있습니다.'); loadMine(true); }
-  } catch (e) { say('sendMsg', '실패: ' + e.message + ' — 다시 시도해 주세요. (쓴 내용은 그대로 남아 있습니다)', 'err'); }
-  btn.disabled = false;
+  }
+  mutSeq++; busy--;
 };
 
 // ---- 교수님: 내가 쓴 글
 async function loadMine(quiet) {
-  if (!quiet) say('mineMsg', '불러오는 중…');
-  try { const r = await api({ action: 'mine', who }); if (!r.ok) throw new Error(errText(r.error)); mine = r.items || []; if (!quiet) say('mineMsg', ''); }
-  catch (e) { if (!quiet) say('mineMsg', '불러오지 못했습니다: ' + e.message, 'err'); }
+  if (!quiet && !mine.length) say('mineMsg', '불러오는 중…');
+  const s0 = mutSeq;
+  try {
+    const r = await api({ action: 'mine', who }); if (!r.ok) throw new Error(errText(r.error));
+    if (s0 !== mutSeq) return renderMine();   // 그 사이 화면에서 고친 내용이 있으면 옛 목록은 버린다
+    const pend = mine.filter(x => x.pending);     // 아직 저장 중인 글은 그대로 둔다
+    mine = pend.concat((r.items || []).filter(x => !pend.some(p => p.id === x.id)));
+    if (!quiet && $('mineMsg').className.indexOf('ok') < 0) say('mineMsg', '');
+  } catch (e) { if (!quiet) say('mineMsg', '불러오지 못했습니다: ' + e.message, 'err'); }
+  renderMine();
+}
+function renderMine() {
   $('mineN').textContent = mine.length ? String(mine.length) : '';
   const tbody = $('myRows'); tbody.textContent = '';
   if (!mine.length) { const tr = el('tr'), td = el('td', 'empty', '아직 등록하신 피드백이 없습니다.'); td.colSpan = 5; tr.append(td); tbody.append(tr); return; }
   mine.forEach(x => {
     const tr = el('tr'); tr.tabIndex = 0;
-    const st = el('td', 'c-st'); st.append(stEl(x));
+    const st = el('td', 'c-st'); st.append(x.pending ? el('span', 'st', '저장 중') : stEl(x));
     tr.append(el('td', 'c-pg', pageLabel(x)), el('td', 'c-sum', sumOf(x)), el('td', 'c-at', x.files && x.files.length ? x.files.length + '개' : '–'), el('td', 'c-dt', when(x.at)), st);
-    tr.onclick = () => edit(x); tr.onkeydown = e => { if (e.key === 'Enter') edit(x); };
+    if (x.pending) tr.classList.add('pend');
+    else { tr.onclick = () => edit(x); tr.onkeydown = e => { if (e.key === 'Enter') edit(x); }; }
     tbody.append(tr);
   });
 }
@@ -587,22 +626,28 @@ function route() {
 }
 window.addEventListener('hashchange', route);
 $('dList').onclick = () => { location.hash = 'list'; };
-async function act(body, okText) {
-  say('dMsg', '저장하는 중…');
-  try {
-    const r = await api(body);
-    if (!r.ok) { say('dMsg', errText(r.error), 'err'); return false; }
-    say('dMsg', okText || '', 'ok'); return true;
-  } catch (e) { say('dMsg', '실패: ' + e.message, 'err'); return false; }
+// 관리자 처리도 화면 먼저 바꾸고 뒤에서 저장 (실패하면 되돌림)
+async function act(body, undo) {
+  busy++;
+  try { const r = await api(body); if (!r.ok) throw new Error(errText(r.error)); }
+  catch (e) { undo(); say('dMsg', '저장하지 못했습니다: ' + e.message, 'err'); if (cur && !$('vView').hidden) { const m = $('dMsg').textContent; view(cur); say('dMsg', m, 'err'); } else drawList(); }
+  busy--;
 }
-$('dSave').onclick = async () => { if (!cur) return; const memo = $('dMemo').value; if (await act({ action: 'status', id: cur.id, status: cur.status || '접수', memo }, '답변을 저장했습니다.')) cur.memo = memo; };
-$('dStat').onclick = async () => {
-  if (!cur) return; const next = cur.status === '반영 완료' ? '접수' : '반영 완료';
-  if (await act({ action: 'status', id: cur.id, status: next, memo: $('dMemo').value }, next === '반영 완료' ? '반영 완료로 표시했습니다.' : '접수로 되돌렸습니다.')) { cur.status = next; cur.memo = $('dMemo').value; const keep = $('dMsg').textContent; view(cur); say('dMsg', keep, 'ok'); }
+$('dSave').onclick = () => {
+  if (!cur) return; const x = cur, old = x.memo, memo = $('dMemo').value;
+  x.memo = memo; flash('dMsg', '답변을 저장했습니다.');
+  act({ action: 'status', id: x.id, status: x.status || '접수', memo }, () => { x.memo = old; });
 };
-$('dDel').onclick = async () => {
+$('dStat').onclick = () => {
+  if (!cur) return; const x = cur, old = [x.status, x.memo], next = x.status === '반영 완료' ? '접수' : '반영 완료';
+  x.status = next; x.memo = $('dMemo').value; view(x); flash('dMsg', next === '반영 완료' ? '반영 완료로 표시했습니다.' : '접수로 되돌렸습니다.');
+  act({ action: 'status', id: x.id, status: next, memo: x.memo }, () => { [x.status, x.memo] = old; });
+};
+$('dDel').onclick = () => {
   if (!cur || !confirm('이 피드백을 목록에서 지울까요? (첨부 파일은 드라이브 폴더에 그대로 남습니다)')) return;
-  if (await act({ action: 'delete', id: cur.id })) { location.hash = 'list'; load(); }
+  const x = cur, i = items.indexOf(x);
+  items = items.filter(y => y !== x); location.hash = 'list';
+  act({ action: 'delete', id: x.id }, () => { items.splice(i, 0, x); });
 };
 // 원본 파일 받기: 저장된 내용을 그대로 내려받아 저장(다시 압축하지 않음)
 async function download(f, btn) {

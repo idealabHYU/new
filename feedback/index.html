@@ -312,12 +312,16 @@ function show(v) {
   if (v === 'vCode') $('codeIn').focus();
   if (v === 'vLogin') { $('loginIn').value = ''; say('loginMsg', '', 'err'); $('loginIn').focus(); }
 }
-async function start() {
+function start() {
   $('siteLink').href = typeof SITE_URL === 'string' ? SITE_URL : '#';
   $('preview').hidden = LIVE;
-  try { const p = await api({ action: 'ping' }); if (p.ok && p.needCode && !code) return show('vCode'); } catch (e) {}
-  if (admin) return load();
-  home();
+  // 서버 응답(1~5초)을 기다리지 않고 첫 화면을 바로 보여 준다
+  if (LIVE && !code && LS.get('fb-open') !== '1') {
+    show('vCode');
+    api({ action: 'ping' }).then(p => { if (p.ok && !p.needCode) { LS.set('fb-open', '1'); if (!$('vCode').hidden) admin ? load() : home(); } }).catch(() => {});
+    return;
+  }
+  admin ? load() : home();
 }
 function home() { if (!who) return show('vName'); goWrite(); loadMine(true); }
 $('names').append(...PROFS.map(n => { const b = el('button', '', n); b.append(el('small', '', '교수')); b.onclick = () => { who = n; LS.set('fb-who', who); mine = []; home(); }; return b; }));
@@ -455,6 +459,7 @@ async function loadMine(quiet) {
 
 // ---- 관리자: 목록
 async function load() {
+  if ($('vList').hidden && $('vView').hidden) { show('vList'); $('count').textContent = '불러오는 중…'; }
   say('listMsg', '불러오는 중…');
   try {
     const r = await api({ action: 'list' });

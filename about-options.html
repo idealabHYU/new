@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>학과소개 시안</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root { --primary: #0E4A84; --accent: #5CC6F2; --ink: #0F1B2D; --ink2: #3A4756; --ink3: #6B7A8C; --line: #E3E8EF; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Pretendard, sans-serif; background: #F4F5F7; color: var(--ink); padding: 30px 28px 80px; }
+  .lbl { max-width: 988px; margin: 0 auto 14px; font-size: 20px; font-weight: 800; color: var(--primary); }
+  .lbl small { font-size: 15px; color: var(--ink3); font-weight: 500; margin-left: 8px; }
+  .box { max-width: 988px; margin: 0 auto 90px; }
+  img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  em { font-style: normal; color: var(--primary); }
+  .k { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 800; letter-spacing: 2px; color: var(--primary); }
+  .k::before { content: ''; width: 26px; height: 3px; border-radius: 3px; background: var(--accent); }
+
+  /* A: 편집형 — 글 왼쪽 / 세로 사진 오른쪽, 숫자는 선으로만 구분, 역량은 한 줄 타이포 */
+  .A .top { display: grid; grid-template-columns: 1fr 400px; gap: 48px; align-items: end; }
+  .A h2 { font-size: 46px; line-height: 1.25; letter-spacing: -1.8px; margin-top: 14px; }
+  .A p { margin-top: 18px; font-size: 18.5px; line-height: 1.8; color: var(--ink2); word-break: keep-all; }
+  .A .ph { height: 440px; border-radius: 4px 120px 4px 4px; overflow: hidden; }
+  .A .num { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 48px; border-top: 2px solid var(--ink); }
+  .A .num div { padding: 22px 0 0 0; }
+  .A .num div + div { padding-left: 28px; border-left: 1px solid var(--line); }
+  .A .num b { display: block; font-size: 40px; font-weight: 800; letter-spacing: -1.5px; }
+  .A .num b i { font-style: normal; font-size: 20px; color: var(--primary); margin-left: 2px; }
+  .A .num span { font-size: 15px; color: var(--ink3); font-weight: 600; }
+  .A .vis { margin-top: 80px; }
+  .A .vis h3 { font-size: 30px; letter-spacing: -1px; margin-top: 10px; }
+  .A .words { display: flex; justify-content: space-between; margin-top: 28px; padding: 30px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .A .words span { font-size: 40px; font-weight: 800; letter-spacing: -1.5px; }
+  .A .words span sup { font-size: 14px; font-weight: 800; color: var(--accent); margin-right: 8px; vertical-align: 22px; letter-spacing: 1px; }
+  .A .words i { width: 1px; background: var(--line); }
+
+  /* B: 사진 배너 위에 제목과 숫자 — 박스 없이 사진 하나로 */
+  .B .ban { position: relative; height: 520px; border-radius: 24px; overflow: hidden; color: #fff; }
+  .B .ban::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,18,30,.15) 0%, rgba(10,18,30,.35) 45%, rgba(10,18,30,.88) 100%); }
+  .B .in { position: absolute; z-index: 1; left: 48px; right: 48px; bottom: 40px; }
+  .B .k { color: #fff; }
+  .B h2 { font-size: 48px; line-height: 1.22; letter-spacing: -1.8px; margin-top: 12px; }
+  .B h2 em { color: var(--accent); }
+  .B .num { display: flex; gap: 0; margin-top: 30px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.3); }
+  .B .num div { flex: 1; }
+  .B .num div + div { padding-left: 26px; border-left: 1px solid rgba(255,255,255,.25); }
+  .B .num b { display: block; font-size: 36px; font-weight: 800; letter-spacing: -1.2px; }
+  .B .num b i { font-style: normal; font-size: 18px; color: var(--accent); margin-left: 2px; }
+  .B .num span { font-size: 14.5px; opacity: .8; font-weight: 600; }
+  .B .vis { display: grid; grid-template-columns: 300px 1fr; gap: 40px; margin-top: 72px; }
+  .B .vis h3 { font-size: 32px; line-height: 1.3; letter-spacing: -1px; margin-top: 10px; }
+  .B ol { list-style: none; counter-reset: v; }
+  .B li { counter-increment: v; display: grid; grid-template-columns: 56px 1fr; align-items: baseline; padding: 20px 0; border-top: 1px solid var(--line); }
+  .B li:last-child { border-bottom: 1px solid var(--line); }
+  .B li::before { content: '0' counter(v); font-size: 15px; font-weight: 800; color: var(--accent); letter-spacing: 1px; }
+  .B li b { font-size: 26px; font-weight: 800; letter-spacing: -.6px; }
+
+  /* C: 숫자 '1979' 타이포가 주인공 + 사진 3장 띠 + 역량은 문장 속 강조 */
+  .C .top { display: grid; grid-template-columns: auto 1fr; gap: 44px; align-items: center; }
+  .C .yr { font-size: 170px; font-weight: 900; letter-spacing: -8px; line-height: .9; color: transparent; -webkit-text-stroke: 2px var(--primary); }
+  .C h2 { font-size: 40px; line-height: 1.3; letter-spacing: -1.4px; margin-top: 12px; }
+  .C .top p { margin-top: 14px; font-size: 18px; line-height: 1.8; color: var(--ink2); word-break: keep-all; }
+  .C .strip { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 10px; height: 280px; margin-top: 44px; }
+  .C .strip div { border-radius: 18px; overflow: hidden; }
+  .C .num { display: flex; justify-content: center; gap: 56px; margin-top: 34px; }
+  .C .num div { text-align: center; }
+  .C .num b { display: block; font-size: 34px; font-weight: 800; letter-spacing: -1.2px; }
+  .C .num b i { font-style: normal; font-size: 17px; color: var(--primary); margin-left: 2px; }
+  .C .num span { font-size: 15px; color: var(--ink3); font-weight: 600; }
+  .C .vis { margin-top: 80px; text-align: center; }
+  .C .vis p { margin-top: 18px; font-size: 36px; line-height: 1.6; font-weight: 700; letter-spacing: -1.2px; color: var(--ink2); word-break: keep-all; }
+  .C .vis p b { color: var(--ink); font-weight: 800; background: linear-gradient(transparent 62%, rgba(92,198,242,.35) 62%); padding: 0 2px; }
+  .sec { max-width: 988px; margin: 0 auto 30px; padding-top: 20px; border-top: 3px solid var(--ink); font-size: 26px; font-weight: 900; }
+
+  /* 인사말 공통: 숫자 줄 (박스 없음) */
+  .gn { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 44px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .gn div { padding: 24px 0; text-align: center; }
+  .gn div + div { border-left: 1px solid var(--line); }
+  .gn b { display: block; font-size: 38px; font-weight: 800; letter-spacing: -1.4px; color: var(--primary); }
+  .gn b i { font-style: normal; font-size: 19px; color: var(--ink); margin-left: 2px; }
+  .gn span { font-size: 14.5px; color: var(--ink3); font-weight: 600; }
+  .more { display: flex; justify-content: center; margin-top: 28px; }
+  .more a { display: inline-flex; align-items: center; gap: 12px; font-size: 17px; font-weight: 800; color: var(--ink); }
+  .more a i { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: #fff; font-style: normal; font-size: 22px; font-weight: 400; }
+
+  /* G1: 편집형 편지 — 왼쪽 큰 문장 + 서명, 오른쪽 요약 */
+  .G1 .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  .G1 h2 { font-size: 42px; line-height: 1.3; letter-spacing: -1.6px; margin-top: 14px; }
+  .G1 .sign { margin-top: 36px; display: flex; align-items: baseline; gap: 12px; }
+  .G1 .sign span { font-size: 16px; color: var(--ink3); font-weight: 600; }
+  .G1 .sign b { font-size: 28px; letter-spacing: 3px; }
+  .G1 .body { padding-top: 42px; }
+  .G1 .body p { font-size: 18px; line-height: 1.9; color: var(--ink2); word-break: keep-all; }
+  .G1 .body p + p { margin-top: 16px; }
+  /* G2: 가운데 큰 따옴표 + 문장, 박스 없음 */
+  .G2 .q { text-align: center; }
+  .G2 .q::before { content: '“'; display: block; font-size: 120px; line-height: .6; font-weight: 800; color: var(--accent); font-family: Georgia, serif; }
+  .G2 h2 { margin-top: 18px; font-size: 46px; line-height: 1.3; letter-spacing: -1.8px; }
+  .G2 .q p { margin-top: 18px; font-size: 18.5px; line-height: 1.8; color: var(--ink2); }
+  .G2 .sign { margin-top: 26px; font-size: 16px; color: var(--ink3); font-weight: 600; }
+  .G2 .sign b { margin-left: 10px; font-size: 24px; letter-spacing: 3px; color: var(--ink); }
+
+  /* H1: 세로 타임라인 — 연도 | 점 | 내용, 모든 줄 정렬 */
+  .H1 ol { list-style: none; margin-top: 36px; }
+  .H1 li { display: grid; grid-template-columns: 120px 40px 1fr; align-items: start; }
+  .H1 li b { padding: 14px 0; text-align: right; font-size: 26px; font-weight: 800; letter-spacing: -.8px; line-height: 1.2; }
+  .H1 li .dot { position: relative; align-self: stretch; }
+  .H1 li .dot::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #D3DDE8; }
+  .H1 li:first-child .dot::before { top: 24px; } .H1 li:last-child .dot::before { bottom: auto; height: 24px; }
+  .H1 li .dot::after { content: ''; position: absolute; left: 50%; top: 19px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: #fff; border: 2.5px solid var(--primary); box-sizing: border-box; }
+  .H1 li.key .dot::after { background: var(--primary); }
+  .H1 li.key b { color: var(--primary); }
+  .H1 li div { padding: 16px 0 16px 4px; border-bottom: 1px solid var(--line); }
+  .H1 li p { font-size: 17px; line-height: 1.6; color: var(--ink); word-break: keep-all; }
+  .H1 li p + p { margin-top: 4px; }
+  /* H2: 가로 타임라인 — 점 · 연도 · 글 모두 가운데 정렬, 칸 폭 동일 */
+  .H2 ol { position: relative; list-style: none; display: grid; grid-template-columns: repeat(6, 1fr); margin-top: 44px; }
+  .H2 ol::before { content: ''; position: absolute; left: calc(100% / 12); right: calc(100% / 12); top: 57px; height: 2px; background: #D3DDE8; }
+  .H2 li { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 8px; }
+  .H2 li b { font-size: 30px; font-weight: 800; letter-spacing: -1px; line-height: 1; height: 38px; }
+  .H2 li i { position: relative; z-index: 1; width: 16px; height: 16px; margin: 12px 0 18px; border-radius: 50%; background: #fff; border: 3px solid var(--primary); box-sizing: border-box; }
+  .H2 li.key i { background: var(--primary); box-shadow: 0 0 0 6px rgba(92,198,242,.3); }
+  .H2 li.key b { color: var(--primary); }
+  .H2 li span { font-size: 15.5px; line-height: 1.55; font-weight: 600; color: var(--ink2); word-break: keep-all; }
+</style>
+</head>
+<body>
+<script src="data.js"></script>
+<script>
+const IM = FIELD_IMG;
+const NUM = cls => `<div class="num"><div><b>1979</b><span>ERICA와 함께 출범</span></div><div><b>20<i>여 명</i></b><span>전원 박사 교수진</span></div><div><b>6,500<i>+</i></b><span>졸업생</span></div><div><b>BK21</b><span>4단계 교육연구단</span></div></div>`;
+const LEAD = '산업도시 안산에서 40여 년간 대한민국 기계공학의 고급 인력을 길러 왔습니다.';
+const O = [
+  ['A', '편집형', '글 왼쪽 + 세로 사진, 숫자와 역량은 선으로만 구분',
+   `<div class="A"><div class="top"><div><span class="k">ABOUT</span><h2>1979년부터,<br>대한민국 <em>기계공학</em>의<br>중심</h2><p>${LEAD}</p></div><div class="ph"><img src="${IM.robot[0]}" alt=""></div></div>
+    ${NUM()}
+    <div class="vis"><span class="k">VISION</span><h3>어느 분야에서든 앞서가는 네 가지 힘</h3>
+      <div class="words"><span><sup>01</sup>창의력</span><i></i><span><sup>02</sup>해석력</span><i></i><span><sup>03</sup>통합력</span><i></i><span><sup>04</sup>현실구현화</span></div></div></div>`],
+  ['B', '사진 배너형', '큰 사진 한 장 위에 제목·숫자, 역량은 왼쪽 제목 + 오른쪽 목록',
+   `<div class="B"><div class="ban"><img src="${IM.robot[0]}" alt=""><div class="in"><span class="k">ABOUT</span><h2>1979년부터, 대한민국<br><em>기계공학</em>의 중심</h2>${NUM()}</div></div>
+    <div class="vis"><div><span class="k">VISION</span><h3>어느 분야에서든<br>앞서가는 네 가지 힘</h3></div>
+      <ol><li><b>창의력</b></li><li><b>해석력</b></li><li><b>통합력</b></li><li><b>현실구현화</b></li></ol></div></div>`],
+  ['C', '타이포형', "큰 '1979' 글자 + 사진 3장 띠, 역량은 한 문장 속 강조",
+   `<div class="C"><div class="top"><div class="yr">1979</div><div><span class="k">ABOUT</span><h2>대한민국 <em>기계공학</em>의<br>중심이 되어 온 학과</h2><p>${LEAD}</p></div></div>
+    <div class="strip"><div><img src="${IM.robot[0]}" alt=""></div><div><img src="${IM.semi[0]}" alt=""></div><div><img src="${IM.mobility[1]}" alt=""></div></div>
+    ${NUM()}
+    <div class="vis"><span class="k">VISION</span><p>어느 분야에서든 앞서가는<br><b>창의력</b> · <b>해석력</b> · <b>통합력</b> · <b>현실구현화</b>를 기릅니다</p></div></div>`],
+];
+const GN = `<div class="gn"><div><b>6,500<i>+</i></b><span>졸업생 배출</span></div><div><b>2<i>위</i></b><span>대교협 기계분야 평가 (2004)</span></div><div><b>10<i>위</i></b><span>중앙일보 학과평가 (2013)</span></div><div><b>109<i>위</i></b><span>QS 세계대학 학문분야 평가</span></div></div>`;
+const MORE = t => `<div class="more"><a href="#">${t}<i>+</i></a></div>`;
+const G = [
+  ['G1', '편집형 편지', '왼쪽 큰 문장 + 서명, 오른쪽 요약 글. 숫자는 위아래 선만',
+   `<div class="G1"><div class="wrap"><div><span class="k">GREETING</span><h2>21세기 국가산업을 이끌<br><em>기계공학 인재</em>를<br>기릅니다</h2><div class="sign"><span>기계공학과 학과장</span><b>김남욱</b></div></div>
+     <div class="body"><p>자동차 · 선박 · 항공기 · 반도체부터 로봇 · 에너지 · 플랜트까지, 기계공학은 우리 산업의 거의 모든 분야를 아우릅니다.</p><p>1979년 ERICA캠퍼스와 함께 시작한 우리 학과는 실용 · 창의 · 전문 · 융합형 글로벌 기계인력을 길러 왔으며, 앞으로도 세계적 수준의 교육과 연구를 이어가겠습니다.</p></div></div>${GN}${MORE('인사말 전문 보기')}</div>`],
+  ['G2', '가운데 인용형', '큰 따옴표와 문장을 가운데로, 상자 없이',
+   `<div class="G2"><div class="q"><h2>21세기 국가산업을 이끌<br><em>기계공학 인재</em>를 기릅니다</h2><p>자동차 · 선박 · 항공기 · 반도체부터 로봇 · 에너지 · 플랜트까지,<br>기계공학은 우리 산업의 거의 모든 분야를 아우릅니다.</p><p class="sign">기계공학과 학과장<b>김남욱</b></p></div>${GN}${MORE('인사말 전문 보기')}</div>`],
+];
+const HALL = [['1979', ['기계공학과 신설 (500명)']], ['1987', ['공학대학 기계공학과로 소속 변경']], ['1999', ['기계산업공학부로 통합', '1단계 BK21 기계분야 사업단 선정 (서울대학교와 공동)']], ['2001', ['기계정보경영공학부 기계공학전공으로 명칭 변경']], ['2003', ['학연산 클러스터(기계부품 관련학과) 특성화사업 선정']], ['2004', ['한국대학교육협의회 기계공학과 평가 전국 2위', 'HYU Global 학과 선정 · 산학협력 중심대학 선정']], ['2006', ['2단계 BK21 기계분야 사업단 선정']], ['2010', ['기계공학과로 학과제 전환']], ['2012', ["대교협 산업계 관점 대학평가 '최우수' · 교과과정 일치도 '최우수'"]], ['2014', ['수도권대학 특성화 사업 (CK-II) 선정']], ['2015', ['HYU 학과평가 최우수상 수상']], ['2016', ["중앙일보 학과평가 '상' 등급 · PRIME 사업 선정"]], ['2017', ['에너지인력양성사업 선정']], ['2020', ['4단계 BK21 교육연구단 선정', '스마트건설기계 인력양성사업 선정']]];
+const KEY = ['1979', '1999', '2004', '2010', '2020'];
+const H = [
+  ['H1', '세로 타임라인 (전체 연혁 바로 보임)', '연도 오른쪽 정렬 · 점 · 내용 왼쪽 정렬로 모든 줄을 맞춤, 주요 연도만 파란색 — 접기 버튼 필요 없음',
+   `<div class="H1"><span class="k">HISTORY</span><h2 style="font-size:40px;letter-spacing:-1.5px;margin-top:10px">1979년부터 이어온 <em>40여 년</em></h2><ol>${HALL.map(([y, e]) => `<li class="${KEY.includes(y) ? 'key' : ''}"><b>${y}</b><span class="dot"></span><div>${e.map(x => `<p>${x}</p>`).join('')}</div></li>`).join('')}</ol></div>`],
+  ['H2', '가로 타임라인 (가운데 정렬)', '연도 · 점 · 설명을 칸 가운데에 맞춤, 선은 첫 점에서 끝 점까지만',
+   `<div class="H2"><span class="k">HISTORY</span><h2 style="font-size:40px;letter-spacing:-1.5px;margin-top:10px">1979년부터 이어온 <em>40여 년</em></h2><ol>${[['1979', '기계공학과 신설'], ['1999', '1단계 BK21<br>사업단 선정'], ['2004', '대교협 평가<br>전국 2위'], ['2010', '기계공학과<br>학과제 전환'], ['2012', '산업계 관점<br>대학평가 최우수'], ['2020', '4단계 BK21<br>교육연구단 선정']].map(([y, e], i, a) => `<li class="${i === a.length - 1 ? 'key' : ''}"><b>${y}</b><i></i><span>${e}</span></li>`).join('')}</ol>${MORE('전체 연혁 보기')}</div>`],
+];
+const sec = (title, list) => `<p class="sec">${title}</p>` + list.map(([id, t, d, h]) => `<p class="lbl">${id}안 · ${t}<small>${d}</small></p><div class="box">${h}</div>`).join('');
+document.body.innerHTML = sec('① 학과소개', O) + sec('② 학과장 인사말', G) + sec('③ 연혁', H);
+</script>
+</body>
+</html>

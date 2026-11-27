@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>학과 소식 시안</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root { --primary: #0E4A84; --accent: #5CC6F2; --ink: #0F1B2D; --ink2: #3A4756; --ink3: #6B7A8C; --line: #E3E8EF; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  a { color: inherit; text-decoration: none; }
+  body { font-family: Pretendard, sans-serif; background: #F4F5F7; color: var(--ink); padding: 30px 28px 80px; }
+  .lbl { max-width: 1180px; margin: 0 auto 12px; font-size: 20px; font-weight: 800; color: var(--primary); }
+  .lbl small { font-size: 15px; color: var(--ink3); font-weight: 500; margin-left: 8px; }
+  .box { max-width: 1180px; margin: 0 auto 56px; }
+  .cat { font-size: 13.5px; font-weight: 800; color: var(--primary); }
+  time { font-size: 14px; color: var(--ink3); }
+  img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+  /* A: 큰 사진 + 오른쪽 글 목록 */
+  .A { display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px; align-items: stretch; }
+  .A .feat { border-radius: 20px; overflow: hidden; height: 340px; position: relative; }
+  .A .feat span { position: absolute; left: 18px; top: 18px; background: #fff; color: var(--primary); font-size: 13px; font-weight: 800; padding: 6px 10px; border-radius: 8px; }
+  .A ul { list-style: none; display: flex; flex-direction: column; justify-content: center; }
+  .A li { padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .A li:first-child { border-top: 2px solid var(--ink); }
+  .A li b { display: block; font-size: 20px; letter-spacing: -.5px; margin: 6px 0 8px; line-height: 1.4; }
+
+  /* B: 가로 카드 3개 (작은 썸네일 + 글) */
+  .B { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .B a { display: grid; grid-template-rows: 64px auto; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 22px; gap: 18px; }
+  .B .th { display: flex; align-items: center; gap: 14px; }
+  .B .th div { width: 64px; height: 64px; border-radius: 14px; overflow: hidden; flex: none; }
+  .B b { font-size: 19px; line-height: 1.45; letter-spacing: -.5px; }
+
+  /* C: 글만, 위에 굵은 블루 선 */
+  .C { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .C a { background: #fff; border-radius: 4px 4px 18px 18px; border-top: 5px solid var(--primary); padding: 28px 26px 26px; display: flex; flex-direction: column; min-height: 230px; box-shadow: 0 14px 30px -24px rgba(14,74,132,.5); }
+  .C .d { font-size: 34px; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
+  .C .d small { font-size: 15px; color: var(--ink3); margin-left: 6px; font-weight: 600; }
+  .C b { font-size: 19.5px; line-height: 1.45; letter-spacing: -.5px; margin: 12px 0 0; }
+  .C .more { margin-top: auto; padding-top: 18px; font-size: 15px; font-weight: 800; color: var(--primary); }
+
+  /* D: 위아래 2단 — 위 큰 기사 가로 배너 + 아래 작은 기사 2개 */
+  .D .top { display: grid; grid-template-columns: 460px 1fr; background: #fff; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+  .D .top .im { height: 260px; }
+  .D .top .tx { padding: 34px 38px; display: flex; flex-direction: column; justify-content: center; }
+  .D .top b { font-size: 26px; letter-spacing: -.8px; line-height: 1.4; margin: 10px 0 12px; }
+  .D .top p { font-size: 16.5px; color: var(--ink3); margin-bottom: 14px; }
+  .D .bot { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+  .D .bot a { display: flex; justify-content: space-between; align-items: center; gap: 20px; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 20px 24px; }
+  .D .bot b { display: block; font-size: 17.5px; letter-spacing: -.4px; margin-top: 4px; }
+
+  /* E: 사진 위 글 3장 (세로 카드) */
+  .E { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .E a { position: relative; height: 320px; border-radius: 20px; overflow: hidden; }
+  .E a::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 30%, rgba(10,18,30,.85)); }
+  .E .tx { position: absolute; z-index: 1; left: 24px; right: 24px; bottom: 22px; color: #fff; }
+  .E .cat { color: var(--accent); }
+  .E b { display: block; font-size: 20px; line-height: 1.4; letter-spacing: -.5px; margin: 6px 0 8px; }
+  .E time { color: rgba(255,255,255,.75); }
+</style>
+</head>
+<body>
+<script>
+const IMG = {
+  semi: 'https://images.unsplash.com/photo-1587845323226-bad89242c735?auto=format&fit=crop&w=1200&q=80',
+  erica: 'https://cdn.newshyu.com/news/photo/202403/1013659_228226_454.jpg',
+  energy: 'https://images.unsplash.com/photo-1630142895963-6996ae6b3a5b?auto=format&fit=crop&w=1200&q=80',
+};
+const N = [
+  ['연구 성과', "홍석준 교수, 한국연구재단 '한우물파기 기초연구' 선정", '연 1억 6천만 원 규모로 최대 10년간 장기 기초연구를 수행합니다.', '2026.03.24', IMG.semi],
+  ['취업', '한양대 ERICA, 취업률 71.3%로 전국 4년제 대학 7위', '2023년 정보공시 기준, 졸업생 2,000명 이상 대학 중 전국 7위.', '2024.03.25', IMG.erica],
+  ['연구 성과', '최준명 교수 연구팀, 친환경 유기전지 수명 연장 전해질 개발', 'UNIST 연구팀과 함께 유기전극의 용출을 막아 전지 수명을 늘렸습니다.', '2024.02.26', IMG.energy],
+];
+const md = d => d.slice(5), yr = d => d.slice(0, 4);
+const O = [
+  ['A', '큰 사진 1장 + 오른쪽 글 목록', '사진은 대표 기사 하나만, 나머지는 글로 깔끔하게',
+    `<div class="A"><a class="feat" href="#"><img src="${N[0][4]}"><span>${N[0][0]}</span></a><ul>${N.map(n => `<li><a href="#"><span class="cat">${n[0]}</span><b>${n[1]}</b><time>${n[3]}</time></a></li>`).join('')}</ul></div>`],
+  ['B', '작은 썸네일 가로 카드 3개', '사진은 작게, 제목이 주인공',
+    `<div class="B">${N.map(n => `<a href="#"><div class="th"><div><img src="${n[4]}"></div><div><span class="cat">${n[0]}</span><br><time>${n[3]}</time></div></div><b>${n[1]}</b></a>`).join('')}</div>`],
+  ['C', '글만 있는 카드 3개 (위 굵은 블루 선 + 큰 날짜)', '사진 없이 반듯하게',
+    `<div class="C">${N.map(n => `<a href="#"><div class="d">${md(n[3])}<small>${yr(n[3])}</small></div><span class="cat" style="margin-top:14px">${n[0]}</span><b>${n[1]}</b><span class="more">자세히 보기 →</span></a>`).join('')}</div>`],
+  ['D', '위 큰 가로 배너 + 아래 작은 기사 2개', '대표 기사를 크게 강조',
+    `<div class="D"><a class="top" href="#"><div class="im"><img src="${N[0][4]}"></div><div class="tx"><span class="cat">${N[0][0]}</span><b>${N[0][1]}</b><p>${N[0][2]}</p><time>${N[0][3]}</time></div></a><div class="bot">${N.slice(1).map(n => `<a href="#"><div><span class="cat">${n[0]}</span><b>${n[1]}</b></div><time>${n[3]}</time></a>`).join('')}</div></div>`],
+  ['E', '사진 위 글 세로 카드 3장', '사진을 크게, 잡지 느낌',
+    `<div class="E">${N.map(n => `<a href="#"><img src="${n[4]}"><div class="tx"><span class="cat">${n[0]}</span><b>${n[1]}</b><time>${n[3]}</time></div></a>`).join('')}</div>`],
+];
+document.body.innerHTML = O.map(([id, t, d, h]) => `<p class="lbl">${id}안 · ${t}<small>${d}</small></p><div class="box">${h}</div>`).join('');
+</script>
+</body>
+</html>

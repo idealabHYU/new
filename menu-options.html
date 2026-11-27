@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>메뉴 강조 시안</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root { --primary: #0E4A84; --accent: #5CC6F2; --ink: #0F1B2D; --line: #E3E8EF; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Pretendard, sans-serif; background: #F4F5F7; color: var(--ink); padding: 40px 28px 80px; }
+  h1 { font-size: 26px; text-align: center; margin-bottom: 6px; }
+  .sub { text-align: center; color: #6B7A8C; margin-bottom: 30px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto; }
+  .opt { background: rgba(255,255,255,.85); border: 1px solid var(--line); border-radius: 18px; padding: 22px 20px 26px; }
+  .opt h3 { font-size: 17px; margin-bottom: 14px; color: var(--primary); }
+  .opt h3 small { display: block; font-size: 13.5px; color: #6B7A8C; font-weight: 500; margin-top: 2px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; text-align: center; }
+  .cols .top { font-weight: 800; font-size: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--primary); margin-bottom: 10px; }
+  ul { list-style: none; }
+  li { padding: 2px 0; }
+  li a { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 7px 6px; font-size: 15.5px; font-weight: 600; color: var(--ink); text-decoration: none; }
+  li a.h { font-weight: 800; color: var(--primary); }
+
+  /* A: 왼쪽 블루 선 + 옅은 띠 */
+  .A a.h { width: 100%; border-left: 3px solid var(--primary); background: linear-gradient(90deg, rgba(92,198,242,.3), rgba(92,198,242,.06)); border-radius: 0 8px 8px 0; color: #0B3A6E; }
+  /* B: 형광펜처럼 글자 아래 반만 아이스블루 */
+  .B a.h { background: linear-gradient(transparent 58%, rgba(92,198,242,.55) 58%); padding: 3px 2px; margin: 4px 0; }
+  /* C: 작은 아이콘 + 블루 글씨 */
+  .C a.h svg { width: 18px; height: 18px; fill: none; stroke: var(--primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  /* D: 흰 카드 + 얕은 그림자 */
+  .D a.h { width: 100%; background: #fff; border-radius: 10px; box-shadow: 0 6px 16px -8px rgba(14,74,132,.45), 0 0 0 1px #DCE7F2; color: var(--primary); }
+  /* E: 블루 글씨 + 테두리 원 화살표 */
+  .E a.h i { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--primary); font-style: normal; font-size: 11px; }
+  /* F: 짧은 아이스블루 밑줄 (가운데) */
+  .F a.h { position: relative; padding-bottom: 10px; }
+  .F a.h::after { content: ''; position: absolute; left: 50%; bottom: 3px; width: 26px; height: 3px; margin-left: -13px; border-radius: 3px; background: var(--accent); }
+</style>
+</head>
+<body>
+  <h1>메뉴 강조 시안</h1>
+  <p class="sub">학부 · 대학원 칸에서 "전공 가이드", "대학원 · 장학"만 강조하는 방식 6가지</p>
+  <div class="grid" id="g"></div>
+<script>
+const OPTS = [
+  ['A', '왼쪽 블루 선 + 옅은 띠', '아까 깔끔했던 그 방식', t => t + ' →'],
+  ['B', '형광펜 밑줄', '글자 아래 반만 아이스블루', t => t],
+  ['C', '작은 아이콘 + 블루 글씨', '바탕 없이 아이콘으로 구분', (t, k) => (k ? '<svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4z"/><path d="M20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z"/></svg>') + t],
+  ['D', '흰 카드', '살짝 떠 있는 흰 카드', t => t + ' →'],
+  ['E', '테두리 원 화살표', '블루 글씨 + 작은 원 화살표', t => t + ' <i>→</i>'],
+  ['F', '짧은 아이스블루 밑줄', '가운데 짧은 선 하나', t => t],
+];
+const UG = ['교과과정', '전공이수체계도', '학사안내', '학생활동'], GR = ['교과과정', '학위취득 로드맵', '학사안내', '논문심사'];
+const col = (top, hot, rest, f, k) => `<div><div class="top">${top}</div><ul><li><a class="h" href="#">${f(hot, k)}</a></li>${rest.map(x => `<li><a href="#">${x}</a></li>`).join('')}</ul></div>`;
+document.getElementById('g').innerHTML = OPTS.map(([id, t, d, f]) => `<div class="opt ${id}"><h3>${id}안 · ${t}<small>${d}</small></h3>
+  <div class="cols">${col('학부', '전공 가이드', UG, f, 0)}${col('대학원', '대학원 · 장학', GR, f, 1)}</div></div>`).join('');
+</script>
+</body>
+</html>

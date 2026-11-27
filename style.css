@@ -3085,3 +3085,64 @@ footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
   .pf dl dt { text-align: left; }
   .em-card { min-width: 0; } .em-links a { word-break: break-all; }
 }
+
+/* ===== v212: 공지사항 전체 · 학부 · 대학원 — 상자 없이 밑줄 탭 ===== */
+.cl-seg.b-seg { display: flex; gap: 0 34px; padding: 0; margin-bottom: 26px; border: 0; border-bottom: 1px solid #C9D3DE; border-radius: 0; background: none; }
+.cl-seg.b-seg button { display: inline-flex; align-items: baseline; gap: 8px; width: auto; height: auto; padding: 14px 2px 15px; margin-bottom: -1px; border: 0; border-bottom: 3px solid transparent; border-radius: 0; background: none; box-shadow: none; font-size: 19px; font-weight: 800; letter-spacing: -.4px; color: var(--ink-3); transition: none; }
+.cl-seg.b-seg button i { margin: 0; font-size: 15px; font-weight: 700; color: #9AA6B3; }
+.cl-seg.b-seg button:hover { color: var(--primary); background: none; }
+.cl-seg.b-seg button:hover i { color: var(--primary); }
+.cl-seg.b-seg button.on { color: var(--ink); background: none; border-color: transparent; border-bottom-color: var(--primary); box-shadow: none; }
+.cl-seg.b-seg button.on i { color: var(--primary); }
+@media (max-width: 900px) {
+  .cl-seg.b-seg { gap: 0 24px; margin-bottom: 18px; }
+  .cl-seg.b-seg button { height: auto; padding: 12px 2px 13px; font-size: 17px; }
+}
+
+/* ===== v213: 연구실 표 위치 — 교수실 · 학생연구실 두 줄 ===== */
+.cl-table.labs th.c, .cl-table.labs td.c { text-align: center; }
+.lroom { display: inline-grid; grid-template-columns: auto auto; gap: 3px 12px; margin: 0; text-align: left; white-space: nowrap; }
+.lroom dt { font-size: 13.5px; font-weight: 700; color: var(--ink-3); }
+.lroom dd { margin: 0; font-size: 15.5px; color: var(--ink); }
+
+/* ===== v214: 연구실 표 — 지도교수 칸을 왼쪽으로, 위치와 간격 넓힘 ===== */
+@media (min-width: 901px) {
+  .cl-table.labs { table-layout: fixed; }
+  .cl-table.labs th:nth-child(2), .cl-table.labs td:nth-child(2) { width: 116px; padding-left: 20px; }
+  .cl-table.labs th:nth-child(3), .cl-table.labs td:nth-child(3) { width: 270px; }
+  .cl-table.labs th:nth-child(4), .cl-table.labs td:nth-child(4) { width: 118px; }
+  .cl-table.labs td:first-child small { white-space: normal; }
+}
+
+/* ===== v215: 교수실 · 학생연구실 이름 가운데 맞춤, 두 줄 사이 구분선 ===== */
+.lroom { grid-template-columns: 74px auto; gap: 0 14px; align-items: center; }
+.lroom dt { text-align: center; padding: 5px 0; }
+.lroom dd { padding: 5px 0; }
+.lroom dt:nth-of-type(2), .lroom dd:nth-of-type(2) { border-top: 1px solid #E1E6EC; }
+.lroom dt::before { content: none; }
+.lroom { column-gap: 0; }
+.lroom dt { padding-right: 14px; }
+.lroom dt:nth-of-type(2), .lroom dd:nth-of-type(2) { border-top-color: #CFD7E0; }
+
+/* ===== v217: 위치 두 줄 — 줄 단위로 묶어 구분선이 끊기지 않게 ===== */
+.lroom2 { display: inline-block; text-align: left; white-space: nowrap; }
+.lroom2 p { display: grid; grid-template-columns: 88px auto; align-items: center; margin: 0; padding: 5px 0; }
+.lroom2 p + p { border-top: 1px solid #CFD7E0; }
+.lroom2 b { font-size: 13.5px; font-weight: 700; color: var(--ink-3); text-align: center; padding-right: 12px; }
+.lroom2 span { font-size: 15.5px; color: var(--ink); }
+.cl-table.labs .lroom2 b { font-size: 13.5px; font-weight: 700; color: var(--ink-3); }
+
+/* ===== v219: 학생활동 RED 사진 3장 ===== */
+.cl-trio { display: grid; grid-template-columns: 1.3fr 1.3fr 1fr; gap: 12px; max-width: 760px; margin-top: 16px; }
+.cl-dl dd .cl-trio img { display: block; width: 100%; max-width: none; height: 100%; margin-top: 0; aspect-ratio: auto; object-fit: cover; border-radius: 10px; }
+.cl-dl dd .cl-trio img:nth-child(-n+2) { aspect-ratio: 4 / 3; }
+.cl-dl dd .cl-trio img:nth-child(3) { object-position: 50% 40%; }
+@media (max-width: 640px) {
+  .cl-trio { grid-template-columns: 1fr 1fr; }
+  .cl-dl dd .cl-trio img:first-child { grid-column: 1 / -1; }
+  .cl-dl dd .cl-trio img:nth-child(n+2) { aspect-ratio: 3 / 4; }
+}
+.cl-trio { align-items: start; }
+.cl-dl dd .cl-trio img { height: auto; }
+.cl-dl dd .cl-trio img:nth-child(3) { aspect-ratio: 1.026 / 1; }
+@media (max-width: 640px) { .cl-dl dd .cl-trio img:first-child { aspect-ratio: 4 / 3; } .cl-dl dd .cl-trio img:nth-child(n+2) { aspect-ratio: 3 / 4; } }

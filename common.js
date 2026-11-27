@@ -183,7 +183,7 @@ const EN = {
   '조선·해양': 'Shipbuilding & Ocean', '항공·우주': 'Aerospace', '건설·플랜트': 'Construction & Plant',
   '공기업·공공기관': 'Public Corporations', '대학원·연구소': 'Graduate School & Research',
   // 연구실·안내
-  '연구실 둘러보기': 'Explore Our Labs', '전체 교수진 · 연구실 보기 →': 'All faculty & labs →', '지도교수': 'Advisor', '위치': 'Location',
+  '연구실 둘러보기': 'Explore Our Labs', '전체 교수진 · 연구실 보기 →': 'All faculty & labs →', '지도교수': 'Advisor', '위치': 'Location', '교수실': 'Office', '학생연구실': 'Student Lab',
   '라이언스칼리지 · 자율전공생': 'Lions College · Undeclared students', '전공을 아직 못 정했다면': "Haven't chosen a major yet?",
   '1학년 탐색부터 4학년 캡스톤까지, 기계공학 4년 로드맵': 'A four-year ME roadmap, from first-year exploration to senior capstone',
   '자대생 · 타대생 대학원 지원자': 'Graduate applicants from Hanyang and other universities', '대학원을 고민한다면': 'Considering graduate school?',

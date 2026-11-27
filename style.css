@@ -3146,3 +3146,58 @@ footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .cl-dl dd .cl-trio img { height: auto; }
 .cl-dl dd .cl-trio img:nth-child(3) { aspect-ratio: 1.026 / 1; }
 @media (max-width: 640px) { .cl-dl dd .cl-trio img:first-child { aspect-ratio: 4 / 3; } .cl-dl dd .cl-trio img:nth-child(n+2) { aspect-ratio: 3 / 4; } }
+
+/* ===== v221: 영어 화면 — 모바일 로고 · 게시판 안내 ===== */
+.b-en { margin: -4px 0 14px; font-size: 14px; color: var(--ink-3); }
+@media (max-width: 900px) {
+  html[lang="en"] .logo { gap: 8px; min-width: 0; }
+  html[lang="en"] .logo .uni, html[lang="en"] .logo .sep { display: none; }
+  html[lang="en"] .logo b { font-size: 16px; white-space: nowrap; }
+}
+@media (max-width: 360px) { html[lang="en"] .logo b { font-size: 14.5px; } }
+@media (max-width: 600px) {
+  html[lang="en"] .nhead { flex-wrap: wrap; row-gap: 10px; }
+  html[lang="en"] .nhead .tabs2 { order: 3; flex-basis: 100%; gap: 16px; }
+  html[lang="en"] .nhead .more2 { margin-left: auto; }
+  html[lang="en"] .cl-seg.b-seg { gap: 0 18px; }
+  html[lang="en"] .cl-seg.b-seg button { font-size: 15.5px; }
+}
+/* 영어 화면 데스크톱 상단: 메뉴 글자가 길어 넘치지 않게 */
+@media (max-width: 1440px) {
+  html[lang="en"] .menu > li { min-width: 100px; }
+  html[lang="en"] .menu .top { font-size: 15.5px; padding: 12px 6px; }
+  html[lang="en"] .logo .uni, html[lang="en"] .logo b { font-size: 17px; }
+}
+@media (max-width: 1260px) { html[lang="en"] .logo .uni, html[lang="en"] .logo .sep { display: none; } }
+@media (max-width: 1060px) and (min-width: 901px) {
+  html[lang="en"] .menu > li { min-width: 84px; }
+  html[lang="en"] .menu .top { font-size: 14.5px; padding: 12px 4px; }
+  html[lang="en"] .logo b { font-size: 15.5px; }
+}
+/* 한국어 화면 901~1140px: 상단 메뉴 칸을 줄여 넘치지 않게 */
+@media (max-width: 1140px) and (min-width: 901px) {
+  html:not([lang="en"]) .menu > li { width: 104px; }
+}
+@media (max-width: 1020px) and (min-width: 901px) {
+  html:not([lang="en"]) .menu > li { width: 92px; }
+  .utl a:not(.lang) { display: none; }
+}
+@media (max-width: 960px) and (min-width: 901px) {
+  html:not([lang="en"]) .menu > li { width: 84px; }
+}
+/* 영어 화면 숫자 띠: 긴 문구가 칸 밖으로 나가지 않게 */
+html[lang="en"] .keys { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+html[lang="en"] .keys > div, html[lang="en"] .keys > div p { min-width: 0; }
+html[lang="en"] .keys b, html[lang="en"] .keys small { white-space: normal; overflow-wrap: anywhere; }
+@media (max-width: 1080px) { html[lang="en"] .keys { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* 교수진 1000px 안팎: 이메일 · 분야 버튼이 카드 밖으로 나가지 않게 */
+.pf-mail { max-width: 100%; min-width: 0; overflow-wrap: anywhere; word-break: break-all; }
+@media (max-width: 1240px) { .filters { flex-wrap: wrap; justify-content: center; } }
+.lnb-main .filters { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.lnb-main .filters button { min-width: 0; }
+@media (max-width: 1240px) and (min-width: 901px) { .lnb-main .filters { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 900px) { .lnb-main .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+html[lang="en"] .pf-name { flex-wrap: wrap; row-gap: 2px; }
+html[lang="en"] .pf-name b { white-space: normal; }
+@media (max-width: 900px) { html[lang="en"] #mtabs button { min-width: 0; padding: 0 4px; font-size: 13.5px; line-height: 1.2; white-space: normal; overflow-wrap: anywhere; } }
+@media (max-width: 640px) { html[lang="en"] .hero h1 { font-size: 34px; letter-spacing: -1px; line-height: 1.12; } }

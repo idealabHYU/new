@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="style.css?v=220">
+<link rel="stylesheet" href="style.css?v=233">
 </head>
 <body>
 <div id="header"></div>
@@ -19,8 +19,8 @@
 <main class="wrap pg" id="content"></main>
 <div id="footer"></div>
 
-<script src="data.js?v=220"></script>
-<script src="common.js?v=220"></script>
+<script src="data.js?v=233"></script>
+<script src="common.js?v=233"></script>
 <script>
 // 내용 출처: 현행 mech.hanyang.ac.kr (학과소개 -26-, 인사말 -27, 연혁 -29, 방문안내 -31, 교과과정 -19/-14, 학생회 -23, 장학 -32/-33, 사업단 -13, 리서치프로파일 -30)
 const q = new URLSearchParams(location.search);
@@ -181,7 +181,7 @@ const CTYPE = { b: '전공기초', c: '전공핵심', a: '전공심화' };
 // 긴 과목명은 원본 이미지처럼 뜻이 끊기는 자리에서 줄바꿈 (숫자 = 앞 줄 글자 수)
 const CBR = { '일반물리학실험1': 5, '기계공학입문설계': 4, '고체역학응용설계': 4, '열역학응용설계': 3, '유체역학응용설계': 4, '공학설계및응용': 4, '공학설계및응용2': 4, '컴퓨터지원설계': 3,
   '계측시스템설계및응용': 5, '기계가공과공정설계': 5, '기계캡스톤디자인1': 5, '기계캡스톤디자인2': 5, '기계캡스톤디자인3': 5, '응용유한요소해석': 4, '기계융합제조공정설계': 6, '응용기계시스템설계': 4 };
-const cbr = n => CBR[n] ? n.slice(0, CBR[n]) + '<wbr>' + n.slice(CBR[n]) : n;
+const cbr = n => CBR[n] && LANG !== 'en' ? n.slice(0, CBR[n]) + '<wbr>' + n.slice(CBR[n]) : n;   // 영어 화면은 과목명 통째로(번역되도록)
 const mapPage = () => `
   <div class="cl-seg five" id="mtabs"><button class="on" data-t="">전체 보기</button>${Object.entries(CTRK).map(([k, v]) => `<button data-t="${k}">${v.name}</button>`).join('')}</div>
   <div class="cm-info" id="minfo" hidden></div>
@@ -266,7 +266,7 @@ const calPage = () => {
   const pick = s => { const f = all.find(e => e[2] && e[1] === s); return f ? f[0].split(' ~ ')[0].replace(/\s*\(.\)/, '') : ''; };
   const day = d => d.replace(/\s*\(.\)/g, '').replace(' ~ ', ' – ');            // 요일은 빼고 날짜만 (요일은 마우스를 올리면 보임)
   const month = ([y, m, ev]) => `<div class="ac-m ${y === cy && m === cm ? 'now' : ''}">
-      <h4><b>${m}</b>월${y === cy && m === cm ? '<em>이번 달</em>' : ''}</h4>
+      <h4>${LANG === 'en' ? `<b>${MON[m - 1]}</b>` : `<b>${m}</b>월`}${y === cy && m === cm ? '<em>이번 달</em>' : ''}</h4>
       <ul>${ev.map(([d, s, k]) => `<li class="${k ? 'k' : ''}"><time title="${d}">${day(d)}</time><span>${s}</span></li>`).join('')}</ul></div>`;
   return `
   <div class="ac-top"><b>2026<i>학년도</i></b>

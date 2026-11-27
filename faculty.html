@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="style.css?v=220">
+<link rel="stylesheet" href="style.css?v=233">
 </head>
 <body>
 <div id="header"></div>
@@ -30,8 +30,8 @@
 
 <div id="footer"></div>
 
-<script src="data.js?v=220"></script>
-<script src="common.js?v=220"></script>
+<script src="data.js?v=233"></script>
+<script src="common.js?v=233"></script>
 <script>
 renderHeader('소개');
 renderFooter();
@@ -94,9 +94,9 @@ const EMER = [
 ];
 const EM_EN = { '명예교수': 'Professor Emeritus', '석학교수': 'Distinguished Professor' };
 document.getElementById('emer').innerHTML = EMER.map(([n, en, pos, phd, mail, web]) => `
-  <div class="em-card"><span class="em-mono">${n[0]}</span><div>
-    <div class="em-name"><b>${n}</b><span>${en}</span></div>
-    <span class="em-pos">${pos} <i>${EM_EN[pos]}</i></span>
+  <div class="em-card"><span class="em-mono">${LANG === 'en' ? en.split(/[\s-]/).pop()[0] : n[0]}</span><div>
+    <div class="em-name" data-keep><b>${LANG === 'en' ? en : n}</b><span>${LANG === 'en' ? n : en}</span></div>
+    <span class="em-pos">${LANG === 'en' ? EM_EN[pos] : `${pos} <i>${EM_EN[pos]}</i>`}</span>
     <p class="em-deg">Ph.D., ${phd}</p>
     <div class="em-links"><a href="mailto:${mail}"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>${mail}</a>${web ? `<a href="${web}" target="_blank" rel="noopener">홈페이지 ↗</a>` : ''}</div></div></div>`).join('');
 function setTab(k, push) {

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="style.css?v=233">
+<link rel="stylesheet" href="style.css?v=235">
 </head>
 <body>
 <div id="header"></div>
@@ -100,9 +100,9 @@
 
 <div id="footer"></div>
 
-<script src="data.js?v=233"></script>
-<script src="posts.js?v=233"></script>
-<script src="common.js?v=233"></script>
+<script src="data.js?v=235"></script>
+<script src="posts.js?v=235"></script>
+<script src="common.js?v=235"></script>
 <script>
 renderHeader('');
 renderFooter();
@@ -144,8 +144,9 @@ const afterLoad = fn => document.readyState === 'complete' ? setTimeout(fn, 300)
   const start = () => { clearInterval(timer); timer = setInterval(() => { if (!idle('hero')) show((i + 1) % FIELDS.length); }, 3200); };
   watch('hero', bg);
   [...hf.children].forEach(n => {
-    n.addEventListener('mouseenter', () => { clearInterval(timer); show(+n.dataset.i); });
-    n.addEventListener('mouseleave', start);
+    // 마우스: 올리면 멈춤 / 손가락: 누르면 그 분야로 바꾸고 자동 전환은 계속
+    if (HOVER) { n.addEventListener('mouseenter', () => { clearInterval(timer); show(+n.dataset.i); }); n.addEventListener('mouseleave', start); }
+    else n.addEventListener('click', () => { show(+n.dataset.i); start(); });
   });
   show(0); start();
 })();
@@ -204,8 +205,13 @@ const FICON = {
   document.getElementById('labsNext').onclick = () => user(1);
   const pb = document.getElementById('labsPause');
   pb.onclick = () => { paused = !paused; pb.textContent = paused ? '▶' : '❚❚'; };
-  vp.addEventListener('mouseenter', () => paused = true);
-  vp.addEventListener('mouseleave', () => paused = pb.textContent === '▶');
+  if (HOVER) { vp.addEventListener('mouseenter', () => paused = true); vp.addEventListener('mouseleave', () => paused = pb.textContent === '▶'); }
+  // 휴대폰: 옆으로 밀어서 넘기기 (세로 스크롤은 그대로)
+  let tx = 0, ty = 0, swiped = false;
+  vp.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; swiped = false; }, { passive: true });
+  vp.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) { swiped = true; user(dx < 0 ? 1 : -1); } }, { passive: true });
+  vp.addEventListener('click', e => { if (swiped) { e.preventDefault(); swiped = false; } }, true);
   watch('labs', vp);
   timer = setTimeout(tick, GAP);
   let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(measure, 150); });
@@ -252,8 +258,9 @@ document.getElementById('jobs').innerHTML = POSTS['취업'].items.slice(0, 5).ma
     [im[k], im[(k + 1) % im.length]].forEach(x => { if (x) x.loading = 'eager'; });   // 지금 + 다음 사진 미리 받기
     cap.classList.remove('in'); void cap.offsetWidth; N.textContent = String(k + 1).padStart(2, '0'); T.textContent = D[k][0]; Ds.textContent = D[k][2]; C.innerHTML = '<i>대표 진출처</i>' + D[k][1].split(' · ').map(x => `<span>${x}</span>`).join('') + '<i class="r">관련 연구기관</i>' + D[k][3].split(' · ').map(x => `<span class="r">${x}</span>`).join(''); cap.classList.add('in'); };
   const run = () => { clearInterval(timer); timer = setInterval(() => { if (!idle('show')) show((i + 1) % li.length); }, 3000); };
-  li.forEach((e, k) => e.addEventListener('mouseenter', () => { clearInterval(timer); show(k); }));
-  w.addEventListener('mouseleave', run); show(0); run();
+  if (HOVER) { li.forEach((e, k) => e.addEventListener('mouseenter', () => { clearInterval(timer); show(k); })); w.addEventListener('mouseleave', run); }
+  else li.forEach((e, k) => e.addEventListener('click', () => { show(k); run(); }));
+  show(0); run();
 })();
 
 // ---- 학과 소식: 누르면 원문으로 바로 가지 않고, 학과가 요약한 페이지(news.html)로 이동

@@ -3201,3 +3201,51 @@ html[lang="en"] .pf-name { flex-wrap: wrap; row-gap: 2px; }
 html[lang="en"] .pf-name b { white-space: normal; }
 @media (max-width: 900px) { html[lang="en"] #mtabs button { min-width: 0; padding: 0 4px; font-size: 13.5px; line-height: 1.2; white-space: normal; overflow-wrap: anywhere; } }
 @media (max-width: 640px) { html[lang="en"] .hero h1 { font-size: 34px; letter-spacing: -1px; line-height: 1.12; } }
+
+/* v234 휴대폰 메뉴: 아래로 펼쳐지는 서랍(전체 화면) + 상위 메뉴를 누르면 하위 메뉴가 그 아래에 열림 */
+@media (max-width: 900px) {
+  .gnb.mega::after { display: none; }
+  .burger { font-size: 0; }
+  .burger::before { content: '☰'; font-size: 20px; line-height: 1; }
+  body.open .burger::before { content: '✕'; font-size: 18px; }
+  body.open { overflow: hidden; }
+  body.open .gnb .menu { display: block; position: fixed; top: 85px; left: 0; right: 0; bottom: 0; z-index: 60; margin: 0; padding: 4px 20px 48px;
+    overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; background: #fff; border-top: 1px solid var(--line); gap: 0; }
+  body.open .gnb .menu > li { display: block; width: auto; min-width: 0; max-width: none; height: auto; position: static; border-bottom: 1px solid var(--line); }
+  body.open .gnb .menu > li > .top { display: flex; align-items: center; justify-content: space-between; width: 100%; height: auto; margin: 0; padding: 17px 4px;
+    font-size: 18px; font-weight: 700; color: var(--ink); text-align: left; background: none; border: 0; border-radius: 0; box-shadow: none; }
+  body.open .gnb .menu > li > .top::after { content: ''; position: static; display: block; width: 8px; height: 8px; margin-right: 4px; background: none;
+    border-right: 2px solid var(--ink-3); border-bottom: 2px solid var(--ink-3); transform: rotate(45deg) translateY(-3px); transition: transform .2s; }
+  body.open .gnb .menu > li.open > .top { color: var(--primary); }
+  body.open .gnb .menu > li.open > .top::after { border-color: var(--primary); transform: rotate(-135deg) translate(-3px, 0); }
+  body.open .gnb .menu .drop, body.open .gnb .menu > li:hover .drop { display: none; position: static; top: auto; left: auto; right: auto; width: auto; min-width: 0;
+    transform: none; opacity: 1; visibility: visible; pointer-events: auto; margin: 0; padding: 0 4px 14px; background: none; border: 0; border-radius: 0; box-shadow: none; }
+  body.open .gnb .menu > li.open .drop { display: block; }
+  body.open .gnb .menu .drop::before { display: none; }
+  body.open .gnb .menu .drop li { display: block; margin: 0; }
+  body.open .gnb .menu .drop a, body.open .gnb .menu .drop a.hot, body.open .gnb .menu .drop a.hot2 { display: block; width: auto; padding: 10px 10px; margin: 0;
+    font-size: 16px; font-weight: 500; line-height: 1.4; color: var(--ink-2); white-space: normal; text-align: left; text-decoration: none;
+    background: none; border: 0; border-radius: 8px; box-shadow: none; filter: none; }
+  body.open .gnb .menu .drop a.hot, body.open .gnb .menu .drop a.hot2 { color: var(--primary); font-weight: 700; }
+  body.open .gnb .menu .drop a.hot::before, body.open .gnb .menu .drop a.hot::after { display: none; }
+  body.open .gnb .menu .drop a.hot span { display: inline; width: auto; height: auto; margin-left: 4px; background: none; color: inherit; font-size: 14px; }
+  body.open .gnb .menu .drop a:active { background: var(--tint); color: var(--primary); }
+}
+.menu > li.m-utl { display: none; }
+@media (max-width: 900px) {
+  body.open .gnb .menu > li.m-utl { display: flex; flex-wrap: wrap; gap: 8px; padding: 22px 0 0; border-bottom: 0; }
+  body.open .gnb .menu > li.m-utl a { padding: 9px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 14.5px; font-weight: 600; color: var(--ink-2); background: #fff; }
+  body.open .gnb .menu > li.m-utl a.lang { margin-left: auto; border-color: var(--primary); color: var(--primary); }
+}
+/* 휴대폰 푸터: 사자 로고를 위로 작게, 정보는 화면 폭 전체로 */
+@media (max-width: 640px) {
+  footer .wrap.ft-main { flex-direction: column; justify-content: flex-start; align-items: flex-start; text-align: left; gap: 16px; }
+  footer .wrap.ft-main .ft-lion { width: 60px; height: auto; margin: 0; }
+  footer .wrap.ft-main .ft-info { width: 100%; min-width: 0; }
+}
+/* 첫 화면 취업정보: 분류 칸이 없으니 제목이 줄 전체를 쓰게 (휴대폰에서 제목이 몇 글자만 보이던 문제) */
+#jobs li a > .t:only-child { grid-column: 1 / -1; }
+/* 영어 화면 휴대폰: 산업 탭 8개를 2줄×4칸 대신 4줄×2칸으로 (Semiconductors 등 긴 단어가 겹치던 문제) */
+@media (max-width: 640px) {
+  html[lang="en"] .sh-list { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}

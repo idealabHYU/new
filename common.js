@@ -1,3 +1,5 @@
+// 마우스로 쓰는 화면인지 (휴대폰·태블릿은 false): 마우스를 올려야 동작하는 기능은 손가락으로 누르는 방식으로 바꿔 씀
+const HOVER = matchMedia("(hover: hover) and (pointer: fine)").matches;
 // 공통 헤더·푸터. 메뉴 구성은 현행 mech.hanyang.ac.kr 그대로 (6개 대메뉴).
 // 주소를 따로 적지 않은 항목은 sub.html?m=&s= 하위 페이지로 연결
 const MENU = [
@@ -45,6 +47,11 @@ function setupLNB(active) {
   sh.parentNode.insertBefore(lay, main);
   lay.appendChild(aside); lay.appendChild(main);
   main.classList.add('lnb-main');
+  // 휴대폰: 옆으로 넘기는 하위 메뉴에서 지금 페이지 탭이 화면 밖에 있으면 보이도록 가로로 당겨 둠
+  const center = () => { const nav = aside.querySelector('.subtabs'), on = nav && nav.querySelector('.on');
+    if (on && nav.scrollWidth > nav.clientWidth + 1) nav.scrollLeft += on.getBoundingClientRect().left - nav.getBoundingClientRect().left - 16; };
+  setTimeout(center, 60);
+  aside.addEventListener('click', () => setTimeout(center, 60));
 }
 function renderHeader(active) {
   setTimeout(() => { setSubheroImg(active); setupLNB(active); }, 0);
@@ -59,7 +66,11 @@ function renderHeader(active) {
         <img class="emb" src="img/hanyang-emblem.svg" alt="">
         <b class="uni">한양대학교</b><span class="sep"></span><b>기계공학과</b>
       </a>
-      <ul class="menu">${top}</ul>
+      <ul class="menu">${top}<li class="m-utl">
+        <a href="https://ieng.hanyang.ac.kr/home" target="_blank" rel="noopener" data-keep>${LANG === 'en' ? 'Eng. College' : '공학대학'}</a>
+        <a href="https://portal.hanyang.ac.kr/sso/lgin.do" target="_blank" rel="noopener">HY-in</a>
+        <a href="https://hy-mooc.hanyang.ac.kr/hy-mooc" target="_blank" rel="noopener">HY-ON</a>
+        <a class="lang" href="#" onclick="toggleLang(event)" data-keep>${LANG === 'en' ? '한국어' : 'English'}</a></li></ul>
       <div class="utl">
         <a href="https://ieng.hanyang.ac.kr/home" target="_blank" rel="noopener" data-keep>${LANG === 'en' ? 'Eng. College' : '공학대학'}</a>
         <a href="https://portal.hanyang.ac.kr/sso/lgin.do" target="_blank" rel="noopener">HY-in</a>
@@ -69,7 +80,7 @@ function renderHeader(active) {
       <button class="burger" aria-label="메뉴" onclick="document.body.classList.toggle('open')">☰</button>
     </div>
   </header>`;
-  const items = document.querySelectorAll('.menu > li');
+  const items = document.querySelectorAll('.menu > li:not(.m-utl)');
   const closeAll = except => items.forEach(li => { if (li !== except) { li.classList.remove('open'); li.querySelector('.top').setAttribute('aria-expanded', 'false'); } });
   items.forEach(li => li.querySelector('.top').addEventListener('click', e => {
     e.stopPropagation();
@@ -80,7 +91,11 @@ function renderHeader(active) {
   // 메뉴 하나에 마우스를 올리면 모든 메뉴의 하위 목록이 한 번에 펼쳐짐 (헤더를 벗어나면 닫힘)
   const gnb = document.querySelector('.gnb');
   // 메뉴가 열려 있는 동안에는 페이지의 자동 전환(첫 화면 사진·연구실 카드 등)을 멈춰, 메뉴 위에서 마우스를 움직일 때 다른 그리기 작업이 겹치지 않게 함
-  document.querySelector('.menu').addEventListener('mouseenter', () => { gnb.classList.add('mega'); window.MENU_OPEN = true; });
+  // 휴대폰·태블릿(900px 이하)에서는 펼침 메뉴를 쓰지 않음: 손가락으로 누를 때도 mouseenter가 생겨 하위 메뉴가 한꺼번에 겹쳐 보였음
+  const narrow = matchMedia('(max-width: 900px)');
+  document.querySelector('.menu').addEventListener('mouseenter', () => { if (narrow.matches) return; gnb.classList.add('mega'); window.MENU_OPEN = true; });
+  narrow.addEventListener('change', () => { gnb.classList.remove('mega'); document.body.classList.remove('open'); closeAll(); });
+  document.querySelectorAll('.menu .drop a').forEach(a => a.addEventListener('click', () => document.body.classList.remove('open')));
   gnb.addEventListener('mouseleave', () => { gnb.classList.remove('mega'); window.MENU_OPEN = false; });
   document.addEventListener('click', () => closeAll());
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });

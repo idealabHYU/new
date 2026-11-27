@@ -417,7 +417,7 @@ function drawCmts() {
   C.forEach((c, i) => {
     const d = el('div', 'cmt'), h = el('div', 'cmt-h');
     h.append(el('b', '', 'Comment ' + (i + 1)));
-    if (C.length > 1) { const x = el('button', 'link', '이 코멘트 빼기'); x.type = 'button'; x.onclick = () => { C.splice(i, 1); drawCmts(); }; h.append(x); }
+    if (C.length > 1) { const x = el('button', 'link', '제거'); x.type = 'button'; x.onclick = () => { C.splice(i, 1); drawCmts(); }; h.append(x); }
     const lu = el('label', 'f', 'URL'), iu = el('input'); iu.type = 'text'; iu.inputMode = 'url'; iu.placeholder = 'https://idealabhyu.github.io/new/…'; iu.value = c.url; iu.oninput = () => { c.url = iu.value; };
     const lt = el('label', 'f', '코멘트 내용'), it = el('textarea'); it.maxLength = 8000; it.placeholder = '예) 이 화면의 연구실 사진을 첨부한 사진으로 바꿔 주세요.'; it.value = c.text; it.oninput = () => { c.text = it.value; };
     const id = 'c' + i; iu.id = id + 'u'; it.id = id + 't'; lu.htmlFor = iu.id; lt.htmlFor = it.id;

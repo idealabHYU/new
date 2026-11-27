@@ -119,7 +119,7 @@ table.fl { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .dv-t { margin: 6px 0 14px; font-size: 30px; word-break: keep-all; }
 .dv-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; padding-bottom: 18px; border-bottom: 2px solid var(--ink); font-size: 15px; color: var(--ink-3); }
 .dv-meta b { font-size: 17px; font-weight: 800; color: var(--ink); }
-.dv-body { padding: 30px 0 34px; font-size: 17px; line-height: 1.8; white-space: pre-wrap; word-break: break-word; border-bottom: 1px solid var(--line); }
+.dv-body { padding: 26px 0 10px; font-size: 17px; line-height: 1.8; word-break: break-word; }
 .dv-sec { margin-top: 32px; }
 .dv-sec h3 { font-size: 17px; font-weight: 800; }
 .dv-sec h3 small { margin-left: 8px; font-size: 14px; font-weight: 600; color: var(--ink-3); }
@@ -140,6 +140,21 @@ table.fl { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .pn li.off:hover b { color: inherit; text-decoration: none; }
 .dv-end { display: flex; justify-content: center; margin-top: 30px; }
 
+.c-hint { margin-bottom: 18px; }
+.cmt { padding: 22px 22px 24px; margin-bottom: 14px; border: 1px solid #CBD3DC; border-radius: 14px; background: #fff; }
+.cmt-h { display: flex; align-items: center; justify-content: space-between; }
+.cmt-h b { font-size: 16px; font-weight: 800; letter-spacing: .2px; color: var(--primary); }
+.cmt-h button { font-size: 14px; }
+.cmt label.f { margin-top: 14px; }
+.cmt textarea { min-height: 120px; }
+.add-c { display: block; width: 100%; height: 52px; border: 1.5px dashed #AEBBC9; border-radius: 12px; background: none; font-size: 16px; font-weight: 800; color: var(--primary); }
+.add-c:hover { border-color: var(--primary); background: #F3F6FA; }
+.cm-v { padding: 20px 0 22px; border-bottom: 1px solid var(--line); }
+.cm-v:first-child { padding-top: 4px; }
+.cm-v h4 { font-size: 15px; font-weight: 800; color: var(--primary); }
+.cm-v .u { display: inline-block; margin-top: 4px; font-size: 14.5px; color: var(--ink-2); word-break: break-all; text-decoration: underline; text-underline-offset: 3px; }
+.cm-v .u:hover { color: var(--primary); }
+.cm-v p { margin-top: 10px; font-size: 17px; line-height: 1.8; white-space: pre-wrap; word-break: break-word; }
 footer { margin-top: 70px; border-top: 1px solid var(--line); }
 footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 22px; padding-bottom: 40px; font-size: 14px; color: var(--ink-3); }
 [hidden] { display: none !important; }
@@ -206,24 +221,23 @@ footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wr
   <div id="vMain" hidden><div class="wrap pane">
     <p class="note" id="preview" hidden style="margin:0 0 24px">미리보기 모드입니다. 아직 저장소가 연결되지 않아, 지금 쓰는 글과 사진은 이 브라우저에만 임시로 보이고 다른 분께는 전달되지 않습니다.</p>
     <h2 id="formH" hidden>피드백 수정 <small id="formHs"></small></h2>
-    <label class="f" for="page">해당 부분</label>
-    <select id="page"><option>전체</option><option>홈 첫 화면</option><option>소개 (학과소개 · 인사말 · 연혁)</option><option>교수진 · 연구실</option><option>입학</option><option>학부 (교과과정 · 이수체계 · 학사일정)</option><option>대학원 · 장학</option><option>연구 · 사업단</option><option>게시판 · 뉴스</option><option>사진 · 자료 전달</option><option>기타</option></select>
-    <label class="f" for="text">내용</label>
-    <textarea id="text" placeholder="예) 연구실 소개 사진을 첨부한 사진으로 바꿔 주세요. / 교수진 페이지의 연구분야를 ○○로 수정해 주세요." maxlength="20000"></textarea>
+    <p class="hint c-hint">홈페이지에서 고칠 화면을 열고, 주소창의 주소(URL)를 복사해 붙여 넣어 주세요. 한 번에 여러 코멘트를 쓸 수 있습니다.</p>
+    <div id="cmts"></div>
+    <button type="button" class="add-c" id="addC">+ 코멘트 추가</button>
     <div id="oldSec" hidden><label class="f">등록된 첨부 파일</label><ul class="files" id="oldFiles"></ul></div>
     <label class="f"><b id="dropLab" style="font-weight:inherit">사진 · 파일 첨부</b><span>(선택)</span></label>
     <div class="drop" id="drop" tabindex="0" role="button"><b>파일 선택</b> 또는 여기로 끌어다 놓기<small>원본 그대로 저장됩니다(화질 변환 없음) · 파일 하나당 25MB까지</small></div>
     <input type="file" id="file" multiple hidden>
     <ul class="picked" id="picked"></ul>
     <p class="memo" id="memoBox" hidden></p>
-    <div class="row"><button class="btn" id="send">등록하기</button><button class="btn ghost" id="cancel" hidden>취소</button><span class="msg" id="sendMsg"></span></div>
+    <div class="row"><button class="btn" id="send">등록하기</button><button class="btn danger" id="delMine" hidden>삭제</button><button class="btn ghost" id="cancel" hidden>취소</button><span class="msg" id="sendMsg"></span></div>
   </div></div>
 
   <!-- 3. 교수님: 내가 쓴 글 -->
   <div id="vMine" hidden><div class="wrap pane">
     <p class="hint" style="margin-bottom:14px">글을 누르면 내용을 확인하고 수정할 수 있습니다.</p>
     <table class="fl my" style="border-top:2px solid var(--ink)">
-      <thead><tr><th class="c-pg">해당 부분</th><th class="c-sum">내용</th><th class="c-at">첨부</th><th class="c-dt">등록일</th><th class="c-st">상태</th></tr></thead>
+      <thead><tr><th class="c-pg">페이지</th><th class="c-sum">내용</th><th class="c-at">첨부</th><th class="c-dt">등록일</th><th class="c-st">상태</th></tr></thead>
       <tbody id="myRows"></tbody>
     </table>
     <div class="row"><span class="msg" id="mineMsg"></span></div>
@@ -235,7 +249,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wr
     <div class="wrap pane">
       <div class="bar"><div class="tabs" id="tabs"></div><select id="byWho" aria-label="교수별 보기"></select></div>
       <table class="fl">
-        <thead><tr><th class="c-who">교수</th><th class="c-pg">해당 부분</th><th class="c-sum">내용</th><th class="c-at">첨부</th><th class="c-dt">등록일</th><th class="c-st">상태</th></tr></thead>
+        <thead><tr><th class="c-who">교수</th><th class="c-pg">페이지</th><th class="c-sum">내용</th><th class="c-at">첨부</th><th class="c-dt">등록일</th><th class="c-st">상태</th></tr></thead>
         <tbody id="rows"></tbody>
       </table>
       <div class="row"><button class="btn ghost sm" id="reload">새로 고침</button><span class="msg" id="listMsg"></span></div>
@@ -285,9 +299,10 @@ function fake(b) {
   const id = () => Math.random().toString(36).slice(2, 10);
   if (b.action === 'ping' || b.action === 'check') return { ok: true, needCode: false };
   if (b.action === 'upload') { const k = id(); mem.files[k] = { id: k, name: b.name, size: Math.round(b.data.length * 3 / 4), mime: b.mime, thumb: b.thumb, data: b.data }; return { ok: true, id: k, name: b.name }; }
-  if (b.action === 'add') { mem.items.push({ id: id(), at: Date.now(), who: b.who, page: b.page, text: b.text, status: '접수', memo: '', files: (b.files || []).map(k => mem.files[k]) }); return { ok: true }; }
+  if (b.action === 'add') { mem.items.push({ id: id(), at: Date.now(), who: b.who, page: '코멘트 ' + b.comments.length + '개', text: b.comments.map(c => c.text).join('\n\n'), comments: b.comments, status: '접수', memo: '', files: (b.files || []).map(k => mem.files[k]) }); return { ok: true }; }
+  if (b.action === 'remove') { const n = mem.items.length; mem.items = mem.items.filter(x => !(x.id === b.id && x.who === b.who)); return n === mem.items.length ? { ok: false, error: '글을 찾을 수 없습니다.' } : { ok: true }; }
   if (b.action === 'mine') return { ok: true, items: mem.items.filter(x => x.who === b.who).sort((x, y) => y.at - x.at) };
-  if (b.action === 'edit') { const x = mem.items.find(y => y.id === b.id && y.who === b.who); if (!x) return { ok: false, error: '글을 찾을 수 없습니다.' }; Object.assign(x, { page: b.page, text: b.text, status: '접수', edited: Date.now(), files: x.files.concat((b.files || []).map(k => mem.files[k])) }); return { ok: true }; }
+  if (b.action === 'edit') { const x = mem.items.find(y => y.id === b.id && y.who === b.who); if (!x) return { ok: false, error: '글을 찾을 수 없습니다.' }; Object.assign(x, { comments: b.comments, text: b.comments.map(c => c.text).join('\n\n'), status: '접수', edited: Date.now(), files: x.files.concat((b.files || []).map(k => mem.files[k])) }); return { ok: true }; }
   if (b.action === 'file' && !b.admin) { const f = mem.files[b.id]; return f ? { ok: true, name: f.name, mime: f.mime, data: f.data } : { ok: false, error: '파일 없음' }; }
   if (!b.admin) return { ok: false, error: 'admin' };
   if (b.action === 'admin') return { ok: true };
@@ -385,6 +400,34 @@ const thumb = url => new Promise(res => { if (!url) return res(''); const im = n
 function say(id, t, cls) { const m = $(id); m.textContent = t || ''; m.className = 'msg' + (cls ? ' ' + cls : '') + (id === 'codeMsg' || id === 'loginMsg' ? ' gmsg' : ''); }
 function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
 
+// ---- 코멘트 묶음 (Comment 1, 2, … : URL + 내용)
+let C = [{ url: '', text: '' }];
+const cOf = x => x.comments && x.comments.length ? x.comments : [{ url: '', text: String(x.text || '') }];
+const safeUrl = u => /^https?:\/\//i.test(u) ? u : '';
+const normUrl = u => { u = String(u || '').trim(); return u && !/^[a-z]+:\/\//i.test(u) && /^[\w-]+(\.[\w-]+)+/.test(u) ? 'https://' + u : u; };
+function pageLabel(x) {
+  const u = (cOf(x).find(c => c.url) || {}).url;
+  if (!u) return x.page && !/^코멘트 \d+개$/.test(x.page) ? x.page : '–';
+  const base = typeof SITE_URL === 'string' ? SITE_URL : '';
+  if (base && u.startsWith(base)) { const r = u.slice(base.length).replace(/^\//, ''); return !r || /^index\.html([?#].*)?$/.test(r) ? '홈 (첫 화면)' : r; }
+  try { const p = new URL(u); return p.hostname + p.pathname + p.search; } catch (e) { return u; }
+}
+function drawCmts() {
+  const box = $('cmts'); box.textContent = '';
+  C.forEach((c, i) => {
+    const d = el('div', 'cmt'), h = el('div', 'cmt-h');
+    h.append(el('b', '', 'Comment ' + (i + 1)));
+    if (C.length > 1) { const x = el('button', 'link', '이 코멘트 빼기'); x.type = 'button'; x.onclick = () => { C.splice(i, 1); drawCmts(); }; h.append(x); }
+    const lu = el('label', 'f', 'URL'), iu = el('input'); iu.type = 'text'; iu.inputMode = 'url'; iu.placeholder = 'https://idealabhyu.github.io/new/…'; iu.value = c.url; iu.oninput = () => { c.url = iu.value; };
+    const lt = el('label', 'f', '코멘트 내용'), it = el('textarea'); it.maxLength = 8000; it.placeholder = '예) 이 화면의 연구실 사진을 첨부한 사진으로 바꿔 주세요.'; it.value = c.text; it.oninput = () => { c.text = it.value; };
+    const id = 'c' + i; iu.id = id + 'u'; it.id = id + 't'; lu.htmlFor = iu.id; lt.htmlFor = it.id;
+    d.append(h, lu, iu, lt, it); box.append(d);
+  });
+}
+$('addC').onclick = () => { C.push({ url: '', text: '' }); drawCmts(); $('c' + (C.length - 1) + 'u').focus(); };
+let flashT = 0;
+function flash(id, t) { say(id, t, 'ok'); clearTimeout(flashT); flashT = setTimeout(() => { if ($(id).textContent === t) say(id, ''); }, 3000); }
+
 // ---- 등록 · 수정 (교수님)
 function fileList(ul, files) {
   ul.textContent = '';
@@ -395,32 +438,42 @@ function fileList(ul, files) {
     li.append(ph, el('span', 'nm', f.name), dl); ul.append(li);
   });
 }
-function setForm(text, page, files) {
-  $('text').value = text || '';
-  const sel = $('page'); if (page && ![...sel.options].some(o => o.value === page)) sel.append(new Option(page)); sel.value = page || '전체';
+function setForm(cs, files) {
+  C = cs && cs.length ? cs.map(c => ({ url: c.url || '', text: c.text || '' })) : [{ url: '', text: '' }]; drawCmts();
   picked = files || []; drawPicked();
 }
 function goWrite() { leaveEdit(); show('vMain'); }
 function goMine() { leaveEdit(); show('vMine'); loadMine(); }
 function leaveEdit() {
   if (!editing) return;
-  editing = null; setForm(draft && draft.text, draft && draft.page, draft && draft.picked); draft = null;
-  $('formH').hidden = true; $('oldSec').hidden = true; $('memoBox').hidden = true; $('cancel').hidden = true;
+  editing = null; setForm(draft && draft.C, draft && draft.picked); draft = null;
+  $('formH').hidden = true; $('oldSec').hidden = true; $('memoBox').hidden = true; $('cancel').hidden = true; $('delMine').hidden = true;
   $('send').textContent = '등록하기'; $('dropLab').textContent = '사진 · 파일 첨부'; say('sendMsg', '');
 }
 function edit(x) {
-  if (!editing) draft = { text: $('text').value, page: $('page').value, picked };
-  editing = x; setForm(x.text, x.page, []);
+  if (!editing) draft = { C, picked };
+  editing = x; setForm(cOf(x), []);
   $('formH').hidden = false; $('formHs').textContent = '등록 ' + when(x.at, true) + (x.edited ? ' · 수정 ' + when(x.edited, true) : '');
   $('oldSec').hidden = !(x.files && x.files.length); fileList($('oldFiles'), x.files);
   const m = $('memoBox'); m.hidden = !x.memo; m.textContent = ''; if (x.memo) m.append(el('b', '', '담당자 답변'), document.createTextNode(x.memo));
-  $('cancel').hidden = false; $('send').textContent = '수정 저장'; $('dropLab').textContent = '사진 · 파일 추가'; say('sendMsg', '');
+  $('cancel').hidden = false; $('delMine').hidden = false; $('send').textContent = '수정 저장'; $('dropLab').textContent = '사진 · 파일 추가'; say('sendMsg', '');
   show('vMain'); window.scrollTo(0, 0);
 }
 $('cancel').onclick = goMine;
+$('delMine').onclick = async () => {
+  if (!editing || !confirm('이 피드백을 삭제할까요? 삭제하면 되돌릴 수 없습니다.')) return;
+  const btn = $('delMine'); btn.disabled = true;
+  try {
+    const r = await api({ action: 'remove', id: editing.id, who }); if (!r.ok) throw new Error(errText(r.error));
+    leaveEdit(); show('vMine'); await loadMine(); flash('mineMsg', '삭제되었습니다.');
+  } catch (e) { say('sendMsg', '삭제하지 못했습니다: ' + e.message, 'err'); }
+  btn.disabled = false;
+};
 $('send').onclick = async () => {
-  const text = $('text').value.trim();
-  if (!text) { say('sendMsg', '내용을 입력해 주세요.', 'err'); $('text').focus(); return; }
+  const cs = C.map(c => ({ url: normUrl(c.url), text: String(c.text || '').trim() })).filter(c => c.url || c.text);
+  const miss = cs.findIndex(c => !c.text);
+  if (!cs.length) { say('sendMsg', '코멘트 내용을 입력해 주세요.', 'err'); $('c0t').focus(); return; }
+  if (miss >= 0) { const k = C.findIndex(c => normUrl(c.url) === cs[miss].url && !String(c.text || '').trim()); say('sendMsg', `Comment ${k + 1}의 내용을 입력해 주세요.`, 'err'); if ($('c' + k + 't')) $('c' + k + 't').focus(); return; }
   const btn = $('send'); btn.disabled = true;
   try {
     const ids = [];
@@ -431,11 +484,11 @@ $('send').onclick = async () => {
       ids.push(r.id);
     }
     say('sendMsg', editing ? '저장하는 중…' : '등록하는 중…');
-    const r = await api(editing ? { action: 'edit', id: editing.id, who, page: $('page').value, text, files: ids } : { action: 'add', who, page: $('page').value, text, files: ids });
+    const r = await api(editing ? { action: 'edit', id: editing.id, who, comments: cs, files: ids } : { action: 'add', who, comments: cs, files: ids });
     if (!r.ok) throw new Error(errText(r.error));
     picked.forEach(p => p.url && URL.revokeObjectURL(p.url)); picked = [];
-    if (editing) { leaveEdit(); show('vMine'); await loadMine(); say('mineMsg', '수정되었습니다.', 'ok'); }
-    else { setForm('', '전체', []); say('sendMsg', "등록되었습니다. '내가 쓴 글'에서 확인하고 수정하실 수 있습니다.", 'ok'); loadMine(true); }
+    if (editing) { leaveEdit(); show('vMine'); await loadMine(); flash('mineMsg', '수정되었습니다.'); }
+    else { setForm([], []); window.scrollTo(0, $('cmts').getBoundingClientRect().top + scrollY - 120); flash('sendMsg', '등록되었습니다. 이어서 코멘트를 작성하실 수 있습니다.'); loadMine(true); }
   } catch (e) { say('sendMsg', '실패: ' + e.message + ' — 다시 시도해 주세요. (쓴 내용은 그대로 남아 있습니다)', 'err'); }
   btn.disabled = false;
 };
@@ -451,7 +504,7 @@ async function loadMine(quiet) {
   mine.forEach(x => {
     const tr = el('tr'); tr.tabIndex = 0;
     const st = el('td', 'c-st'); st.append(stEl(x));
-    tr.append(el('td', 'c-pg', x.page || '전체'), el('td', 'c-sum', flat(x.text)), el('td', 'c-at', x.files && x.files.length ? x.files.length + '개' : '–'), el('td', 'c-dt', when(x.at)), st);
+    tr.append(el('td', 'c-pg', pageLabel(x)), el('td', 'c-sum', sumOf(x)), el('td', 'c-at', x.files && x.files.length ? x.files.length + '개' : '–'), el('td', 'c-dt', when(x.at)), st);
     tr.onclick = () => edit(x); tr.onkeydown = e => { if (e.key === 'Enter') edit(x); };
     tbody.append(tr);
   });
@@ -471,7 +524,8 @@ async function load() {
 const TABS = [['all', '전체', () => true], ['open', '접수', x => x.status !== '반영 완료'], ['done', '반영 완료', x => x.status === '반영 완료']];
 const when = (t, full) => { const d = new Date(t), p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}.${p(d.getMonth() + 1)}.${p(d.getDate())}` + (full ? ` ${p(d.getHours())}:${p(d.getMinutes())}` : ''); };
 const flat = s => String(s || '').replace(/\s+/g, ' ').trim();
-const title = x => { const l = String(x.text || '').split('\n').map(s => s.trim()).find(Boolean) || '(내용 없음)'; return l.length > 60 ? l.slice(0, 60) + '…' : l; };
+const title = x => { const l = String(cOf(x)[0].text || '').split('\n').map(s => s.trim()).find(Boolean) || '(내용 없음)'; return l.length > 60 ? l.slice(0, 60) + '…' : l; };
+const sumOf = x => { const cs = cOf(x); return (cs.length > 1 ? `[코멘트 ${cs.length}개] ` : '') + cs.map(c => flat(c.text)).join(' / '); };
 const visible = () => items.filter(TABS.find(t => t[0] === tab)[2]).filter(x => !byWho || x.who === byWho);
 const stEl = x => el('span', 'st' + (x.status === '반영 완료' ? ' done' : ''), x.status || '접수');
 const open = x => { location.hash = 'v=' + x.id; };
@@ -491,7 +545,7 @@ function drawList() {
   rows.forEach(x => {
     const tr = el('tr'); tr.tabIndex = 0;
     const st = el('td', 'c-st'); st.append(stEl(x));
-    tr.append(el('td', 'c-who', x.who), el('td', 'c-pg', x.page || '전체'), el('td', 'c-sum', flat(x.text)), el('td', 'c-at', x.files && x.files.length ? x.files.length + '개' : '–'), el('td', 'c-dt', when(x.at)), st);
+    tr.append(el('td', 'c-who', x.who), el('td', 'c-pg', pageLabel(x)), el('td', 'c-sum', sumOf(x)), el('td', 'c-at', x.files && x.files.length ? x.files.length + '개' : '–'), el('td', 'c-dt', when(x.at)), st);
     tr.onclick = () => open(x);
     tr.onkeydown = e => { if (e.key === 'Enter') open(x); };
     tbody.append(tr);
@@ -504,10 +558,15 @@ $('reload').onclick = load;
 let cur = null;
 function view(x) {
   cur = x; show('vView'); window.scrollTo(0, 0);
-  $('dPg').textContent = x.page || '전체';
+  $('dPg').textContent = pageLabel(x);
   $('dT').textContent = title(x);
   const m = $('dMeta'); m.textContent = ''; m.append(el('b', '', x.who + ' 교수'), el('span', '', when(x.at, true)), stEl(x)); if (x.edited) m.append(el('span', '', '수정 ' + when(x.edited, true)));
-  $('dBody').textContent = x.text;
+  const body = $('dBody'); body.textContent = '';
+  cOf(x).forEach((c, i, all) => {
+    const v = el('div', 'cm-v'); if (all.length > 1 || c.url) v.append(el('h4', '', 'Comment ' + (i + 1)));
+    if (c.url) { const u = safeUrl(c.url); const a = el(u ? 'a' : 'span', 'u', c.url); if (u) { a.href = u; a.target = '_blank'; a.rel = 'noopener'; } v.append(a); }
+    v.append(el('p', '', c.text)); body.append(v);
+  });
   const fs = x.files || [];
   $('dFilesSec').hidden = !fs.length; $('dFilesN').textContent = fs.length + '개'; fileList($('dFiles'), fs);
   $('dMemo').value = x.memo || ''; say('dMsg', '');
@@ -555,6 +614,7 @@ async function download(f, btn) {
   } catch (e) { alert('파일을 받지 못했습니다: ' + e.message); }
   btn.textContent = old; btn.disabled = false;
 }
+drawCmts();
 start();
 </script>
 </body>

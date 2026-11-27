@@ -1,5 +1,5 @@
 /**
- * 기계공학과 홈페이지 피드백 — 저장용 구글 Apps Script
+ * 기계공학과 홈페이지 피드백 — 저장용 구글 Apps Script (코멘트 묶음 · 본인 글 삭제 지원)
  *
  * 하는 일: 피드백 글을 구글 시트에, 사진·파일을 구글 드라이브 폴더에 '원본 그대로' 저장하고,
  *          피드백 사이트(GitHub 페이지)가 이 스크립트 주소로 글 목록·파일을 주고받게 합니다.
@@ -65,6 +65,7 @@ function doPost(e) {
     const me = String(b.who || '').trim();
     if (b.action === 'mine') return out({ ok: true, items: me ? listAll().filter(x => String(x.who) === me) : [] });
     if (b.action === 'edit') return out(editFeedback(b, me));
+    if (b.action === 'remove') return out(removeOwn(b, me));
     if (b.action === 'file' && !okAdmin(b.admin)) return out(readFile(b.id, me));   // 교수님은 본인 글의 첨부만
     if (!okAdmin(b.admin)) return out({ ok: false, error: 'admin' });
     if (b.action === 'admin') return out({ ok: true });
@@ -89,13 +90,22 @@ function saveFile(b) {
   return { ok: true, id: id, name: name, size: bytes.length };
 }
 
+/** 코멘트 묶음: [{url, text}] → 정리 · 시트에 읽기 좋게 쓸 글 */
+function cmtsOf(b) {
+  return (Array.isArray(b.comments) ? b.comments : []).slice(0, 30)
+    .map(c => ({ url: String((c && c.url) || '').trim().slice(0, 500), text: String((c && c.text) || '').trim().slice(0, 8000) }))
+    .filter(c => c.text);
+}
+const readable = cs => cs.map((c, i) => '[Comment ' + (i + 1) + ']' + (c.url ? '\nURL: ' + c.url : '') + '\n' + c.text).join('\n\n');
+
 function addFeedback(b) {
-  const who = String(b.who || '').trim().slice(0, 40), text = String(b.text || '').trim().slice(0, 20000);
+  const cs = cmtsOf(b);
+  const who = String(b.who || '').trim().slice(0, 40), text = (cs.length ? readable(cs) : String(b.text || '').trim()).slice(0, 40000);
   if (!who || !text) return { ok: false, error: '이름과 내용이 필요합니다.' };
   const id = uid(), files = (b.files || []).map(String).slice(0, 30);
   const lock = LockService.getScriptLock(); lock.waitLock(20000);
   try {
-    sheet('피드백').appendRow([id, new Date(), who, String(b.page || '').slice(0, 60), text, '접수', files.join(','), '']);
+    sheet('피드백').appendRow([id, new Date(), who, cs.length ? '코멘트 ' + cs.length + '개' : String(b.page || '').slice(0, 60), text, '접수', files.join(','), '', '', cs.length ? JSON.stringify(cs) : '']);
     if (files.length) {   // 첨부 파일에 이 글의 id 를 적어 둔다
       const sh = sheet('파일'), v = sh.getDataRange().getValues();
       for (let r = 1; r < v.length; r++) if (files.indexOf(String(v[r][0])) >= 0) sh.getRange(r + 1, 2).setValue(id);
@@ -106,7 +116,8 @@ function addFeedback(b) {
 
 /** 본인 글 수정: 이름이 같은 글만. 내용 · 해당 부분을 바꾸고 첨부를 더할 수 있다. 수정하면 상태는 '접수'로 돌아간다. */
 function editFeedback(b, me) {
-  const text = String(b.text || '').trim().slice(0, 20000);
+  const cs = cmtsOf(b);
+  const text = (cs.length ? readable(cs) : String(b.text || '').trim()).slice(0, 40000);
   if (!me || !text) return { ok: false, error: '이름과 내용이 필요합니다.' };
   const add = (b.files || []).map(String).slice(0, 30);
   const lock = LockService.getScriptLock(); lock.waitLock(20000);
@@ -115,12 +126,25 @@ function editFeedback(b, me) {
     const sh = sheet('피드백'), row = sh.getRange(r, 1, 1, 8).getValues()[0];
     if (String(row[2]) !== me) return { ok: false, error: '본인이 쓴 글만 수정할 수 있습니다.' };
     const files = String(row[6] || '').split(',').filter(String).concat(add).slice(0, 30);
-    sh.getRange(r, 4, 1, 4).setValues([[String(b.page || '').slice(0, 60), text, '접수', files.join(',')]]);
+    sh.getRange(r, 4, 1, 4).setValues([[cs.length ? '코멘트 ' + cs.length + '개' : String(b.page || '').slice(0, 60), text, '접수', files.join(',')]]);
+    sh.getRange(r, 10).setValue(cs.length ? JSON.stringify(cs) : '');
     sh.getRange(r, 9).setValue(new Date());   // 수정 시각
     if (add.length) {
       const fs = sheet('파일'), v = fs.getDataRange().getValues();
       for (let i = 1; i < v.length; i++) if (add.indexOf(String(v[i][0])) >= 0) fs.getRange(i + 1, 2).setValue(String(b.id));
     }
+  } finally { lock.releaseLock(); }
+  return { ok: true };
+}
+
+/** 본인 글 삭제: 이름이 같은 글만. 시트의 줄만 지우고 첨부 파일은 드라이브에 남긴다. */
+function removeOwn(b, me) {
+  const lock = LockService.getScriptLock(); lock.waitLock(20000);
+  try {
+    const r = rowOf(b.id); if (!r) return { ok: false, error: '글을 찾을 수 없습니다.' };
+    const sh = sheet('피드백');
+    if (!me || String(sh.getRange(r, 3).getValue()) !== me) return { ok: false, error: '본인이 쓴 글만 삭제할 수 있습니다.' };
+    sh.deleteRow(r);
   } finally { lock.releaseLock(); }
   return { ok: true };
 }
@@ -132,10 +156,12 @@ function listAll() {
   for (let r = 1; r < v.length; r++) {
     if (!v[r][0]) continue;
     items.push({ id: String(v[r][0]), at: new Date(v[r][1]).getTime(), who: v[r][2], page: v[r][3], text: v[r][4], status: v[r][5] || '접수',
-      files: String(v[r][6] || '').split(',').filter(String).map(k => files[k]).filter(Boolean), memo: v[r][7] || '', edited: v[r][8] ? new Date(v[r][8]).getTime() : 0 });
+      files: String(v[r][6] || '').split(',').filter(String).map(k => files[k]).filter(Boolean), memo: v[r][7] || '', edited: v[r][8] ? new Date(v[r][8]).getTime() : 0, comments: parseCmts(v[r][9]) });
   }
   return items.sort((x, y) => y.at - x.at);
 }
+
+function parseCmts(raw) { try { const a = JSON.parse(raw || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
 
 /** 원본 파일을 그대로 돌려준다(사이트가 받아서 저장). 드라이브 공유 설정을 바꿀 필요가 없다. */
 function readFile(fileId, me) {

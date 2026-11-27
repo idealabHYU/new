@@ -66,11 +66,11 @@ function renderHeader(active) {
         <img class="emb" src="img/hanyang-emblem.svg" alt="">
         <b class="uni">한양대학교</b><span class="sep"></span><b>기계공학과</b>
       </a>
-      <ul class="menu">${top}<li class="m-utl">
+      <ul class="menu"><li class="m-utl">
         <a href="https://ieng.hanyang.ac.kr/home" target="_blank" rel="noopener" data-keep>${LANG === 'en' ? 'Eng. College' : '공학대학'}</a>
         <a href="https://portal.hanyang.ac.kr/sso/lgin.do" target="_blank" rel="noopener">HY-in</a>
         <a href="https://hy-mooc.hanyang.ac.kr/hy-mooc" target="_blank" rel="noopener">HY-ON</a>
-        <a class="lang" href="#" onclick="toggleLang(event)" data-keep>${LANG === 'en' ? '한국어' : 'English'}</a></li></ul>
+        <a class="lang" href="#" onclick="toggleLang(event)" data-keep>${LANG === 'en' ? 'KO' : 'EN'}</a></li>${top}</ul>
       <div class="utl">
         <a href="https://ieng.hanyang.ac.kr/home" target="_blank" rel="noopener" data-keep>${LANG === 'en' ? 'Eng. College' : '공학대학'}</a>
         <a href="https://portal.hanyang.ac.kr/sso/lgin.do" target="_blank" rel="noopener">HY-in</a>

@@ -3249,3 +3249,21 @@ html[lang="en"] .pf-name b { white-space: normal; }
 @media (max-width: 640px) {
   html[lang="en"] .sh-list { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
 }
+/* v236 휴대폰 메뉴: 현행 학과 사이트와 같은 구성 (위: 작은 유틸 링크 + EN / 큰 대메뉴 + 더하기·빼기 / 하위 메뉴는 줄로 나뉜 목록) */
+@media (max-width: 900px) {
+  body.open .gnb .menu { padding: 0 16px 48px; }
+  body.open .gnb .menu > li.m-utl { display: flex; flex-wrap: wrap; align-items: center; gap: 0; padding: 18px 4px 16px; border-bottom: 1px solid var(--line); }
+  body.open .gnb .menu > li.m-utl a { padding: 0; border: 0; border-radius: 0; background: none; font-size: 13.5px; font-weight: 400; color: var(--ink-3); }
+  body.open .gnb .menu > li.m-utl a + a:not(.lang)::before { content: ''; display: inline-block; width: 1px; height: 10px; margin: 0 9px; background: #C9D3DE; vertical-align: 0; }
+  body.open .gnb .menu > li.m-utl a.lang { margin-left: auto; padding: 3px 11px; border: 1px solid var(--ink-3); border-radius: 999px; font-size: 12.5px; color: var(--ink-2); }
+  body.open .gnb .menu > li > .top { padding: 22px 4px; font-size: 22px; font-weight: 700; }
+  body.open .gnb .menu > li > .top::after, body.open .gnb .menu > li.open > .top::after { content: '+'; width: auto; height: auto; margin: 0; border: 0; transform: none;
+    font-size: 26px; font-weight: 300; line-height: 1; color: var(--ink-2); }
+  body.open .gnb .menu > li.open > .top::after { content: '−'; color: var(--primary); }
+  body.open .gnb .menu > li.open > .top { border-bottom: 1px solid var(--line); }
+  body.open .gnb .menu .drop, body.open .gnb .menu > li:hover .drop { padding: 0; }
+  body.open .gnb .menu .drop li:has(> a.hot) { display: none; }
+  body.open .gnb .menu .drop li + li { border-top: 1px solid var(--line); }
+  body.open .gnb .menu .drop a { padding: 14px 4px; font-size: 17px; font-weight: 400; color: var(--ink-2); border-radius: 0; }
+}
+@media (max-width: 900px) { body.open .gnb .menu .drop li:has(> a.hot) + li { border-top: 0; } }

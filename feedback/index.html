@@ -31,11 +31,14 @@ h2 { display: flex; align-items: baseline; justify-content: space-between; gap: 
 h2 small { font-size: 14.5px; font-weight: 600; color: var(--ink-3); }
 
 /* 이름 고르기 */
-.names { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 22px; }
-.names button { height: 56px; border: 1px solid #C9D3DE; border-radius: 12px; background: #fff; font-size: 17px; font-weight: 700; }
-.names button:hover { border-color: var(--primary); color: var(--primary); }
-.other { display: flex; gap: 10px; margin-top: 16px; }
-.other input { flex: 1; min-width: 0; }
+.names { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 26px; }
+.names button { height: 76px; border: 1px solid #C9D3DE; border-radius: 12px; background: #fff; font-size: 20px; font-weight: 700; letter-spacing: -.3px; }
+.names button:hover, .names button:focus-visible { border-color: var(--primary); color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); outline: none; }
+.other { display: flex; align-items: stretch; gap: 10px; margin-top: 22px; max-width: 520px; }
+.other input, .other input[type=password] { flex: 1; min-width: 0; margin-top: 0; height: 54px; }
+.other .btn { flex: none; width: auto; }
+.msg.warn { margin-top: 10px; color: #8A5A00; font-weight: 700; }
+#codeMsg { margin-top: 10px; }
 
 /* 입력 */
 label.f { display: block; margin-top: 20px; font-size: 15px; font-weight: 800; }
@@ -62,7 +65,7 @@ textarea { min-height: 170px; resize: vertical; line-height: 1.65; }
 .msg.ok { color: #1B7A3E; font-weight: 700; }
 
 /* 목록 */
-.tabs { display: flex; gap: 22px; margin-top: 16px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.tabs { display: flex; flex-wrap: wrap; gap: 0 22px; margin-top: 16px; border-bottom: 1px solid var(--line); overflow: visible; }
 .tabs button { padding: 12px 2px; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px; background: none; font-size: 16px; font-weight: 700; color: var(--ink-3); white-space: nowrap; }
 .tabs button.on { color: var(--primary); border-bottom-color: var(--primary); }
 .tabs button i { font-style: normal; margin-left: 6px; font-size: 14px; }
@@ -101,29 +104,28 @@ footer { margin: 60px 0 40px; font-size: 14px; color: var(--ink-3); display: fle
 <main class="wrap">
   <!-- 입장 암호 (설정한 경우에만) -->
   <div id="vCode" hidden>
-    <h1>입장 암호를 입력해 주세요</h1>
-    <p class="lead">학과에서 안내받은 암호를 입력하면 들어갈 수 있습니다.</p>
+    <h1>입장 암호</h1>
+    <p class="lead">안내받으신 입장 암호를 입력해 주십시오.</p>
     <div class="other"><input type="password" id="codeIn" placeholder="입장 암호" autocomplete="off"><button class="btn" id="codeOk">확인</button></div>
-    <p class="msg err" id="codeMsg" style="margin-top:12px"></p>
+    <p class="msg warn" id="capsMsg" hidden>Caps Lock이 켜져 있습니다.</p>
+    <p class="msg err" id="codeMsg"></p>
   </div>
 
   <!-- 1. 이름 고르기 -->
   <div id="vName" hidden>
-    <h1>교수님 성함을 선택해 주세요</h1>
-    <p class="lead">한 번 고르면 이 기기에서는 다음부터 바로 들어옵니다.</p>
+    <h1>성함 선택</h1>
     <div class="names" id="names"></div>
-    <div class="other"><input type="text" id="otherIn" placeholder="목록에 없으면 성함을 직접 입력" maxlength="20"><button class="btn ghost" id="otherOk">입장</button></div>
   </div>
 
   <!-- 2. 쓰기 + 목록 -->
   <div id="vMain" hidden>
-    <h1>새 홈페이지, 어떻게 보셨나요?</h1>
-    <p class="lead"><a id="siteLink" target="_blank" rel="noopener">새 홈페이지 데모 보기 ↗</a> 를 둘러보시고, 고칠 점이나 넣고 싶은 내용을 남겨 주세요. 연구실 사진 등 자료도 함께 올리실 수 있습니다.</p>
+    <h1>홈페이지 개편안 피드백</h1>
+    <p class="lead">학과 홈페이지 개편안에 대한 수정 의견과 자료를 등록하는 페이지입니다. 등록된 내용은 담당자가 확인한 뒤 반영합니다. <a id="siteLink" target="_blank" rel="noopener">개편안 보기 ↗</a></p>
     <p class="note" id="preview" hidden>미리보기 모드입니다. 아직 저장소가 연결되지 않아, 지금 쓰는 글과 사진은 이 브라우저에만 임시로 보이고 다른 분께는 전달되지 않습니다.</p>
 
     <section>
       <h2>피드백 쓰기</h2>
-      <label class="f" for="page">어느 부분에 대한 의견인가요?</label>
+      <label class="f" for="page">해당 부분</label>
       <select id="page"><option>전체</option><option>홈 첫 화면</option><option>소개 (학과소개 · 인사말 · 연혁)</option><option>교수진 · 연구실</option><option>입학</option><option>학부 (교과과정 · 이수체계 · 학사일정)</option><option>대학원 · 장학</option><option>연구 · 사업단</option><option>게시판 · 뉴스</option><option>사진 · 자료 전달</option><option>기타</option></select>
       <label class="f" for="text">내용</label>
       <textarea id="text" placeholder="예) 연구실 소개 사진을 첨부한 사진으로 바꿔 주세요. / 교수진 페이지의 연구분야를 ○○로 수정해 주세요." maxlength="20000"></textarea>
@@ -145,7 +147,7 @@ footer { margin: 60px 0 40px; font-size: 14px; color: var(--ink-3); display: fle
   </div>
 </main>
 
-<script src="config.js?v=1"></script>
+<script src="config.js?v=2"></script>
 <script>
 // 교수진(현행 학과 사이트 순서: 학과장 먼저)
 const PROFS = ['김남욱', '윤준용', '이성환', '이도형', '오제훈', '류근', '김영득', '윤종헌', '이원철', '홍석준', '오준호', '김호준', '김진용', '최이현', '노형도', '김태균', '박지혁', '박주현', '양선웅', '강석경'];
@@ -179,7 +181,7 @@ function fake(b) {
 }
 
 // ---- 화면 전환
-function show(v) { ['vCode', 'vName', 'vMain'].forEach(k => $(k).hidden = k !== v); $('me').hidden = v !== 'vMain'; if (v === 'vMain') $('meName').textContent = who; }
+function show(v) { ['vCode', 'vName', 'vMain'].forEach(k => $(k).hidden = k !== v); $('me').hidden = v !== 'vMain'; if (v === 'vMain') $('meName').textContent = who; if (v === 'vCode') $('codeIn').focus(); }
 async function start() {
   $('siteLink').href = typeof SITE_URL === 'string' ? SITE_URL : '#';
   $('preview').hidden = LIVE;
@@ -189,9 +191,12 @@ async function start() {
 }
 $('names').append(...PROFS.map(n => { const b = document.createElement('button'); b.textContent = n; b.onclick = () => enter(n); return b; }));
 function enter(n) { n = (n || '').trim(); if (!n) return; who = n; LS.set('fb-who', who); show('vMain'); load(); }
-$('otherOk').onclick = () => enter($('otherIn').value);
-$('otherIn').onkeydown = e => { if (e.key === 'Enter') enter($('otherIn').value); };
 $('chg').onclick = () => { who = ''; LS.set('fb-who', ''); show('vName'); };
+// 입장 암호: 엔터로 확인, Caps Lock 알림
+const caps = e => { if (e.getModifierState) $('capsMsg').hidden = !e.getModifierState('CapsLock'); };
+$('codeIn').addEventListener('keydown', e => { caps(e); if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); $('codeOk').click(); } });
+$('codeIn').addEventListener('keyup', caps);
+$('codeIn').addEventListener('blur', () => { $('capsMsg').hidden = true; });
 $('codeOk').onclick = async () => {
   code = $('codeIn').value.trim(); $('codeMsg').textContent = '';
   try { const r = await api('GET', { action: 'list' }); if (!r.ok) { code = ''; $('codeMsg').textContent = '암호가 맞지 않습니다.'; return; } LS.set('fb-code', code); start(); }

@@ -116,8 +116,8 @@ table.fl { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .st.done { border-color: #1B7A3E; color: #1B7A3E; }
 
 /* 상세 보기 (뉴스 글 형태) */
-.dv-pg { margin-top: 12px; font-size: 15px; font-weight: 800; color: var(--primary); }
-.dv-t { margin: 6px 0 14px; font-size: 30px; word-break: keep-all; }
+.dv-pg { overflow-wrap: anywhere; margin-top: 12px; font-size: 15px; font-weight: 800; color: var(--primary); }
+.dv-t { overflow-wrap: anywhere; margin: 6px 0 14px; font-size: 30px; word-break: keep-all; }
 .dv-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; padding-bottom: 18px; border-bottom: 2px solid var(--ink); font-size: 15px; color: var(--ink-3); }
 .dv-meta b { font-size: 17px; font-weight: 800; color: var(--ink); }
 .dv-body { padding: 26px 0 10px; font-size: 17px; line-height: 1.8; word-break: break-word; }
@@ -170,7 +170,15 @@ footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wr
   .fl, .fl tbody, .fl tr, .fl td { display: block; width: auto !important; }
   .fl tbody tr { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 16px 2px; border-bottom: 1px solid var(--line); }
   .fl td { padding: 0; border: 0 !important; background: none !important; }
-  .fl td.c-who { grid-column: 1; } .fl td.c-pg, .fl td.c-sum, .fl td.c-dt { text-align: left; }
+  .fl td.c-who { grid-column: 1; } .fl td.c-who, .fl td.c-pg, .fl td.c-sum, .fl td.c-dt { text-align: left; }
+  .fl tbody tr { grid-template-columns: minmax(0, 1fr) auto; }
+  .fl td.c-sum { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 15.5px; color: var(--ink); }
+  .fl td.c-pg { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fl td.c-dt { white-space: nowrap; }
+  .cmt { padding: 18px 16px 20px; }
+  .dv-meta { gap: 4px 12px; }
+  .cm-v .u { font-size: 14px; }
+  .row .btn.sm { flex: 1 1 auto; }
   .fl td.c-sum { grid-column: 1 / -1; grid-row: 2; } .fl td.c-pg { grid-column: 1; grid-row: 3; } .fl td.c-dt { grid-column: 2; grid-row: 3; } .fl td.c-at { display: none; }
   .fl.my td.c-pg { grid-row: 1; } .fl.my td.c-dt { grid-column: 1; text-align: left; }
   .pn li em { display: none; }

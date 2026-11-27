@@ -147,6 +147,9 @@ table.fl { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .cmt-h b { font-size: 16px; font-weight: 800; letter-spacing: .2px; color: var(--primary); }
 .cmt-h button { font-size: 14px; }
 .cmt label.f { margin-top: 14px; }
+.cmt label.f .lab-help { margin-left: 10px; font-size: 14px; font-weight: 500; color: var(--ink-3); }
+.cmt label.f .lab-help::before { content: ''; display: inline-block; width: 1px; height: 12px; margin-right: 10px; background: #C9D3DE; vertical-align: -1px; }
+@media (max-width: 640px) { .cmt label.f .lab-help { display: block; margin: 3px 0 0; font-size: 13.5px; } .cmt label.f .lab-help::before { display: none; } }
 .cmt textarea { min-height: 120px; }
 .add-c { display: block; width: 100%; height: 52px; border: 1.5px dashed #AEBBC9; border-radius: 12px; background: none; font-size: 16px; font-weight: 800; color: var(--primary); }
 .add-c:hover { border-color: var(--primary); background: #F3F6FA; }
@@ -429,7 +432,7 @@ function drawCmts() {
     const d = el('div', 'cmt'), h = el('div', 'cmt-h');
     h.append(el('b', '', 'Comment ' + (i + 1)));
     if (C.length > 1) { const x = el('button', 'link', '제거'); x.type = 'button'; x.onclick = () => { C.splice(i, 1); drawCmts(); }; h.append(x); }
-    const lu = el('label', 'f', 'URL'), iu = el('input'); iu.type = 'text'; iu.inputMode = 'url'; iu.placeholder = 'https://idealabhyu.github.io/new/…'; iu.value = c.url; iu.oninput = () => { c.url = iu.value; };
+    const lu = el('label', 'f', 'URL'), iu = el('input'); lu.append(el('span', 'lab-help', '수정이 필요한 학과 홈페이지 화면의 주소를 복사해 붙여 넣어 주세요')); iu.type = 'text'; iu.inputMode = 'url'; iu.placeholder = 'https://idealabhyu.github.io/new/…'; iu.value = c.url; iu.oninput = () => { c.url = iu.value; };
     const lt = el('label', 'f', '코멘트 내용'), it = el('textarea'); it.maxLength = 8000; it.placeholder = '예) 이 화면의 연구실 사진을 첨부한 사진으로 바꿔 주세요.'; it.value = c.text; it.oninput = () => { c.text = it.value; };
     const id = 'c' + i; iu.id = id + 'u'; it.id = id + 't'; lu.htmlFor = iu.id; lt.htmlFor = it.id;
     d.append(h, lu, iu, lt, it); box.append(d);
